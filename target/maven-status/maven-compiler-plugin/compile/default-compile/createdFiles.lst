@@ -1,0 +1,9 @@
+org\scarlettparker\videogameslifeserver\commands\SetLife.class
+org\scarlettparker\videogameslifeserver\ConfigManager.class
+org\scarlettparker\videogameslifeserver\LifeManager.class
+org\scarlettparker\videogameslifeserver\InstantFirework.class
+org\scarlettparker\videogameslifeserver\commands\StartLife.class
+org\scarlettparker\videogameslifeserver\commands\GiveLife$1.class
+org\scarlettparker\videogameslifeserver\LifeEvents.class
+org\scarlettparker\videogameslifeserver\VideogamesLifeServer.class
+org\scarlettparker\videogameslifeserver\commands\GiveLife.class

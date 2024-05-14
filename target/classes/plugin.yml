@@ -1,0 +1,14 @@
+name: VideoGamesLifeServer
+version: '1.0-SNAPSHOT'
+main: org.scarlettparker.videogameslifeserver.VideogamesLifeServer
+api-version: '1.20'
+commands:
+  startlife:
+    description: Starts the life server by giving everyone a set number of lives. Command must be run from console.
+    usage: /<command> lives
+  setlife:
+    description: Updates a player's lives. Command must be run from console.
+    usage: /<command> player lives
+  givelife:
+    description: Give a life to a player.
+    usage: /<command> player
