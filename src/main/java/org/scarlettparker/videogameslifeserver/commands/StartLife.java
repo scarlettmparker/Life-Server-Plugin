@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.scarlettparker.videogameslifeserver.ConfigManager;
-import org.scarlettparker.videogameslifeserver.LifeManager;
+import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
+import org.scarlettparker.videogameslifeserver.manager.LifeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,11 +48,8 @@ public class StartLife implements CommandExecutor {
             ConfigManager.createPlayerBase();
             for (Player p : getAllPlayers()) {
                 // add players with lives to config
-                ConfigManager.getPlayerBase().set(p.getName(), numLives);
+                createNewPlayer(p.getName(), numLives, 0, "false");
             }
-            // copy everything into config
-            ConfigManager.getPlayerBase().options().copyDefaults(true);
-            ConfigManager.savePlayerBase();
 
             System.out.println("Lives successfully assigned to all players.");
             for (Player p : getAllPlayers()) {
@@ -64,5 +61,10 @@ public class StartLife implements CommandExecutor {
 
     private List<Player> getAllPlayers() {
         return new ArrayList<>(Bukkit.getOnlinePlayers());
+    }
+
+    public void createNewPlayer(String playerName, int numLives, int deaths, String isZombie) {
+        String[] data = new String[]{String.valueOf(numLives), String.valueOf(deaths), String.valueOf(isZombie)};
+        ConfigManager.writeToPlayerBase(playerName, data);
     }
 }

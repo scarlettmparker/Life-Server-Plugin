@@ -7,11 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.scarlettparker.videogameslifeserver.ConfigManager;
-import org.scarlettparker.videogameslifeserver.LifeManager;
+import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
+import org.scarlettparker.videogameslifeserver.manager.LifeManager;
 
 public class SetLife implements CommandExecutor {
     LifeManager lifeManager = new LifeManager();
+    StartLife startLife = new StartLife();
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         int numLives;
@@ -39,10 +40,17 @@ public class SetLife implements CommandExecutor {
         }
         if (sender instanceof ConsoleCommandSender) {
             if (!ConfigManager.findPlayerBase()) {
-                System.err.println("Config file not found! Please run /setlife lives first.");
+                System.err.println("Config file not found! Please run /startlife lives first.");
                 return true;
             }
-            lifeManager.updateLives(args[0], numLives);
+            try {
+                String[] playerData = ConfigManager.getPlayerData(args[0]).split(",");
+                lifeManager.updateLives(playerData, numLives);
+            } catch(Exception e) {
+                // in case player doesn't exist, make a new player
+                startLife.createNewPlayer(args[0], numLives, 0, "false");
+            }
+
         }
         System.out.println("Success!");
         return true;
