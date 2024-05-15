@@ -65,7 +65,6 @@ public class ConfigManager {
             }
             else {
                 player.clear();
-                player.add(playerName);
                 player.addAll(Arrays.asList(attributes));
             }
 
