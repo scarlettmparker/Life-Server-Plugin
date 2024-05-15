@@ -1,6 +1,6 @@
 name: VideoGamesLifeServer
 version: '${project.version}'
-main: org.scarlettparker.videogameslifeserver.VideogamesLifeServer
+main: org.scarlettparker.videogameslifeserver.Main
 api-version: '1.20'
 commands:
   startlife:
