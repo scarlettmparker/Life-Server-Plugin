@@ -1,8 +1,13 @@
 package org.scarlettparker.videogameslifeserver.manager;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.bukkit.Bukkit;
 import java.io.*;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 /*
     CSV File Structure:
@@ -41,41 +46,35 @@ public class ConfigManager {
     public static void writeToPlayerBase(String playerName, String[] attributes) {
         try {
             File tempFile = new File(playerFile.getAbsolutePath() + ".tmp");
-            PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
 
-            BufferedReader br = new BufferedReader(new FileReader(playerFile));
-            String line;
-            boolean found = false;
+            for (int i = 0; i < attributes.length; i++) {
+                attributes[i] = " "+attributes[i];
+            }
 
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith(playerName)) {
-                    // if player exists replace data
-                    StringJoiner joiner = new StringJoiner(",");
-                    for (String attribute : attributes) {
-                        String s = escapeSpecialCharacters(attribute);
-                        joiner.add(s);
-                    }
-                    pw.println(joiner);
-                    found = true;
-                } else {
-                    pw.println(line);
+            CsvMapper cm = new CsvMapper();
+            MappingIterator<List<String>> it = cm.readerForListOf(String.class)
+                    .with(CsvParser.Feature.WRAP_AS_ARRAY)
+                    .with(CsvParser.Feature.SKIP_EMPTY_LINES)
+                    .readValues(playerFile);
+            List<List<String>> all = it.readAll();
+            List<String> player = all.stream()
+                    .filter(entry -> entry.get(0).equals(playerName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (player == null) {
+                List<String> playerValues = new ArrayList<>(Arrays.stream(attributes).toList());
+                playerValues.add(0, playerName);
+                all.add(playerValues);
+            }
+            else {
+                for (int i = 0; i < attributes.length; i++) {
+                    player.set(i+1, attributes[i]);
                 }
             }
 
-            // if no player exists write a new line
-            if (!found) {
-                StringJoiner joiner = new StringJoiner(",");
-                joiner.add(playerName);
-                for (String attribute : attributes) {
-                    String s = escapeSpecialCharacters(attribute);
-                    joiner.add(s);
-                }
-                pw.println(joiner);
-            }
-
-            br.close();
-            pw.flush();
-            pw.close();
+            CsvSchema schema = cm.schemaFor(String.class).withoutQuoteChar();
+            cm.writer(schema).withDefaultPrettyPrinter().writeValue(tempFile, all);
 
             playerFile.delete();
             tempFile.renameTo(playerFile);
