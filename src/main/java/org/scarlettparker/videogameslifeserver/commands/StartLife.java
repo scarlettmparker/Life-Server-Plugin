@@ -48,7 +48,7 @@ public class StartLife implements CommandExecutor {
             ConfigManager.createPlayerBase();
             for (Player p : getAllPlayers()) {
                 // add players with lives to config
-                createNewPlayer(p.getName(), numLives, 0, "false");
+                createNewPlayer(p.getName(), numLives, 0, -1, "false");
             }
 
             System.out.println("Lives successfully assigned to all players.");
@@ -63,8 +63,9 @@ public class StartLife implements CommandExecutor {
         return new ArrayList<>(Bukkit.getOnlinePlayers());
     }
 
-    public void createNewPlayer(String playerName, int numLives, int deaths, String isZombie) {
-        String[] data = new String[]{String.valueOf(numLives), String.valueOf(deaths), String.valueOf(isZombie)};
+    public void createNewPlayer(String playerName, int numLives, int deaths, int activeTaskID, String isZombie) {
+        String[] data = new String[]{String.valueOf(numLives), String.valueOf(deaths),
+                String.valueOf(activeTaskID), String.valueOf(isZombie)};
         ConfigManager.writeToPlayerBase(playerName, data);
     }
 }

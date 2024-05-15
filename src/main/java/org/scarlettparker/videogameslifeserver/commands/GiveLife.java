@@ -22,8 +22,6 @@ public class GiveLife implements CommandExecutor {
     LifeManager lifeManager = new LifeManager();
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        System.out.println(canSendLife);
-
         if (sender instanceof ConsoleCommandSender) {
             System.err.println("Only players can use this command!");
             return true;

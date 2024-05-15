@@ -15,3 +15,12 @@ commands:
   starttasks:
     description: Initializes the tasks and then distributes one to each player.
     usage: /<command>
+  newtask:
+    description: Gives a player a new task. Default difficulty is normal but can be chosen by player if not on 1 life.
+    usage: /<command> [normal/hard]
+  whattask:
+    description: Tells the player their task along with its difficulty.
+    usage: /<command>
+  completetask:
+    description: Completes a user's task, giving them the expected number of tokens while broadcasting it to the server.
+    usage: /<command>

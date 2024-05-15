@@ -2,10 +2,13 @@ package org.scarlettparker.videogameslifeserver.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 import org.scarlettparker.videogameslifeserver.tasks.Task;
@@ -15,10 +18,13 @@ import java.util.*;
 import static org.scarlettparker.videogameslifeserver.manager.TaskManager.*;
 
 public class StartTasks implements CommandExecutor {
-    public Task[] tasks = {};
-    public HashMap<Player, Task> playerTasks = new HashMap();
+    private static Task[] tasks = {};
+    public static HashMap<Player, Task> playerTasks = new HashMap();
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        // just in case it has already been set up
+        playerTasks.clear();
+
         if (sender instanceof Player) {
             Player p = (Player) sender;
             p.sendMessage(ChatColor.RED + "You cannot use this command as a player. Please run this command from the console.");
@@ -34,11 +40,38 @@ public class StartTasks implements CommandExecutor {
         tasks = generateTasks();
         distributeTasks();
 
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK, 1);
+        BookMeta meta = (BookMeta) book.getItemMeta();
+
         // debugging to print off tasks
         for (Map.Entry<Player, Task> entry : playerTasks.entrySet()) {
+
             Player player = entry.getKey();
             Task task = entry.getValue();
-            System.out.println("Player: " + player.getName() + ", Task: " + task.getID() + ", Description: " + task.getDescription());
+
+            ChatColor messageColor = null;
+            String difficultyText = null;
+
+            // set the colour based on difficulty
+            if (task.getDifficulty() == 0) {
+                messageColor = ChatColor.GREEN;
+                difficultyText = "Normal";
+            } else if (task.getDifficulty() == 1) {
+                messageColor = ChatColor.YELLOW;
+                difficultyText = "Hard";
+            } else if (task.getDifficulty() == 2) {
+                messageColor = ChatColor.RED;
+                difficultyText = "Red";
+            }
+
+            // format the book properly
+            meta.setTitle(messageColor + "Your Task");
+            meta.setAuthor("VGS Life Series");
+            meta.setPages("Task Difficulty: " + messageColor + difficultyText
+                    + "\n" + ChatColor.BLUE + task.getDescription());
+
+            book.setItemMeta(meta);
+            player.getInventory().addItem(book);
         }
         return true;
     }
@@ -50,13 +83,20 @@ public class StartTasks implements CommandExecutor {
             int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
 
             Task assignedTask = null;
+
             if (numLives == 1) {
-                List<Task> difficultyTwoTasks = filterTasksByDifficulty(tasks, 2);
-                assignedTask = getRandomTask(difficultyTwoTasks);
+                // assign task based on difficulty and update player
+                List<Task> task = filterTasksByDifficulty(tasks, 2);
+                assignedTask = getRandomTask(task);
+                playerData[3] = "2";
             } else if (numLives > 1) {
-                List<Task> difficultyZeroTasks = filterTasksByDifficulty(tasks, 0);
-                assignedTask = getRandomTask(difficultyZeroTasks);
+                List<Task> task = filterTasksByDifficulty(tasks, 0);
+                assignedTask = getRandomTask(task);
+                playerData[3] = "0";
             }
+
+            // update player info
+            ConfigManager.writeToPlayerBase(playerName, playerData);
 
             if (assignedTask == null) {
                 System.err.println("No more tasks left! Cannot assign task to " + p.getName());
@@ -69,5 +109,9 @@ public class StartTasks implements CommandExecutor {
 
     private List<Player> getAllPlayers() {
         return new ArrayList<>(Bukkit.getOnlinePlayers());
+    }
+
+    public static Task[] getTasks() {
+        return tasks;
     }
 }

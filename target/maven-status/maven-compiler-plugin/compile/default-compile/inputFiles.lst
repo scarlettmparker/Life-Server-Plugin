@@ -1,8 +1,14 @@
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\Main.java
-C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\GiveLife.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\SetLife.java
-C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\events\LifeEvents.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\LifeManager.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\utils\InstantFirework.java
-C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\ConfigManager.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\NewTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\StartLife.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\StartTasks.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\WhatTask.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\tasks\Task.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\CompleteTask.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\GiveLife.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\events\LifeEvents.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\ConfigManager.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\TaskManager.java

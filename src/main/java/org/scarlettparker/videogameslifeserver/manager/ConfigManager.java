@@ -1,7 +1,5 @@
 package org.scarlettparker.videogameslifeserver.manager;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -11,7 +9,7 @@ import java.util.*;
 
 /*
     CSV File Structure:
-    playerName, lives, deaths(...time:message:etc), tasks(...time:task:etc), isZombie, livesGained, hasUsedExtraLife
+    playerName, lives, deaths(...time:message:etc), activeTaskID, isZombie, livesGained, hasUsedExtraLife
 */
 
 public class ConfigManager {

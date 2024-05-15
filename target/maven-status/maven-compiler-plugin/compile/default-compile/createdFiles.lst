@@ -1,4 +1,6 @@
+org\scarlettparker\videogameslifeserver\commands\WhatTask.class
 org\scarlettparker\videogameslifeserver\manager\ConfigManager.class
+org\scarlettparker\videogameslifeserver\commands\CompleteTask.class
 org\scarlettparker\videogameslifeserver\manager\TaskManager.class
 org\scarlettparker\videogameslifeserver\commands\GiveLife$1.class
 org\scarlettparker\videogameslifeserver\utils\InstantFirework.class
@@ -8,5 +10,6 @@ org\scarlettparker\videogameslifeserver\commands\StartTasks.class
 org\scarlettparker\videogameslifeserver\commands\StartLife.class
 org\scarlettparker\videogameslifeserver\tasks\Task.class
 org\scarlettparker\videogameslifeserver\Main.class
+org\scarlettparker\videogameslifeserver\commands\NewTask.class
 org\scarlettparker\videogameslifeserver\events\LifeEvents.class
 org\scarlettparker\videogameslifeserver\commands\GiveLife.class

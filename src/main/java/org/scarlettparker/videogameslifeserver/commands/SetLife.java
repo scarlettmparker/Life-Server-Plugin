@@ -48,7 +48,7 @@ public class SetLife implements CommandExecutor {
                 lifeManager.updateLives(playerData, numLives);
             } catch(Exception e) {
                 // in case player doesn't exist, make a new player
-                startLife.createNewPlayer(args[0], numLives, 0, "false");
+                startLife.createNewPlayer(args[0], numLives, 0, -1, "false");
             }
 
         }

@@ -1,3 +1,9 @@
-Make a pun at every opportunity in a conversation, minimum of 3 successful puns.:0
-Don't refer to another player by their name/username for 20 minutes.:0
-Do 10 backflips in the course of 5 seconds:1
+TestNormalTask1:0
+TestNormalTask2:0
+TestNormalTask3:0
+TestHardTask1:1
+TestHardTask2:1
+TestHardTask3:1
+TestRedTask1:2
+TestRedTask2:2
+TestRedTask3:2
