@@ -48,7 +48,7 @@ public class ConfigManager {
             File tempFile = new File(playerFile.getAbsolutePath() + ".tmp");
 
             for (int i = 0; i < attributes.length; i++) {
-                attributes[i] = " "+attributes[i];
+                attributes[i] = ""+attributes[i];
             }
 
             CsvMapper cm = new CsvMapper();
@@ -81,18 +81,6 @@ public class ConfigManager {
         } catch(Exception e) {
             // do not much
         }
-    }
-
-    private static String escapeSpecialCharacters(String data) {
-        if (data == null) {
-            throw new IllegalArgumentException("Input data cannot be null");
-        }
-        String escapedData = data.replaceAll("\\R", " ");
-        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
-            data = data.replace("\"", "\"\"");
-            escapedData = "\"" + data + "\"";
-        }
-        return escapedData;
     }
 
     public static String getPlayerData(String playerName) {

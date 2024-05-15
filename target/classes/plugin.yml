@@ -1,6 +1,6 @@
 name: VideoGamesLifeServer
 version: '1.0-SNAPSHOT'
-main: org.scarlettparker.videogameslifeserver.VideogamesLifeServer
+main: org.scarlettparker.videogameslifeserver.Main
 api-version: '1.20'
 commands:
   startlife:
