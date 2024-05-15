@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 import org.scarlettparker.videogameslifeserver.manager.LifeManager;
-import org.scarlettparker.videogameslifeserver.util.InstantFirework;
+import org.scarlettparker.videogameslifeserver.utils.InstantFirework;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -130,13 +130,12 @@ public class GiveLife implements CommandExecutor {
 
             // play a firework when revived because yay
             Location location = r.getPlayer().getLocation();
-            World world = location.getWorld();
             FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(false).trail(true)
                     .with(FireworkEffect.Type.BALL).withColor(Color.WHITE).withFade(Color.GRAY).build();
             new InstantFirework(fireworkEffect, location);
 
             // and a villager celebration!
-            world.playSound(location, Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);
+            r.getPlayer().playSound(location, Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);
 
             // update receiver data stuff to mark that player is a zombie
             receiverData[3] = "true";
