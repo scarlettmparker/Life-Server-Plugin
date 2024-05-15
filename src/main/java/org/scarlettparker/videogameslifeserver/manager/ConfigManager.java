@@ -47,10 +47,6 @@ public class ConfigManager {
         try {
             File tempFile = new File(playerFile.getAbsolutePath() + ".tmp");
 
-            for (int i = 0; i < attributes.length; i++) {
-                attributes[i] = ""+attributes[i];
-            }
-
             CsvMapper cm = new CsvMapper();
             MappingIterator<List<String>> it = cm.readerForListOf(String.class)
                     .with(CsvParser.Feature.WRAP_AS_ARRAY)
@@ -68,10 +64,9 @@ public class ConfigManager {
                 all.add(playerValues);
             }
             else {
-                for (int i = 0; i < attributes.length; i++) {
-                    System.out.println("This is running!");
-                    player.set(i+1, attributes[i]);
-                }
+                player.clear();
+                player.add(playerName);
+                player.addAll(Arrays.asList(attributes));
             }
 
             CsvSchema schema = cm.schemaFor(String.class).withoutQuoteChar();
