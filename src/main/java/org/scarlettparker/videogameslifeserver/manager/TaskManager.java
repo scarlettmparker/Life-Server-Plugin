@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class TaskManager {
     public static Task[] generateTasks() {
@@ -55,10 +56,21 @@ public class TaskManager {
         return task;
     }
 
-    private static Task[] pushTask(Task[] array, Task push) {
-        Task[] longer = new Task[array.length + 1];
-        System.arraycopy(array, 0, longer, 0, array.length);
-        longer[array.length] = push;
-        return longer;
+    public static List<Task> filterTasksByDifficulty(Task[] tasks, int difficulty) {
+        List<Task> filteredTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDifficulty() == difficulty && task.getAvailable()) {
+                filteredTasks.add(task);
+            }
+        }
+        return filteredTasks;
+    }
+
+    public static Task getRandomTask(List<Task> taskList) {
+        if (taskList.isEmpty()) {
+            return null;
+        }
+        Random rand = new Random();
+        return taskList.get(rand.nextInt(taskList.size()));
     }
 }
