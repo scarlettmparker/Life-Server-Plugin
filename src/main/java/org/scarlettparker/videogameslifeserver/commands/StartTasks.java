@@ -26,8 +26,13 @@ public class StartTasks implements CommandExecutor {
             return true;
         }
 
+        // initialize all tasks
         tasks = generateTasks();
-        System.out.println(Arrays.toString(tasks));
+        
+        for (Task t : tasks) {
+            System.out.println("ID: " + t.getID() + ", description: " + t.getDescription()
+            + ", difficulty: " + t.getDifficulty() + ", available: " + t.getAvailable());
+        }
         return true;
     }
 }

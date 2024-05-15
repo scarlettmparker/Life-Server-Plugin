@@ -3,16 +3,26 @@ package org.scarlettparker.videogameslifeserver.manager;
 import org.scarlettparker.videogameslifeserver.tasks.Task;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskManager {
     public static Task[] generateTasks() {
         String path = "tasks/tasks.txt";
-        Task[] tasks = {};
+        InputStream is = TaskManager.class.getClassLoader().getResourceAsStream(path);
 
-        try {
-            // start reading the file
-            BufferedReader reader = new BufferedReader(new FileReader(path));
+        if (is == null) {
+            System.err.println("Input stream is null. Resource not found.");
+            return new Task[0];
+        }
+
+        List<Task> taskList = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String line;
             int taskID = 0;
 
@@ -20,17 +30,17 @@ public class TaskManager {
                 String[] attributes = line.split(":");
 
                 // set attributes of the temporary task
-                int tempId = taskID;
                 String tempDescription = attributes[0];
                 int tempDifficulty = Integer.parseInt(attributes[1]);
 
-                tasks = pushTask(tasks, generateTask(tempId, tempDifficulty, true, tempDescription));
+                taskList.add(generateTask(taskID, tempDifficulty, true, tempDescription));
                 taskID += 1;
             }
         } catch (Exception e) {
-            // don't do much
+            e.printStackTrace();
         }
-        return tasks;
+
+        return taskList.toArray(new Task[0]);
     }
 
     public static Task generateTask(int id, int difficulty, boolean available, String description) {
