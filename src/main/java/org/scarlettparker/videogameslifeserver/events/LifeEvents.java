@@ -7,7 +7,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 import org.scarlettparker.videogameslifeserver.manager.LifeManager;
-import org.scarlettparker.videogameslifeserver.util.InstantFirework;
+import org.scarlettparker.videogameslifeserver.utils.InstantFirework;
 import java.util.Objects;
 
 public class LifeEvents implements Listener {

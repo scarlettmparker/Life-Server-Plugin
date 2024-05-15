@@ -1,4 +1,4 @@
-package org.scarlettparker.videogameslifeserver.util;
+package org.scarlettparker.videogameslifeserver.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.FireworkEffect;
