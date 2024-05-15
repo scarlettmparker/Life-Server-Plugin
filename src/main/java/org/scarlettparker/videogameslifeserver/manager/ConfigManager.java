@@ -69,6 +69,7 @@ public class ConfigManager {
             }
             else {
                 for (int i = 0; i < attributes.length; i++) {
+                    System.out.println("This is running!");
                     player.set(i+1, attributes[i]);
                 }
             }
@@ -79,7 +80,7 @@ public class ConfigManager {
             playerFile.delete();
             tempFile.renameTo(playerFile);
         } catch(Exception e) {
-            // do not much
+            e.printStackTrace();
         }
     }
 

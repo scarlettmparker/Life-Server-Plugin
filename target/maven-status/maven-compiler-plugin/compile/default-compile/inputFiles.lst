@@ -1,7 +1,8 @@
-C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\LifeManager.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\Main.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\GiveLife.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\SetLife.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\events\LifeEvents.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\LifeManager.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\utils\InstantFirework.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\ConfigManager.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\StartLife.java
-C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\ConfigManager.java
-C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\LifeEvents.java
-C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\VideogamesLifeServer.java
