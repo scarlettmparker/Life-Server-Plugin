@@ -28,7 +28,7 @@ public class InstantFirework{
             ticksFlown.setInt(entityFirework, expectedLifespan.getInt(entityFirework) - 1);
             ticksFlown.setAccessible(false);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            // do nothing
         }
     }
 
