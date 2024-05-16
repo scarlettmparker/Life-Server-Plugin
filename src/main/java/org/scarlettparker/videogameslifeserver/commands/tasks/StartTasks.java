@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,11 +21,13 @@ import static org.scarlettparker.videogameslifeserver.manager.TaskManager.*;
 
 public class StartTasks implements CommandExecutor {
     private static Task[] tasks = {};
+    private static boolean chatDisabled = false;
     public static HashMap<Player, Task> playerTasks = new HashMap();
 
+    private String commandLabel = "starttasks";
+
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        // just in case it has already been set up
-        playerTasks.clear();
+        commandLabel = label;
 
         if (sender instanceof Player) {
             Player p = (Player) sender;
@@ -69,10 +72,15 @@ public class StartTasks implements CommandExecutor {
     }
 
     private void distributeTasks() {
+        setChatDisabled(true);
         for (Player p : getAllPlayers()) {
             String playerName = p.getName();
             String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
             int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
+
+            if (Objects.equals(commandLabel, "sessiontasks")) {
+                p.performCommand("failtask");
+            }
 
             Task assignedTask = null;
 
@@ -97,6 +105,7 @@ public class StartTasks implements CommandExecutor {
                 assignedTask.setAvailable(false);
             }
         }
+        setChatDisabled(false);
     }
 
     private List<Player> getAllPlayers() {
@@ -129,8 +138,16 @@ public class StartTasks implements CommandExecutor {
         meta.setTitle(messageColor + "Your Task");
         meta.setAuthor("VGS Life Series");
         meta.setPages("Task Difficulty: " + messageColor + difficultyText
-                + "\n" + ChatColor.BLUE + task.getDescription());
+                + "\n" + ChatColor.BLACK + task.getDescription());
 
         book.setItemMeta(meta);
+    }
+
+    public static boolean getChatDisabled() {
+        return chatDisabled;
+    }
+
+    public static void setChatDisabled(boolean disabled) {
+        chatDisabled = disabled;
     }
 }

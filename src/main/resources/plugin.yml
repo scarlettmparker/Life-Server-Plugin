@@ -2,6 +2,8 @@ name: VideoGamesLifeServer
 version: '${project.version}'
 main: org.scarlettparker.videogameslifeserver.Main
 api-version: '1.20'
+author: Scarlett Parker
+
 commands:
   givelife:
     description: Give a life to a player.
@@ -21,6 +23,9 @@ commands:
   newtask:
     description: Gives a player a new task. Default difficulty is normal but can be chosen by player if not on 1 life.
     usage: /<command> [normal/hard]
+  sessiontasks:
+    description: Initializes the tasks for the session, thereby failing any player who has yet to complete one, and then distributes a new one to each player.
+    usage: /<command>
   starttasks:
     description: Initializes the tasks and then distributes one to each player.
     usage: /<command>

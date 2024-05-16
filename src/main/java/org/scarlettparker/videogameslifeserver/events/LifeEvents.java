@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 import org.scarlettparker.videogameslifeserver.manager.LifeManager;
@@ -51,5 +52,10 @@ public class LifeEvents implements Listener {
     @EventHandler
     public void playerJoinEvent(PlayerJoinEvent event) {
         lifeManager.setPlayerName(event.getPlayer());
+    }
+
+    @EventHandler
+    public void receiveMessageEvent(AsyncPlayerChatEvent event) {
+
     }
 }

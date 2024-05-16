@@ -1,9 +1,76 @@
-TestNormalTask1:0
-TestNormalTask2:0
-TestNormalTask3:0
-TestHardTask1:1
-TestHardTask2:1
-TestHardTask3:1
-TestRedTask1:2
-TestRedTask2:2
-TestRedTask3:2
+Get 3 players to give you a total of at least 10 gravel.:0
+Tell a story and get someone to leave before you finish it.:0
+Dig a hole at least 3x3 wide down to Y = 0. It can be your base if you want.:0
+Don't call any mobs by their name for the next 2 hours.:0
+Listen into another player's conversation then try to have the same conversation with either of them later and get them to claim deja vu.:0
+Compliment someone whenever you see them take damage, for a total of 5 compliments. This can be to one or many players, but if you fail to compliment them you fail the task.:0
+Every time you see someone take damage, warn them that they are about to be damaged or tell them how they could have avoided it, for a total of 5 times. If you fail to tell them, you fail the task:0
+Steal 4 people's beds without being caught and make a shrine out of them.:0
+Jumpscare another player.:0
+Convince someone that you have the same task as them.:0
+Ask someone what they think a good task would be, their response is now your task. If they don't give you an idea, you may ask someone else.:0
+Convince someone to take a leap of faith. You succeed if they do so and take no damage.:0
+You must lie about everything in-game for the next hour.:0
+Call people anything other than their name/username for the next hour.:0
+Give someone a nickname and try to get at least 4 other people to call them by that nickname.:0
+Be {receiver}'s hype person for the next 30 minutes and don't get called out. If you get called out, you fail the task.:0
+Do the opposite of what everyone tells you to do for the next 2 hours.:0
+Make 3 bad jokes and get NO laughs.:0
+Move 5 people's doors at least once. If you are called out, you fail the task.:0
+For the next 10 achievements that {receiver} obtains, you must also obtain the same.:0
+Get someone to believe that your task is "singing everything you say" so that they call you out on it.:0
+Tell 3 jokes where the punchline is complete nonsense, tricking players into laughing at something they don't understand, and don't get called out. If you get called out, you fail the task.:0
+Make granite your entire identity for the next hour.:0
+Go mining with a partner, and excitedly call them over 3 times for a big ore find. When they arrive and see nothing, blame a creeper explosion for the missing ore.:0
+Completely agree with everything that everyone says for the next hour (this does not mean do what people say, just agree), and don't get called out. If you get called out, you fail the task:0
+You cannot deny any request or question from another player. You must say yes for the next 2 hours.:0
+Write a poem about {receiver} in a book and get them to sign it.:0
+Get accused of doing 3 tasks that don't actually exist.:0
+Make a pun at every opportunity during a conversation. You must make at least 3 successful puns within a 5 minute time-span.:0
+Become {receiver}'s absolute best friend for the next 30 minutes and don't get called out. If you get called out, you fail the task.:0
+You have now become an extreme introvert. If anybody tries to talk to you, run away and appear actively afraid.:0
+Ask for an item 5 times in one conversation but never pick it up, and don't get called out. If you get called out, you fail the task.:0
+Talk like a YouTuber/TikTok influencer for the next hour.:0
+Leave at least 3 conversations in-game in a creative manner. For example, instead of walking away, dig straight down until you're out of ear-distance of any interlocutors. You may leave conversations normally, but this won't count towards your goal.:0
+Do the opposite of what any green name tells you to do.:0
+Say a line/lyric from Smash Mouth's "All Star" in at least 3 different conversations. Each line/lyric must be different for each conversation.:0
+Back seat {receiver} for the next 10 minutes. If they call you out, move onto another player, for a maximum of 3 attempts before failure.:0
+Break 4 crafting tables while in use.:0
+Make a bet with another player and win.:0
+Leave your book in another person's base/chest thereby exposing your task. If you are that other player reading this book, announce to chat that {sender} has completed their task.:0
+You have a new catchphrase for the next hour. In any predicament, you must say "What would iskall do?", and don't get called out. If you get called out, you fail.:0
+Kill the Ender Dragon (must be re-spawned if already killed).:1
+Kill the Wither. Exploits such as trapping the Wither under bedrock are not allowed.:1
+Starting with a grass seed, trade your way up to 2 golden apples. Minimum of 4 trades are required.:1
+Kill {receiver} with an anvil.:1
+Build a TNT cannon that successfully hits another player from at least 50 blocks away.:1
+Convince another player to give you a life.:1
+Cause a player to die from suffocation.:1
+Become the villain of the server. Grief. Steal. Seek server wide domination. You pass if you are actively disliked by the majority of players.:1
+Drink invisibility and punch a green player so that they fall a large distance, thereby damaging or killing them.:1
+Build a completely friendly roller coaster with a track length of at least 300 blocks, and get at least 3 players to ride through it without them being suspicious that it's a trap.:1
+Create a parkour course with at least 30 jumps, and get 6 players to play. If any one of them succeeds on their first attempt, the counter resets. You may re-build the course if you like but only if the counter is on 0/has just reset.:1
+Obtain a full set of chainmail armour.:1
+Obtain 10 of the possible 12 item discs that are dropped by Creepers upon being killed by a Skeleton.:1
+You must ask other players what you can do for them in exchange for diamonds, they set the amount and the task. You succeed when you have made a total of 10 diamonds from at least 3 other players. You must accept their first offer of diamonds and can not convince them to give you more.:1
+You must convince anyone you encounter that {receiver} is a deadly threat and is out to kill you. You must form an allyship with at least 3 other players and your only goal is to kill them together.:1
+You now have an imaginary friend for the next hour. Talk to them as if they're with you in-game and are part of conversations. You must still interact with players normally during this time.:1
+For the next hour, you now have an imaginary friend who is exactly like {receiver}. Talk to them as if they're with you in-game and are part of conversations. You must still interact with players normally during this time, even if {receiver} is part of the interaction, as if there's two of them.:1
+Announce in the chat that you are a Genie and can grant 3 wishes. Only one wish per player. You succeed if you grant 3 wishes, however, you must get some part of the wish wrong (how much wrong is up to you).:1
+Act as if you're in a TV show, and actively break the fourth wall as much as possible for the next hour. Applaud or boo when people arrive, turn to the side and talk to a non-existent audience, return to the conversation as if nothing happened. You fail if at least 2 people call you out after an hour.:1
+Trap another player. It can be placed in a base or elsewhere, the only condition is it must kill another player without that player's prior knowledge of said trap.:2
+Place lava on someone. If it doesn't kill them, you must then place lava on another player for a total of 2 player. If it does kill them (a total of 1 player in lava), you complete this task.:2
+Repeatedly attack a player until they block you with a shield. If you kill them, you also succeed.:2
+Do any amount of damage to a non-red player with an anvil. If you kill them, you also succeed.:2
+Get any yellow player to team with you. They must then kill any player of your choice with your help. They must either get kill credit or deal most of the damage for you to succeed.:2
+Summon any number of mobs using an egg to deal damage to {receiver}.:2
+Use a redstone contraption to damage another player. You can't hit them with a redstone item, it must be some kind of trap or machine.:2
+Punch another player into a natural lava source.:2
+Mine a large hole underground and spleef a player into it, thereby damaging or killing them.:2
+Repeatedly fire arrows from an un-enchanted bow at someone until they start blocking. If you kill them, you also succeed.:2
+Get another player to look at an enderman.:2
+Tame at least 5 wolves, and then punch a player so that the wolves begin attacking them, thereby damaging or killing them.:2
+Cause someone to be pricked by a berry bush that you placed.:2
+Enderpearl into a friendly conversation, and begin attacking players. If you're hit, or they run away, successfully hide from them for the next 5 minutes.:2
+Create an elaborate sky base (at least Y = 200) and place this book inside a trapped chest. Once the chest is opened, the player reading this book should be trapped in a way that kills them.:2
+Kill a player's pet (e.g. wolf, fish, horse) while they're near it. If they don't have a pet, convince them to get one, name it, and then kill it. Once you've killed their pet, kill them as well shortly after.:2

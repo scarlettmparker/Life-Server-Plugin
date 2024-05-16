@@ -5,6 +5,7 @@ public class Task {
     private int difficulty;
     private boolean available;
     private String description;
+    private String receiver;
 
     public int getID() {
         return this.id;
@@ -22,6 +23,10 @@ public class Task {
         return this.description;
     }
 
+    public String getReceiver() {
+        return this.receiver;
+    }
+
     public void setID(int id) {
         this.id = id;
     }
@@ -36,5 +41,9 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setReceiver() {
+        this.receiver = receiver;
     }
 }

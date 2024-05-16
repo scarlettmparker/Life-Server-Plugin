@@ -11,6 +11,7 @@ import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 
 import java.util.Objects;
 
+import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.getChatDisabled;
 import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.playerTasks;
 
 public class FailTask implements CommandExecutor {
@@ -25,19 +26,29 @@ public class FailTask implements CommandExecutor {
         String playerName = sender.getName();
         String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
 
-        if (args.length > 0) {
+        if (args.length > 0 && !getChatDisabled()) {
             p.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /failtask");
             return true;
         }
 
-        if (Objects.equals(playerData[3], "-1")) {
+        // tell user that they can't fail a task they don't have
+        if (Objects.equals(playerData[3], "-1") && !getChatDisabled()) {
             p.sendMessage(ChatColor.RED + "You have no active task to fail! Select a new task with /newtask [normal/hard]");
+            return true;
+        } else if (Objects.equals(playerData[3], "-1") && getChatDisabled()) {
             return true;
         }
 
-        p.sendMessage(ChatColor.RED + "You have failed your task."
-                + ChatColor.WHITE + " You can select a new task with: " + ChatColor.GREEN + "/newtask [normal/hard]");
+        // just depending on whether it's the start of the server or not
+        if (getChatDisabled()) {
+            p.sendMessage(ChatColor.RED + "You have failed your task.");
+        } else {
+            p.sendMessage(ChatColor.RED + "You have failed your task."
+                    + ChatColor.WHITE + " You can select a new task with: "
+                    + ChatColor.GREEN + "/newtask [normal/hard]");
+        }
 
+        // tell everyone the user has failed their task
         Bukkit.broadcastMessage(playerName + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE + ": "
                 + ChatColor.WHITE + playerTasks.get(p).getDescription());
 

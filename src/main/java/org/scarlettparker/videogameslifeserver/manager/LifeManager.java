@@ -28,45 +28,35 @@ public class LifeManager {
             int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
             ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
-            String newName;
+            String newName = "";
             String command = "";
 
             // formatting to look lovely
             if (numLives == 0) {
                 newName = ChatColor.GRAY + p.getName() + " [DEAD]";
-                p.setDisplayName(newName);
-                p.setPlayerListName(newName);
-                p.setCustomName(newName);
                 command = "nte player " + p.getName() + " prefix &7";
             } else if (numLives == 1) {
                 newName = ChatColor.RED + p.getName()
                         + ChatColor.WHITE + " [" + ChatColor.RED + numLives
                         + ChatColor.WHITE + "]";
-                p.setDisplayName(newName);
-                p.setPlayerListName(newName);
-                p.setCustomName(newName);
                 command = "nte player " + p.getName() + " prefix &c";
             } else if (numLives == 2) {
                 newName = ChatColor.YELLOW + p.getName()
                         + ChatColor.WHITE + " [" + ChatColor.YELLOW + numLives
                         + ChatColor.WHITE + "]";
-                p.setDisplayName(newName);
-                p.setPlayerListName(newName);
-                p.setCustomName(newName);
                 command = "nte player " + p.getName() + " prefix &e";
             } else if (numLives >= 3) {
                 newName = ChatColor.GREEN + p.getName()
                         + ChatColor.WHITE + " [" + ChatColor.GREEN + numLives
                         + ChatColor.WHITE + "]";
-                p.setDisplayName(newName);
-                p.setPlayerListName(newName);
-                p.setCustomName(newName);
-                setPlayerNameTag(p, ChatColor.RED + p.getName() + "aaaahh");
                 command = "nte player " + p.getName() + " prefix &a";
             }
             // custom name AND tag name now displays
-            p.setCustomNameVisible(true);
             Bukkit.dispatchCommand(console, command);
+
+            p.setDisplayName(newName);
+            p.setPlayerListName(newName);
+            p.setCustomName(newName);
         } catch (Exception e) {
             // do a whole lot of nothing cause player doesnt exist
         }
