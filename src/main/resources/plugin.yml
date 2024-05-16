@@ -3,24 +3,27 @@ version: '${project.version}'
 main: org.scarlettparker.videogameslifeserver.Main
 api-version: '1.20'
 commands:
+  givelife:
+    description: Give a life to a player.
+    usage: /<command> player
   startlife:
     description: Starts the life server by giving everyone a set number of lives. Command must be run from console.
     usage: /<command> lives
   setlife:
     description: Updates a player's lives. Command must be run from console.
     usage: /<command> player lives
-  givelife:
-    description: Give a life to a player.
-    usage: /<command> player
-  starttasks:
-    description: Initializes the tasks and then distributes one to each player.
+  completetask:
+    description: Completes a user's task, giving them the expected number of tokens while broadcasting it to the server.
+    usage: /<command>
+  failtask:
+    description: Fails a user's task, giving them the expected punishment while broadcasting it to the server.
     usage: /<command>
   newtask:
     description: Gives a player a new task. Default difficulty is normal but can be chosen by player if not on 1 life.
     usage: /<command> [normal/hard]
+  starttasks:
+    description: Initializes the tasks and then distributes one to each player.
+    usage: /<command>
   whattask:
     description: Tells the player their task along with its difficulty.
-    usage: /<command>
-  completetask:
-    description: Completes a user's task, giving them the expected number of tokens while broadcasting it to the server.
     usage: /<command>

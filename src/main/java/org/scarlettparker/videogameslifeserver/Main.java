@@ -1,6 +1,9 @@
 package org.scarlettparker.videogameslifeserver;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.scarlettparker.videogameslifeserver.commands.*;
+import org.scarlettparker.videogameslifeserver.commands.life.GiveLife;
+import org.scarlettparker.videogameslifeserver.commands.life.SetLife;
+import org.scarlettparker.videogameslifeserver.commands.life.StartLife;
+import org.scarlettparker.videogameslifeserver.commands.tasks.*;
 import org.scarlettparker.videogameslifeserver.events.LifeEvents;
 
 import java.util.Objects;
@@ -23,6 +26,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("newtask")).setExecutor(new NewTask());
         Objects.requireNonNull(getCommand("whattask")).setExecutor(new WhatTask());
         Objects.requireNonNull(getCommand("completetask")).setExecutor(new CompleteTask());
+        Objects.requireNonNull(getCommand("failtask")).setExecutor(new FailTask());
     }
 
     @Override
