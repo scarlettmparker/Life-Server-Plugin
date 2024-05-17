@@ -11,8 +11,9 @@ import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 
 import java.util.Objects;
 
-import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.getChatDisabled;
-import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.playerTasks;
+import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.*;
+import static org.scarlettparker.videogameslifeserver.manager.TaskManager.removeBook;
+import static org.scarlettparker.videogameslifeserver.manager.TaskManager.updatePlayerFile;
 
 public class FailTask implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -45,35 +46,50 @@ public class FailTask implements CommandExecutor {
         } else {
             p.sendMessage(ChatColor.RED + "You have failed your task."
                     + ChatColor.WHITE + " You can select a new task with: "
-                    + ChatColor.GREEN + "/newtask [normal/hard]");
+                    + ChatColor.RED + "/newtask [normal/hard]");
         }
 
         // tell everyone the user has failed their task
         Bukkit.broadcastMessage(playerName + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE + ": "
-                + ChatColor.WHITE + playerTasks.get(p).getDescription());
+                + ChatColor.WHITE + playerTasks.get(p.getName()).getDescription());
 
         int punishment = 0;
+        int difficulty = playerTasks.get(p.getName()).getDifficulty();
 
-        if (playerTasks.get(p).getDifficulty() == 1) {
+        if (difficulty == 1 || difficulty == 3) {
             // Player has failed a hard task
+            punishment = 1;
             p.sendMessage("Because you failed a " + ChatColor.RED + "hard " + ChatColor.WHITE
                     + "task, you have been punished with: " + ChatColor.RED + punishment);
-            punishment = 1;
         }
 
-        if (playerTasks.get(p).getDifficulty() == 2) {
+        if (difficulty == 2) {
             // Player has failed a red player task
+            punishment = 2;
             p.sendMessage("Because you failed a " + ChatColor.RED + "red " + ChatColor.WHITE
                     + "task, you have been punished with: " + ChatColor.RED + punishment);
-            punishment = 2;
         }
 
+        // players can only attempt 2 tasks a session
+        int sessionTasks = Integer.parseInt(playerData[5]);
+        int numLives = Integer.parseInt(playerData[1]);
+
+        sessionTasks += 1;
+        playerData[5] = String.valueOf(sessionTasks);
+
         // remove player data from hash
-        playerTasks.remove(p);
+        playerTasks.remove(p.getName());
+        removeBook(p);
         playerData[3] = "-1";
 
         // update player info
+        updatePlayerFile();
         ConfigManager.writeToPlayerBase(playerName, playerData);
+
+        // red players constantly take new tasks, as well as players who didn't take on any
+        if ((difficulty == 2 && numLives == 1) || Objects.equals(playerData[5], "-1")) {
+            p.performCommand("newtask");
+        }
 
         return true;
     }

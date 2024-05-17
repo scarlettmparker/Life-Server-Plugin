@@ -3,10 +3,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.scarlettparker.videogameslifeserver.commands.life.GiveLife;
 import org.scarlettparker.videogameslifeserver.commands.life.SetLife;
 import org.scarlettparker.videogameslifeserver.commands.life.StartLife;
+import org.scarlettparker.videogameslifeserver.commands.shop.Tokens;
 import org.scarlettparker.videogameslifeserver.commands.tasks.*;
 import org.scarlettparker.videogameslifeserver.events.LifeEvents;
 
 import java.util.Objects;
+
+import static org.scarlettparker.videogameslifeserver.manager.TaskManager.generateTasks;
+import static org.scarlettparker.videogameslifeserver.manager.TaskManager.loadPlayerFile;
+import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.tasks;
 
 public final class Main extends JavaPlugin {
     LifeEvents lifeEvents = new LifeEvents();
@@ -28,6 +33,18 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("whattask")).setExecutor(new WhatTask());
         Objects.requireNonNull(getCommand("completetask")).setExecutor(new CompleteTask());
         Objects.requireNonNull(getCommand("failtask")).setExecutor(new FailTask());
+
+        // shop commands
+        Objects.requireNonNull(getCommand("tokens")).setExecutor(new Tokens());
+
+        // other setup stuff
+        tasks = generateTasks();
+
+        try {
+            loadPlayerFile();
+        } catch (Exception e) {
+            System.err.println("No task file exists yet! Please distribute some tasks with /starttasks!");
+        }
     }
 
     @Override

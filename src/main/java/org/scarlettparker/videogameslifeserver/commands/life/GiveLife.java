@@ -51,6 +51,11 @@ public class GiveLife implements CommandExecutor {
                 receiverData = ConfigManager.getPlayerData(r.getName()).split(",");
 
                 int receiverLives = Integer.parseInt(receiverData[1]);
+
+                if (receiverLives == 4) {
+                    s.sendMessage(ChatColor.RED + "Players may not have more than 4 lives at once.");
+                    return true;
+                }
                 receiverLives += 1;
 
                 s.sendMessage(ChatColor.GREEN + "Successfully sent a life to " + r.getDisplayName());
@@ -65,6 +70,27 @@ public class GiveLife implements CommandExecutor {
 
                 s.playEffect(EntityEffect.TOTEM_RESURRECT);
                 r.playEffect(EntityEffect.TOTEM_RESURRECT);
+
+                if (receiverLives == 1) {
+                    // bring player back to survival and announce
+                    r.setGameMode(GameMode.SURVIVAL);
+                    r.teleport(Bukkit.getWorld("world").getSpawnLocation());
+                    Bukkit.broadcastMessage(r.getName() + ChatColor.BLUE + " has been revived" + ChatColor.WHITE
+                            + ", and now must " +  ChatColor.RED + "kill at least 1 player per session "
+                            + ChatColor.WHITE + "to remain in the game.");
+
+                    // play a firework when revived because yay
+                    Location location = r.getPlayer().getLocation();
+                    FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(false).trail(true)
+                            .with(FireworkEffect.Type.BALL).withColor(Color.WHITE).withFade(Color.GRAY).build();
+                    new InstantFirework(fireworkEffect, location);
+
+                    // and a villager celebration!
+                    r.getPlayer().playSound(location, Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);
+
+                    // update receiver data stuff to mark that player is a zombie
+                    receiverData[7] = "true";
+                }
 
                 return true;
             } else {
@@ -136,7 +162,10 @@ public class GiveLife implements CommandExecutor {
             r.getPlayer().playSound(location, Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);
 
             // update receiver data stuff to mark that player is a zombie
-            receiverData[3] = "true";
+            receiverData[7] = "true";
+        } else if (receiverLives == 4){
+            s.sendMessage(ChatColor.RED + "Players may not have more than 4 lives at once.");
+            return true;
         } else {
             r.playEffect(EntityEffect.TOTEM_RESURRECT);
         }

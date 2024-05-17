@@ -5,6 +5,7 @@ C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettpa
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\RewardManager.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\tasks\NewTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\Unfreeze.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\shop\Shop.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\tasks\StartTasks.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\LifeManager.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\utils\InstantFirework.java
@@ -12,7 +13,9 @@ C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettpa
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\tasks\CompleteTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\life\SetLife.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\tasks\Task.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\SetGameRules.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\events\LifeEvents.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\shop\Tokens.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\ConfigManager.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\life\GiveLife.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\TaskManager.java

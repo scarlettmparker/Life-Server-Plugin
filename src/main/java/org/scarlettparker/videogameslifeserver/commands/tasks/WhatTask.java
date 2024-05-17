@@ -38,9 +38,7 @@ public class WhatTask implements CommandExecutor {
             return true;
         }
 
-        // send the player task information
-        p.sendMessage("Your current task is: " + ChatColor.BLUE + playerTasks.get(p).getDescription());
-        int taskDifficulty = playerTasks.get(p).getDifficulty();
+        int taskDifficulty = playerTasks.get(p.getName()).getDifficulty();
 
         ChatColor messageColor = null;
         String difficultyText = null;
@@ -57,6 +55,9 @@ public class WhatTask implements CommandExecutor {
             difficultyText = "Red";
         }
 
+        // send the player task information
+        p.sendMessage(messageColor + "Your current task is: "
+                + ChatColor.WHITE + playerTasks.get(p.getName()).getDescription());
         p.sendMessage("Your current task's difficulty is: " + messageColor + difficultyText);
 
         return true;

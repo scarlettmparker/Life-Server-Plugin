@@ -43,7 +43,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setReceiver() {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 }

@@ -48,7 +48,10 @@ public class SetLife implements CommandExecutor {
                 lifeManager.updateLives(playerData, numLives);
             } catch(Exception e) {
                 // in case player doesn't exist, make a new player
-                startLife.createNewPlayer(args[0], numLives, 0, -1, "false");
+                startLife.createNewPlayer(args[0], numLives, "", -1, "", 0,
+                        0, String.valueOf(false));
+                String[] playerData = ConfigManager.getPlayerData(args[0]).split(",");
+                lifeManager.updateLives(playerData, numLives);
             }
             System.out.println("Successfully set " + args[0] + "'s lives to " + args[1] + ".");
         }

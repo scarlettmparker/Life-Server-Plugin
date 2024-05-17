@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 import org.scarlettparker.videogameslifeserver.manager.LifeManager;
@@ -21,9 +20,7 @@ public class LifeEvents implements Listener {
         String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
 
         int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
-
         numLives -= 1;
-        playerData[2] = String.valueOf(Integer.parseInt(playerData[2]) + 1);
 
         lifeManager.updateLives(playerData, numLives);
 
@@ -39,7 +36,8 @@ public class LifeEvents implements Listener {
             world.strikeLightningEffect(location).setSilent(true);
             event.getPlayer().setGameMode(GameMode.SPECTATOR);
             Bukkit.broadcastMessage(ChatColor.RED + playerName + " has lost all of their lives." + ChatColor.WHITE +
-                    " They are now permanently dead unless" + ChatColor.BLUE + " revived by another player.");
+                    " They are now permanently dead unless" + ChatColor.BLUE + " revived by another player"
+                    + ChatColor.WHITE + ".");
 
             // play the lightning sound for everyone
             for (Player p : world.getPlayers()) {
@@ -52,10 +50,6 @@ public class LifeEvents implements Listener {
     @EventHandler
     public void playerJoinEvent(PlayerJoinEvent event) {
         lifeManager.setPlayerName(event.getPlayer());
-    }
-
-    @EventHandler
-    public void receiveMessageEvent(AsyncPlayerChatEvent event) {
-
+        event.getPlayer().setNoDamageTicks(0);
     }
 }

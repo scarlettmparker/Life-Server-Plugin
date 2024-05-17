@@ -29,6 +29,9 @@ commands:
   starttasks:
     description: Initializes the tasks and then distributes one to each player.
     usage: /<command>
+  tokens:
+    description: Tells the user their current number of tokens.
+    usage: /<command>
   whattask:
     description: Tells the player their task along with its difficulty.
     usage: /<command>

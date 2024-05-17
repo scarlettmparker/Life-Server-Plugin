@@ -9,7 +9,7 @@ import java.util.*;
 
 /*
     CSV File Structure:
-    playerName, lives, deaths(...time:message:etc), activeTaskID, isZombie, livesGained, hasUsedExtraLife
+    numLives, deaths[], activeTaskID, tasks[], sessionTasks, tokens, isZombie
 */
 
 public class ConfigManager {

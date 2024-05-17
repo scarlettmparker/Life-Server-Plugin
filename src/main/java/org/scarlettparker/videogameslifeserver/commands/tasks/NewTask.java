@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.*;
-import static org.scarlettparker.videogameslifeserver.manager.TaskManager.filterTasksByDifficulty;
-import static org.scarlettparker.videogameslifeserver.manager.TaskManager.getRandomTask;
+import static org.scarlettparker.videogameslifeserver.manager.TaskManager.*;
 
 public class NewTask implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -31,8 +30,11 @@ public class NewTask implements CommandExecutor {
         String playerName = p.getName();
         String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
 
+        // get useful information for edge cases
         int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
         int taskID = Integer.parseInt(Objects.requireNonNull(playerData[3]));
+        int sessionTasks = Integer.parseInt(Objects.requireNonNull(playerData[5]));
+
         int difficulty = 0;
 
         if (args.length > 1) {
@@ -41,12 +43,19 @@ public class NewTask implements CommandExecutor {
         }
 
         if (args.length > 0 && numLives == 1) {
-            p.sendMessage(ChatColor.RED + "You cannot select the difficulty of the task as a red player. Correct usage: /newtask.");
+            p.sendMessage(ChatColor.RED + "You cannot select the difficulty of the task as a red player. Correct usage: /newtask");
             return true;
         }
 
+        // if user has an active task
         if (taskID != -1) {
             p.sendMessage(ChatColor.RED + "You already have an active task! Complete it to begin another!");
+            return true;
+        }
+
+        // limit for tasks per session
+        if (sessionTasks > 1 && numLives != 1) {
+            p.sendMessage(ChatColor.RED + "You have already attempted 2 tasks this session. As a non-red player, you cannot take on more than 2 tasks a session.");
             return true;
         }
 
@@ -72,13 +81,16 @@ public class NewTask implements CommandExecutor {
         List<Task> task = filterTasksByDifficulty(getTasks(), difficulty);
         Task assignedTask = getRandomTask(task);
         playerData[3] = String.valueOf(difficulty);
+        removeBook(p);
 
+        // update necessary files nd whatnot
         ConfigManager.writeToPlayerBase(playerName, playerData);
 
         if (assignedTask == null) {
             System.err.println("No more tasks left! Cannot assign task!");
         } else {
-            playerTasks.put(p, assignedTask);
+            playerTasks.put(p.getName(), assignedTask);
+            updatePlayerFile();
             assignedTask.setAvailable(false);
 
             // set up book stuff and add to inventory
