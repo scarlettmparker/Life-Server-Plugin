@@ -1,0 +1,21 @@
+Iron Block -> 1 token
+1 Sugar Cane, 1 of Other Regrowables -> 1 token
+3 Apples -> 1 token
+10 Infested Stone -> 1 token
+10 Levels of EXP -> 1 token
+16 Carrots, Potatoes, Bamboo -> 1 token
+16 Jacket Potatoes -> 2 tokens
+Golden Apple -> 2 tokens
+3 Diamonds -> 2 tokens
+1 Netherite Scrap -> 3 tokens
+2 Wolf Spawn Eggs -> 5 tokens
+1 Mending Book -> 7 tokens
+16 Blaze Rods -> 8 tokens
+
+Regular Potions (extended):
+Invisibility, Fire Res, Swiftness, Resistance -> 3 tokens
+Splash Potions (extended):
+Poison, Weakness, Harming, Slowness -> 3 tokens
+
+Additions after 3rd session:
+

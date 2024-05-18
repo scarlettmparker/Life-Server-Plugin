@@ -89,6 +89,7 @@ Get another player to look at an enderman.:2
 Tame at least 2 wolves, and then punch a player so that the wolves begin attacking them, thereby damaging or killing them.:2
 Cause someone to be pricked by a berry bush that you placed.:2
 Enderpearl into a friendly conversation, and begin attacking players. If you're hit, or they run away, successfully hide from them for the next 5 minutes.:2
+Name a weapon "Scarlett Slayer" and kill {receiver} with it (it doesn't have to be Scarlett who you kill). If you kill someone with this weapon, the death message will show in chat.:2
 Create an elaborate sky base (at least Y = 200) and place this book inside a trapped chest. Once the chest is opened, the player reading this book should be trapped in a way that kills them.:2
 Kill a player's pet (e.g. wolf, fish, horse) while they're near it. If they don't have a pet, convince them to get one, name it, and then kill it. Once you've killed their pet, try to kill them as well shortly after.:2
 Convince someone to craft a helmet as a joke. If they try, it'll give them blindness for 15 minutes and you will succeed the task. Skipping this task won't punish you if someone else has already done it.:2

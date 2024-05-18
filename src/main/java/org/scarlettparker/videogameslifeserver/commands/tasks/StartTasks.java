@@ -108,7 +108,7 @@ public class StartTasks implements CommandExecutor {
             Task assignedTask = null;
             removeBook(p);
 
-            if (Objects.equals(commandLabel, "starttasks") && p.getName().equals("scarwe")) {
+            if (Objects.equals(commandLabel, "starttasks") && p.getName().equals("RavingRaven43453")) {
                 assignedTask = new Task();
 
                 assignedTask.setDifficulty(3);
