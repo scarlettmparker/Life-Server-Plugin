@@ -17,8 +17,13 @@ Give someone a nickname and try to get at least 4 other people to call them by t
 Be {receiver}'s hype person for the next 30 minutes and don't get called out. If you get called out, switch to any other player and reset the timer, or fail the task (your choice).:0
 Make 3 bad jokes and get NO laughs.:0
 Move 5 people's doors at least once. If someone calls you out, that person doesn't count.:0
+Move 5 people's chests at least once. If someone calls you out, that person doesn't count.:0
 For the next 10 achievements that {receiver} obtains, you must also obtain the same.:0
 Convince a yellow name your task is to make granite your entire identity for the next hour.:0
+Spy on {receiver} without getting caught for 10 minutes. If you're caught, move to another player.:0
+Lead someone on a wild goose chase that goes nowhere and wait for them to return empty handed.:0
+Leave cryptic signs at 5 different people's bases. If someone calls you out, that person doesn't count.:0
+Hide mobs across 3 players' bases without being caught (the mob sound should still be audible). If someone calls you out, that person doesn't count.:0
 Convince a yellow name your task is to repeat everything that they say.:0
 Convince a yellow name your task is to jumpscare another player.:0
 Convince a yellow name your task is to speak in rhyme.:0
@@ -45,7 +50,7 @@ Make a bet with another player and win.:0
 Move into someone else's house and get them to evict you.:0
 For the next hour and a half, you are a serial yapper. Go on random tangents, talk way too much and take control of every conversation telling random and irrelevant stories.:0
 Leave your book in another person's base/chest thereby exposing your task. If you are that other player reading this book, announce to chat that {sender} has completed their task.:0
-You have a new catchphrase for the next hour. In any predicament, you must say "What would iskall do?", and don't get called out. If you get called out, reset the timer or fail the task (your choice).:0
+You have a new catchphrase for the next hour. In any predicament, you must say "What would Jon do?", and don't get called out. If you get called out, reset the timer or fail the task (your choice).:0
 You cannot deny any request or question from another player. You must say yes for the next 2 hours (unless it breaks the rules).:1
 You are now a weeping angel until the end of the session. If you're aware that someone is looking at you, you are not allowed to move until they stop looking at you.:1
 Kill the Ender Dragon with a friend(can be re-spawned if already killed).:1
@@ -63,10 +68,10 @@ Become the villain of the server. Grief. Steal. Seek server wide domination. You
 Build a completely friendly roller coaster with a track length of at least 300 blocks, and get at least 3 players to ride through it without them being suspicious that it's a trap.:1
 Create a parkour course with at least 30 jumps, and get 6 players to play. If any one of them succeeds on their first attempt, the counter resets. You may re-build the course if you like but only if the counter is on 0/has just reset.:1
 Obtain a full set of chainmail armour (including the helmet, just don't wear it).:1
-Before the end of the session, do a 100 block high water bucket clutch in front of every (willing) player on the server. You may reveal this secret without failing. You must take off all armour before performing the clutch:1
+Before the end of the session, do a 100 block high water bucket clutch in front of everyone on the server. You may reveal this secret without failing. You must take off all armour before performing the clutch. You only get one attempt - no practice runs.:1
 Obtain 9 of the possible 12 item discs that are dropped by Creepers upon being killed by a Skeleton. You must obtain all disks yourself, you cannot get other players to give you any, though other players may help you in the process.:1
 You must ask other players what you can do for them in exchange for diamonds, they set the amount and the task. You succeed when you have made a total of 10 diamonds from at least 3 other players. You must accept their first offer of diamonds and can not convince them to give you more.:1
-Before the end of the session, do a 50 block high boat clutch in front of every (willing) player on the server. You may reveal this secret without failing. You must take off all armour before performing the clutch:1
+Before the end of the session, do a 50 block high boat clutch in front of every (willing) player on the server. You may reveal this secret without failing. You must take off all armour before performing the clutch.:1
 You must convince anyone you encounter that {receiver} is a deadly threat and is out to kill you. You must form an allyship with at least 3 other players and your only goal is to kill them together.:1
 You now have an imaginary friend for the next hour. Talk to them as if they're with you in-game and are part of conversations. You must still interact with players normally during this time.:1
 You are now {receiver}'s assassin. Brew or purchase an invisibility potion and kill them without them figuring out who you are. If you're figured out, or if they manage to escape for at least 5 minutes after the attack, you fail the task.:1
@@ -89,7 +94,7 @@ Get another player to look at an enderman.:2
 Tame at least 2 wolves, and then punch a player so that the wolves begin attacking them, thereby damaging or killing them.:2
 Cause someone to be pricked by a berry bush that you placed.:2
 Enderpearl into a friendly conversation, and begin attacking players. If you're hit, or they run away, successfully hide from them for the next 5 minutes.:2
-Name a weapon "Scarlett Slayer" and kill {receiver} with it (it doesn't have to be Scarlett who you kill). If you kill someone with this weapon, the death message will show in chat.:2
+Name a weapon "Scarlett Slayer" and kill {receiver} with it. If you kill them with this weapon, the death message will show in chat.:2
 Create an elaborate sky base (at least Y = 200) and place this book inside a trapped chest. Once the chest is opened, the player reading this book should be trapped in a way that kills them.:2
 Kill a player's pet (e.g. wolf, fish, horse) while they're near it. If they don't have a pet, convince them to get one, name it, and then kill it. Once you've killed their pet, try to kill them as well shortly after.:2
 Convince someone to craft a helmet as a joke. If they try, it'll give them blindness for 15 minutes and you will succeed the task. Skipping this task won't punish you if someone else has already done it.:2

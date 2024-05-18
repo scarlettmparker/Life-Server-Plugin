@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
+import org.scarlettparker.videogameslifeserver.tasks.Task;
 
 import java.util.Objects;
 
@@ -22,13 +23,30 @@ public class FailTask implements CommandExecutor {
             return true;
         }
 
+        if (args.length != 1) {
+            sender.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /failtask PASSWORD");
+            return true;
+        }
+
+        if (!Objects.equals(args[0], "J30JVDXNL")) {
+            sender.sendMessage(ChatColor.RED + "Incorrect password! Please right click the sign to use this command!");
+            return true;
+        }
+
         // get player and relevant data
         Player p = Bukkit.getPlayer(sender.getName());
         String playerName = sender.getName();
         String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
 
-        if (args.length > 0 && !getChatDisabled()) {
-            p.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /failtask");
+        // current task is now available
+        Task currentTask = playerTasks.get(p.getName());
+        currentTask.setAvailable(true);
+
+        int numLives = Integer.parseInt(playerData[1]);
+        int difficulty = currentTask.getDifficulty();
+
+        // don't fail red tasks at the start of the session
+        if (getChatDisabled() && difficulty == 2) {
             return true;
         }
 
@@ -54,7 +72,6 @@ public class FailTask implements CommandExecutor {
                 + ChatColor.WHITE + playerTasks.get(p.getName()).getDescription());
 
         int punishment = 0;
-        int difficulty = playerTasks.get(p.getName()).getDifficulty();
 
         if (difficulty == 1 || difficulty == 3) {
             // Player has failed a hard task
@@ -72,7 +89,6 @@ public class FailTask implements CommandExecutor {
 
         // players can only attempt 2 tasks a session
         int sessionTasks = Integer.parseInt(playerData[5]);
-        int numLives = Integer.parseInt(playerData[1]);
 
         sessionTasks += 1;
         playerData[5] = String.valueOf(sessionTasks);
@@ -88,7 +104,7 @@ public class FailTask implements CommandExecutor {
 
         // red players constantly take new tasks, as well as players who didn't take on any
         if ((difficulty == 2 && numLives == 1) || Objects.equals(playerData[5], "-1")) {
-            p.performCommand("newtask");
+            p.performCommand("newtask normal J30JVDXNL");
         }
 
         return true;

@@ -41,11 +41,16 @@ public class LifeManager {
                         + ChatColor.WHITE + " [" + ChatColor.YELLOW + numLives
                         + ChatColor.WHITE + "]";
                 command = "nte player " + p.getName() + " prefix &e";
-            } else if (numLives >= 3) {
+            } else if (numLives == 3) {
                 newName = ChatColor.GREEN + p.getName()
                         + ChatColor.WHITE + " [" + ChatColor.GREEN + numLives
                         + ChatColor.WHITE + "]";
                 command = "nte player " + p.getName() + " prefix &a";
+            } else if (numLives >= 4) {
+                newName = ChatColor.DARK_GREEN + p.getName()
+                        + ChatColor.WHITE + " [" + ChatColor.DARK_GREEN + numLives
+                        + ChatColor.WHITE + "]";
+                command = "nte player " + p.getName() + " prefix &2";
             }
             // custom name AND tag name now displays
             Bukkit.dispatchCommand(console, command);

@@ -14,6 +14,7 @@ import org.scarlettparker.videogameslifeserver.tasks.Task;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.*;
 import static org.scarlettparker.videogameslifeserver.manager.TaskManager.*;
@@ -25,9 +26,19 @@ public class NewTask implements CommandExecutor {
             return true;
         }
 
-        // get the player and their info
+        if (args.length != 2) {
+            sender.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /newtask [normal/hard] PASSWORD");
+            return true;
+        }
+
+        if (!Objects.equals(args[1], "J30JVDXNL")) {
+            sender.sendMessage(ChatColor.RED + "Incorrect password! Please right click the sign to use this command!");
+            return true;
+        }
+
+        // get player and relevant data
         Player p = Bukkit.getPlayer(sender.getName());
-        String playerName = p.getName();
+        String playerName = sender.getName();
         String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
 
         // get useful information for edge cases
@@ -36,16 +47,6 @@ public class NewTask implements CommandExecutor {
         int sessionTasks = Integer.parseInt(Objects.requireNonNull(playerData[5]));
 
         int difficulty = 0;
-
-        if (args.length > 1) {
-            p.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /newtask [normal/hard]");
-            return true;
-        }
-
-        if (args.length > 0 && numLives == 1) {
-            p.sendMessage(ChatColor.RED + "You cannot select the difficulty of the task as a red player. Correct usage: /newtask");
-            return true;
-        }
 
         // if user has an active task
         if (taskID != -1) {
@@ -65,16 +66,17 @@ public class NewTask implements CommandExecutor {
 
         // big ball of mud the sequel, i'm gonna go off and eat 2 pizzas after this.
         try {
-            if (!args[0].isEmpty()) {
-                if (args[0].equalsIgnoreCase("hard")) {
-                    difficulty = 1;
-                } else if (!(args[0].equalsIgnoreCase("normal"))){
-                    p.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /newtask [normal/hard]");
-                    return true;
-                }
-            }
+             if (args[0].equalsIgnoreCase("hard")) {
+                difficulty = 1;
+             } else if (args[0].equalsIgnoreCase("normal")){
+                difficulty = 0;
+             }
         } catch (Exception e) {
             // do nothing
+        }
+
+        if (numLives == 1) {
+            difficulty = 2;
         }
 
         // filter task by difficulty and give to player
@@ -82,6 +84,18 @@ public class NewTask implements CommandExecutor {
         Task assignedTask = getRandomTask(task);
         playerData[3] = String.valueOf(difficulty);
         removeBook(p);
+
+        if (assignedTask.getDescription().contains("{receiver}")) {
+            List<Player> allPlayers = getAllPlayers();
+            allPlayers.remove(p.getPlayer());
+            int random = new Random().nextInt(allPlayers.size());
+            Player pickedPlayer = getAllPlayers().get(random);
+            assignedTask.setDescription(assignedTask.getDescription().replace("{receiver}", pickedPlayer.getName()));
+            System.out.println(assignedTask.getDescription());
+        }
+        if (assignedTask.getDescription().contains("{sender}")) {
+            assignedTask.setDescription(assignedTask.getDescription().replace("{sender}", p.getName()));
+        }
 
         // update necessary files nd whatnot
         ConfigManager.writeToPlayerBase(playerName, playerData);

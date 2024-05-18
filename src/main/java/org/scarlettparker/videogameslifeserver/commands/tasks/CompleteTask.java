@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
+import org.scarlettparker.videogameslifeserver.tasks.Task;
 
 import java.util.Objects;
 import static org.scarlettparker.videogameslifeserver.commands.tasks.StartTasks.playerTasks;
@@ -21,15 +22,20 @@ public class CompleteTask implements CommandExecutor {
             return true;
         }
 
+        if (args.length != 1) {
+            sender.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /completetask PASSWORD");
+            return true;
+        }
+
+        if (!Objects.equals(args[0], "J30JVDXNL")) {
+            sender.sendMessage(ChatColor.RED + "Incorrect password! Please right click the sign to use this command!");
+            return true;
+        }
+
         // get player and relevant data
         Player p = Bukkit.getPlayer(sender.getName());
         String playerName = sender.getName();
         String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
-
-        if (args.length > 0) {
-            p.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /completetask");
-            return true;
-        }
 
         if (Objects.equals(playerData[3], "-1")) {
             p.sendMessage(ChatColor.RED + "You have no active task to complete! Select a new task with /newtask [normal/hard]");
@@ -48,10 +54,13 @@ public class CompleteTask implements CommandExecutor {
         Bukkit.broadcastMessage(playerName + " has" + ChatColor.GREEN + " completed their task" + ChatColor.WHITE + ": "
                 + ChatColor.WHITE + playerTasks.get(p.getName()).getDescription());
 
+        Task currentTask = playerTasks.get(p.getName());
+        currentTask.setAvailable(true);
+
         // get user info to update
         int tokens = Integer.parseInt(Objects.requireNonNull(playerData[6]));
         int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
-        int difficulty = playerTasks.get(p.getName()).getDifficulty();
+        int difficulty = currentTask.getDifficulty();
 
         sessionTasks += 1;
         playerData[5] = String.valueOf(sessionTasks);
@@ -87,7 +96,7 @@ public class CompleteTask implements CommandExecutor {
 
         // red players constantly take new tasks
         if (difficulty == 2 && numLives == 1) {
-            p.performCommand("newtask");
+            p.performCommand("newtask normal J30JVDXNL");
         }
 
         return true;

@@ -19,6 +19,7 @@ import org.scarlettparker.videogameslifeserver.tasks.Task;
 import java.io.*;
 import java.util.*;
 
+import static org.bukkit.Bukkit.getName;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.writeToPlayerBase;
 import static org.scarlettparker.videogameslifeserver.manager.TaskManager.*;
 
@@ -40,6 +41,12 @@ public class StartTasks implements CommandExecutor {
         if (args.length > 0) {
             System.err.println("Incorrect usage! Usage is /starttasks");
             return true;
+        }
+
+        if (commandLabel.equalsIgnoreCase("starttasks")) {
+            playerTasks.clear();
+            createTaskFile();
+            tasks = generateTasks();
         }
 
         // initialize all tasks
@@ -96,19 +103,21 @@ public class StartTasks implements CommandExecutor {
             String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
             int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
 
-            if (Objects.equals(commandLabel, "sessiontasks")) {
-                p.performCommand("failtask");
+
+            if (commandLabel.equalsIgnoreCase("sessiontasks")) {
+
+                p.performCommand("failtask J30JVDXNL");
             }
 
             // reset player tokens
-            if (Objects.equals(commandLabel, "starttasks")) {
+            if (commandLabel.equalsIgnoreCase("starttasks")) {
                 playerData[6] = "0";
             }
 
             Task assignedTask = null;
             removeBook(p);
 
-            if (Objects.equals(commandLabel, "starttasks") && p.getName().equals("RavingRaven43453")) {
+            if (commandLabel.equalsIgnoreCase("starttasks") && p.getName().equals("scarwe")) {
                 assignedTask = new Task();
 
                 assignedTask.setDifficulty(3);
@@ -127,28 +136,25 @@ public class StartTasks implements CommandExecutor {
                     assignedTask = getRandomTask(task);
                     playerData[3] = "0";
                 }
-                if (assignedTask.getDescription().contains("{receiver}")) {
-                    List<Player> allPlayers = getAllPlayers();
-                    allPlayers.remove(p);
-                    int random = new Random().nextInt(allPlayers.size());
-                    Player pickedPlayer = getAllPlayers().get(random);
-                    assignedTask.setDescription(assignedTask.getDescription().replace("{receiver}", pickedPlayer.getName()));
-                    System.out.println(assignedTask.getDescription());
-                }
-                if (assignedTask.getDescription().contains("{sender}")) {
-                    assignedTask.setDescription(assignedTask.getDescription().replace("{receiver}", p.getName()));
-                }
+            }
+
+            if (assignedTask.getDescription().contains("{receiver}")) {
+                List<Player> allPlayers = getAllPlayers();
+                allPlayers.remove(p.getPlayer());
+                int random = new Random().nextInt(allPlayers.size());
+                Player pickedPlayer = getAllPlayers().get(random);
+                assignedTask.setDescription(assignedTask.getDescription().replace("{receiver}", pickedPlayer.getName()));
+                System.out.println(assignedTask.getDescription());
+            }
+            if (assignedTask.getDescription().contains("{sender}")) {
+                assignedTask.setDescription(assignedTask.getDescription().replace("{sender}", p.getName()));
             }
 
             // update player info
             writeToPlayerBase(playerName, playerData);
 
-            if (assignedTask == null) {
-                System.err.println("No more tasks left! Cannot assign task to " + p.getName());
-            } else {
-                playerTasks.put(p.getName(), assignedTask);
-                assignedTask.setAvailable(false);
-            }
+            playerTasks.put(p.getName(), assignedTask);
+            assignedTask.setAvailable(false);
         }
         setChatDisabled(false);
     }
@@ -157,7 +163,7 @@ public class StartTasks implements CommandExecutor {
         return tasks;
     }
 
-    private List<Player> getAllPlayers() {
+    public static List<Player> getAllPlayers() {
         return new ArrayList<>(Bukkit.getOnlinePlayers());
     }
 

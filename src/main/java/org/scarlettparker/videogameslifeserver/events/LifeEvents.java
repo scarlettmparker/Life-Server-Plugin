@@ -1,10 +1,13 @@
 package org.scarlettparker.videogameslifeserver.events;
 import org.bukkit.*;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 import org.scarlettparker.videogameslifeserver.manager.LifeManager;
 import org.scarlettparker.videogameslifeserver.utils.InstantFirework;
@@ -33,6 +36,21 @@ public class LifeEvents implements Listener {
 
         // for perma deaths :(
         if (numLives == 0) {
+            // drop items on death
+            Inventory inv = event.getPlayer().getInventory();
+            for (ItemStack is : inv) {
+                try {
+                    world.dropItem(event.getPlayer().getLocation(), is);
+                } catch(Exception e) {
+                    // do nothing
+                }
+            }
+
+            // clear player inventory in case they are revived
+            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+            String command = "clear " + playerName;
+            Bukkit.dispatchCommand(console, command);
+
             world.strikeLightningEffect(location).setSilent(true);
             event.getPlayer().setGameMode(GameMode.SPECTATOR);
             Bukkit.broadcastMessage(ChatColor.RED + playerName + " has lost all of their lives." + ChatColor.WHITE +

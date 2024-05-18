@@ -228,4 +228,23 @@ public class TaskManager {
                 task.getReceiver();
     }
 
+    public static void createTaskFile() {
+        if (!pTaskFile.exists()) {
+            try {
+                pTaskFile.createNewFile();
+            } catch (Exception e) {
+                // do nothing
+            }
+        } else {
+            // delete file because we want new lives
+            pTaskFile.delete();
+            try {
+                pTaskFile.createNewFile();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

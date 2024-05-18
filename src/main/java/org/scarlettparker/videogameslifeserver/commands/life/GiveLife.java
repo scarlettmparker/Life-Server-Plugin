@@ -37,7 +37,8 @@ public class GiveLife implements CommandExecutor {
             s.sendMessage(ChatColor.RED + "Incorrect arguments. Command usage: /givelife player");
             return true;
         }
-        if (!Objects.equals(args[0], "confirm")) {
+
+        if (!Objects.equals(args[0], "confirm") && args[0].length() >= 2) {
             try {
                 r = Bukkit.getPlayer(args[0]);
                 receiverData = ConfigManager.getPlayerData(r.getName()).split(",");
@@ -94,6 +95,10 @@ public class GiveLife implements CommandExecutor {
 
                 return true;
             } else {
+                if (args[0].length() <= 2) {
+                    s.sendMessage(ChatColor.RED + "Please enter a full username!");
+                    return true;
+                }
                 s.sendMessage(ChatColor.RED + "Nothing to confirm!");
                 return true;
             }
@@ -102,16 +107,18 @@ public class GiveLife implements CommandExecutor {
             s.sendMessage(ChatColor.RED + "Config file not found! Please run /startlife lives from the console first.");
             return true;
         }
-        if (sender.getName().equals(args[0])) {
-            s.sendMessage(ChatColor.RED + "You can't give yourself lives!");
-            return true;
-        }
 
         // get current players lives
         int numLives = Integer.parseInt(Objects.requireNonNull(senderData[1]));
 
         if (numLives == 0) {
             s.sendMessage(ChatColor.RED + "You are dead. You have no lives to send.");
+            return true;
+        }
+
+        // make it so you cant send lives to yourself
+        if (sender.getName().equals(receiverData[0])) {
+            s.sendMessage(ChatColor.RED + "You can't give yourself lives!");
             return true;
         }
 
