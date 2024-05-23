@@ -1,73 +1,67 @@
 package org.scarlettparker.videogameslifeserver.events;
-import org.bukkit.*;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
-import org.scarlettparker.videogameslifeserver.manager.LifeManager;
+import org.scarlettparker.videogameslifeserver.objects.Death;
+import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.utils.InstantFirework;
-import java.util.Objects;
+
+import static org.scarlettparker.videogameslifeserver.commands.admin.StartLife.createPlayer;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
+import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.setPlayerName;
 
 public class LifeEvents implements Listener {
-    LifeManager lifeManager = new LifeManager();
+    @EventHandler
+    public void playerJoinEvent(PlayerJoinEvent event) {
+        // check if player exists in file
+        if (playerFile.exists() && !playerExists(event.getPlayer().getName())) {
+            createPlayer(event.getPlayer());
+        } else {
+            TPlayer tempPlayer = new TPlayer(event.getPlayer().getName());
+            int lives = tempPlayer.getLives();
+            setPlayerName(event.getPlayer(), lives);
+        }
+        event.getPlayer().setNoDamageTicks(0);
+    }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        // TODO: Implement custom Player Death
-        String playerName = event.getPlayer().getName();
-        String[] playerData = ConfigManager.getPlayerData(playerName).split(",");
+    public void playerDeathEvent(PlayerDeathEvent event) {
+        if (playerFile.exists() && playerExists(event.getPlayer().getName())) {
+            long unixTime = System.currentTimeMillis() / 1000L;
+            Death death = new Death(unixTime, event.getDeathMessage());
 
-        int numLives = Integer.parseInt(Objects.requireNonNull(playerData[1]));
-        numLives -= 1;
+            TPlayer tempPlayer = new TPlayer(event.getPlayer().getName());
+            Death[] currentDeaths = tempPlayer.getDeaths();
+            Death[] tempDeaths = new Death[currentDeaths.length + 1];
 
-        lifeManager.updateLives(playerData, numLives);
+            // copy old deaths into new array
+            System.arraycopy(currentDeaths, 0, tempDeaths, 0, currentDeaths.length);
+
+            // add new death to last position and update
+            tempDeaths[currentDeaths.length] = death;
+            tempPlayer.setDeaths(tempDeaths);
+
+            // update lives and used to set name properly
+            int lives = tempPlayer.getLives();
+            lives -= 1;
+
+            if (lives < 0) {
+                lives = 0;
+            }
+
+            tempPlayer.setLives(lives);
+            setPlayerName(event.getPlayer(), lives);
+        }
 
         Location location = event.getPlayer().getLocation();
-        World world = location.getWorld();
 
         FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(false).trail(true)
                 .with(FireworkEffect.Type.BALL).withColor(Color.WHITE).withFade(Color.GRAY).build();
         new InstantFirework(fireworkEffect, location);
-
-        // for perma deaths :(
-        if (numLives == 0) {
-            // drop items on death
-            Inventory inv = event.getPlayer().getInventory();
-            for (ItemStack is : inv) {
-                try {
-                    world.dropItem(event.getPlayer().getLocation(), is);
-                } catch(Exception e) {
-                    // do nothing
-                }
-            }
-
-            // clear player inventory in case they are revived
-            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-            String command = "clear " + playerName;
-            Bukkit.dispatchCommand(console, command);
-
-            world.strikeLightningEffect(location).setSilent(true);
-            event.getPlayer().setGameMode(GameMode.SPECTATOR);
-            Bukkit.broadcastMessage(ChatColor.RED + playerName + " has lost all of their lives." + ChatColor.WHITE +
-                    " They are now permanently dead unless" + ChatColor.BLUE + " revived by another player"
-                    + ChatColor.WHITE + ".");
-
-            // play the lightning sound for everyone
-            for (Player p : world.getPlayers()) {
-                Location tempLocation = p.getPlayer().getLocation();
-                p.getPlayer().playSound(tempLocation, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1, 0);
-            }
-        }
-    }
-
-    @EventHandler
-    public void playerJoinEvent(PlayerJoinEvent event) {
-        lifeManager.setPlayerName(event.getPlayer());
-        event.getPlayer().setNoDamageTicks(0);
     }
 }

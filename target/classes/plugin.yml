@@ -9,29 +9,41 @@ commands:
     description: Give a life to a player.
     usage: /<command> player
   startlife:
-    description: Starts the life server by giving everyone a set number of lives. Command must be run from console.
+    description: Starts the life server.
     usage: /<command> lives
   setlife:
-    description: Updates a player's lives. Command must be run from console.
+    description: Updates a player's lives
     usage: /<command> player lives
   completetask:
-    description: Completes a user's task, giving them the expected number of tokens while broadcasting it to the server.
-    usage: /<command>
+    description: Completes a user's task.
+    usage: /<command> player
   failtask:
-    description: Fails a user's task, giving them the expected punishment while broadcasting it to the server.
-    usage: /<command>
+    description: Fails a user's task.
+    usage: /<command> player
   newtask:
-    description: Gives a player a new task. Default difficulty is normal but can be chosen by player if not on 1 life.
-    usage: /<command> [normal/hard]
+    description: Gives a player a new task.
+    usage: /<command> normal/hard  player
   sessiontasks:
-    description: Initializes the tasks for the session, thereby failing any player who has yet to complete one, and then distributes a new one to each player.
+    description: Initializes the tasks for the session.
     usage: /<command>
+  settask:
+    description: Sets a player's task.
+    usage: /<command> player taskID
   starttasks:
-    description: Initializes the tasks and then distributes one to each player.
-    usage: /<command>
-  tokens:
-    description: Tells the user their current number of tokens.
+    description: Initializes the tasks.
     usage: /<command>
   whattask:
-    description: Tells the player their task along with its difficulty.
+    description: Displays the player's current task.
+    usage: /<command>
+  tokens:
+    description: Displays current number of tokens.
+    usage: /<command>
+  givetokens:
+    description: Gives a player a number of tokens.
+    usage: /<command> player tokens
+  settokens:
+    description: Sets a player's tokens.
+    usage: /<command> player tokens
+  shop:
+    description: Displays the token shop.
     usage: /<command>

@@ -4,189 +4,100 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
-import org.scarlettparker.videogameslifeserver.manager.LifeManager;
-import org.scarlettparker.videogameslifeserver.utils.InstantFirework;
+import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class GiveLife implements CommandExecutor {
-    HashMap<String, Boolean> canSendLife = new HashMap<>();
-    HashMap<String, Player> tempSender = new HashMap<>();
-    LifeManager lifeManager = new LifeManager();
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
+import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.handleRevive;
 
+public class GiveLife implements CommandExecutor{
+
+    @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (sender instanceof ConsoleCommandSender) {
-            System.err.println("Only players can use this command!");
+        String receiver;
+
+        // for cleanliness
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
             return true;
         }
 
-        Player s = Bukkit.getPlayer(sender.getName());
-        Player r;
-
-        String[] senderData = ConfigManager.getPlayerData(sender.getName()).split(",");
-        String[] receiverData = null;
-
-        if (args.length != 1) {
-            s.sendMessage(ChatColor.RED + "Incorrect arguments. Command usage: /givelife player");
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /givelife player");
             return true;
         }
 
-        if (!Objects.equals(args[0], "confirm") && args[0].length() >= 2) {
-            try {
-                r = Bukkit.getPlayer(args[0]);
-                receiverData = ConfigManager.getPlayerData(r.getName()).split(",");
-            } catch (Exception e) {
-                s.sendMessage(ChatColor.RED + "Player is not online!");
-                return true;
-            }
+        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+            sender.sendMessage(ChatColor.RED + "Specified player does not exist/is not online.");
+            return true;
         } else {
-            if (canSendLife.containsKey(s.getName())) {
-                r = tempSender.get(s.getName());
-                receiverData = ConfigManager.getPlayerData(r.getName()).split(",");
-
-                int receiverLives = Integer.parseInt(receiverData[1]);
-
-                if (receiverLives == 4) {
-                    s.sendMessage(ChatColor.RED + "Players may not have more than 4 lives at once.");
-                    return true;
-                }
-                receiverLives += 1;
-
-                s.sendMessage(ChatColor.GREEN + "Successfully sent a life to " + r.getDisplayName());
-                s.setHealth(0.0);
-
-                // update lives and empty lists so it can't be run again
-                lifeManager.updateLives(receiverData, receiverLives);
-                lifeManager.updateLives(senderData, 0);
-
-                canSendLife.remove(s.getName());
-                tempSender.remove(s.getName());
-
-                s.playEffect(EntityEffect.TOTEM_RESURRECT);
-                r.playEffect(EntityEffect.TOTEM_RESURRECT);
-
-                if (receiverLives == 1) {
-                    // bring player back to survival and announce
-                    r.setGameMode(GameMode.SURVIVAL);
-                    r.teleport(Bukkit.getWorld("world").getSpawnLocation());
-                    Bukkit.broadcastMessage(r.getName() + ChatColor.BLUE + " has been revived" + ChatColor.WHITE
-                            + ", and now must " +  ChatColor.RED + "kill at least 1 player per session "
-                            + ChatColor.WHITE + "to remain in the game.");
-
-                    // play a firework when revived because yay
-                    Location location = r.getPlayer().getLocation();
-                    FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(false).trail(true)
-                            .with(FireworkEffect.Type.BALL).withColor(Color.WHITE).withFade(Color.GRAY).build();
-                    new InstantFirework(fireworkEffect, location);
-
-                    // and a villager celebration!
-                    r.getPlayer().playSound(location, Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);
-
-                    // update receiver data stuff to mark that player is a zombie
-                    receiverData[7] = "true";
-                }
-
-                return true;
-            } else {
-                if (args[0].length() <= 2) {
-                    s.sendMessage(ChatColor.RED + "Please enter a full username!");
-                    return true;
-                }
-                s.sendMessage(ChatColor.RED + "Nothing to confirm!");
+            receiver = args[0];
+            if (Objects.equals(receiver, sender.getName())) {
+                sender.sendMessage(ChatColor.RED + "You cannot give yourself lives.");
                 return true;
             }
         }
-        if (!ConfigManager.findPlayerBase()) {
-            s.sendMessage(ChatColor.RED + "Config file not found! Please run /startlife lives from the console first.");
+
+        // sender and receiver
+        TPlayer sPlayer = new TPlayer(sender.getName());
+        TPlayer rPlayer = new TPlayer(receiver);
+
+        if (sPlayer.getLives() < 1) {
+            sender.sendMessage(ChatColor.RED + "You are dead. You cannot give lives.");
             return true;
         }
 
-        // get current players lives
-        int numLives = Integer.parseInt(Objects.requireNonNull(senderData[1]));
-
-        if (numLives == 0) {
-            s.sendMessage(ChatColor.RED + "You are dead. You have no lives to send.");
+        if (rPlayer.isZombie()) {
+            sender.sendMessage(ChatColor.RED + "You may not send lives to previously revived players.");
             return true;
         }
 
-        // make it so you cant send lives to yourself
-        if (sender.getName().equals(receiverData[0])) {
-            s.sendMessage(ChatColor.RED + "You can't give yourself lives!");
-            return true;
-        }
-
-        if (numLives == 1) {
-            s.sendMessage("Are you sure you want to give this player a life?" +
+        if (sPlayer.getLives() == 1 && (args.length != 2 || !Objects.equals(args[1], "confirm"))) {
+            sender.sendMessage("Are you sure you want to give this player a life?" +
                     ChatColor.RED + " Doing so will permanently kill you.");
-            s.sendMessage("[VGS Life Server] Type" + ChatColor.RED + " /givelife confirm " + ChatColor.WHITE +
-                    "within the next 30 seconds to confirm that you want to give this player a life.");
-
-            canSendLife.put(s.getName(), false);
-            tempSender.put(s.getName(), r);
-
-            Timer timer = new Timer();
-
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    canSendLife.remove(s.getName());
-                    tempSender.remove(s.getName());
-                }
-            }, 30000); // remove confirm list after 30 seconds
-
-            // remove player from map after 30 seconds
+            sender.sendMessage("Type" + ChatColor.RED + " /givelife [name] confirm "
+                    + ChatColor.WHITE + "to give the receiver a life.");
             return true;
         }
 
-        numLives -= 1;
-
-        lifeManager.updateLives(senderData, numLives);
-
-        int receiverLives = Integer.parseInt(Objects.requireNonNull(receiverData[1]));
-
-        if (receiverLives == 0) {
-            // bring player back to survival and announce
-            r.setGameMode(GameMode.SURVIVAL);
-            r.teleport(Bukkit.getWorld("world").getSpawnLocation());
-            Bukkit.broadcastMessage(r.getName() + ChatColor.BLUE + " has been revived" + ChatColor.WHITE
-                    + ", and now must " +  ChatColor.RED + "kill at least 1 player per session "
-                    + ChatColor.WHITE + "to remain in the game.");
-
-            // play a firework when revived because yay
-            Location location = r.getPlayer().getLocation();
-            FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(false).trail(true)
-                    .with(FireworkEffect.Type.BALL).withColor(Color.WHITE).withFade(Color.GRAY).build();
-            new InstantFirework(fireworkEffect, location);
-
-            // and a villager celebration!
-            r.getPlayer().playSound(location, Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);
-
-            // update receiver data stuff to mark that player is a zombie
-            receiverData[7] = "true";
-        } else if (receiverLives == 4){
-            s.sendMessage(ChatColor.RED + "Players may not have more than 4 lives at once.");
-            return true;
-        } else {
-            r.playEffect(EntityEffect.TOTEM_RESURRECT);
-        }
+        int receiverLives = rPlayer.getLives();
+        int senderLives = sPlayer.getLives();
 
         receiverLives += 1;
+        senderLives -= 1;
 
-        lifeManager.updateLives(receiverData, receiverLives);
+        if (receiverLives > 4) {
+            sender.sendMessage(ChatColor.RED + "Players are not allowed to have more than 4 lives at any given time.");
+            return true;
+        }
+
+        if (senderLives == 0) {
+            ((Player) sender).setHealth(0);
+        }
+
+        // player has been revived (mathematically obviously)
+        if (receiverLives == 1) {
+            Player p = Bukkit.getPlayer(receiver);
+            handleRevive(p);
+
+            rPlayer.setZombie(true);
+        }
+
+        rPlayer.setLives(receiverLives);
+        sPlayer.setLives(senderLives);
 
         // player gets confirmation message
-        s.sendMessage(ChatColor.GREEN + "Successfully sent a life to " + r.getDisplayName() + ChatColor.GREEN + ".");
-        r.sendMessage(s.getDisplayName() + "" + ChatColor.GREEN + " has given you a life!");
+        sender.sendMessage(ChatColor.GREEN + "Successfully sent a life to "
+                + receiver + ".");
+        Bukkit.getPlayer(receiver).sendMessage( ChatColor.GREEN + sender.getName() + " has given you a life!");
 
-        // totems cause yummy
-        s.playEffect(EntityEffect.TOTEM_RESURRECT);
+        // awesome effect moment
+        Bukkit.getPlayer(receiver).playEffect(EntityEffect.TOTEM_RESURRECT);
+        ((Player) sender).playEffect(EntityEffect.TOTEM_RESURRECT);
+
         return true;
     }
 }

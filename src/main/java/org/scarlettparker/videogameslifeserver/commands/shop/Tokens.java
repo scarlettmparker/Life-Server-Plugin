@@ -5,28 +5,33 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
-
-import java.util.Objects;
+import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 
 public class Tokens implements CommandExecutor {
-    // TODO: Tell user how many tokens they have.
+    @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (sender instanceof ConsoleCommandSender) {
-            System.err.println("Only players can use this command!");
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
             return true;
         }
 
-        Player p = Bukkit.getPlayer(sender.getName());
+        if (args.length > 0) {
+            sender.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /tokens");
+            return true;
+        }
 
-        // get token information from player
-        String[] playerData = ConfigManager.getPlayerData(sender.getName()).split(",");
-        String tokens = Objects.requireNonNull(playerData[6]);
+        TPlayer tempPlayer = new TPlayer(sender.getName());
 
-        p.sendMessage(ChatColor.WHITE + "You have " + ChatColor.GOLD + tokens + " tokens" + ChatColor.WHITE + ".");
+        // because perhaps some people will try to be funny
+        if (tempPlayer.getLives() <= 0) {
+            sender.sendMessage(ChatColor.RED + "You are a spectator. You can stop worrying about the market now.");
+            return true;
+        }
+
+        Bukkit.getPlayer(sender.getName()).sendMessage(ChatColor.WHITE + "You have "
+                + ChatColor.GOLD + tempPlayer.getTokens() + " tokens" + ChatColor.WHITE + ".");
 
         return true;
     }
