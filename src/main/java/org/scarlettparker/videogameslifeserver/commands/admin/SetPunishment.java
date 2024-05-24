@@ -9,11 +9,15 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.Punishment;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
+import org.scarlettparker.videogameslifeserver.utils.CustomEffect;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
+import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
+import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.getCustomEffect;
 
 public class SetPunishment implements CommandExecutor {
     @Override
@@ -48,6 +52,7 @@ public class SetPunishment implements CommandExecutor {
 
         // get player and add punishments
         TPlayer tempPlayer = new TPlayer(playerName);
+
         tempPlayer.addPunishment(args[1]);
         applyPunishment(args[1], Bukkit.getPlayer(args[0]), false);
 

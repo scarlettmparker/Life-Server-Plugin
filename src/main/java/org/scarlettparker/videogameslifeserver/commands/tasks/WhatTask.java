@@ -42,7 +42,7 @@ public class WhatTask implements CommandExecutor {
 
         if (Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             sender.sendMessage(ChatColor.RED
-                    + "You have no active task! Select a new task with /newtask [normal/hard]");
+                    + "Yo have no active task! Players can select a new task by clicking a sign at spawn.");
             return true;
         }
 

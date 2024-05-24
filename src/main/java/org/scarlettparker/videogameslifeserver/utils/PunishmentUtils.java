@@ -47,7 +47,7 @@ public class PunishmentUtils implements Listener {
         }
     }
 
-    private static @Nullable CustomEffect getCustomEffect(String punishment) {
+    public static @Nullable CustomEffect getCustomEffect(String punishment) {
         CustomEffect customPunishment = null;
 
         if (Objects.equals(punishment, "weak2")) {

@@ -18,12 +18,10 @@ public class FragilityListener implements Listener {
         if (plugin == null) {
             plugin = JavaPlugin.getProvidingPlugin(FragilityListener.class);
         }
+
         if (!fragilityPlayers.containsKey(player.getUniqueId())) {
             fragilityPlayers.put(player.getUniqueId(), amplifier);
         }
-
-
-        plugin.getServer().getPluginManager().registerEvents(new FragilityListener(), plugin);
     }
 
     public static void unregister(Player player) {
@@ -31,8 +29,6 @@ public class FragilityListener implements Listener {
             plugin = JavaPlugin.getProvidingPlugin(FragilityListener.class);
         }
         fragilityPlayers.remove(player.getUniqueId());
-
-        plugin.getServer().getPluginManager().registerEvents(new FragilityListener(), plugin);
     }
 
     @EventHandler

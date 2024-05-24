@@ -36,7 +36,9 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(lifeEvents, this);
         getServer().getPluginManager().registerEvents(inventoryEvents, this);
         getServer().getPluginManager().registerEvents(punishmentEvents, this);
+
         getServer().getPluginManager().registerEvents(new PunishmentUtils(), this);
+        getServer().getPluginManager().registerEvents(new FragilityListener(), this);
 
         // life commands
         Objects.requireNonNull(getCommand("givelife")).setExecutor(new GiveLife());

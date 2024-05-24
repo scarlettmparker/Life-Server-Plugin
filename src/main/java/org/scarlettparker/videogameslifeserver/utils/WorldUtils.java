@@ -232,7 +232,7 @@ public class WorldUtils {
                     + " just for you.\n\n");
 
             pages.add(ChatColor.BLACK + "Your task is to " + ChatColor.RED + "give nether wart that you have collected"
-                    + "alone to a player of your choice " + ChatColor.BLACK +"before the end of the session"
+                    + " on your own to a player of your choice " + ChatColor.BLACK +"before the end of the session"
                     + ChatColor.BLACK + ".\nLuckily, there are some perks to your task! No yellow player is allowed to"
                     + " guess your task, but you still must not reveal your task to anybody, or you fail.\n");
             pages.add(ChatColor.RED + "Failing this task will result in "
