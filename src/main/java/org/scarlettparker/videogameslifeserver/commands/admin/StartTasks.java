@@ -17,6 +17,7 @@ import org.scarlettparker.videogameslifeserver.objects.Task;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
+import static org.scarlettparker.videogameslifeserver.manager.PunishmentManager.generatePunishments;
 import static org.scarlettparker.videogameslifeserver.manager.TaskManager.doTaskDistribution;
 import static org.scarlettparker.videogameslifeserver.manager.TaskManager.generateTasks;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.getAllPlayers;
@@ -31,14 +32,20 @@ public class StartTasks implements CommandExecutor {
 
         handleNewSession();
 
-        Bukkit.getLogger().info("Creating and assigning tasks to " + getAllPlayers().size() + " players...");
+        sender.sendMessage("Creating and assigning tasks to " + getAllPlayers().size() + " players...");
         ConfigManager.createJsonFile(taskFile);
 
         generateTasks();
-        
+
         // distribute both normal and red tasks
         doTaskDistribution(getAllPlayers(), 0);
 
+        sender.sendMessage("Creating punishments JSON...");
+        ConfigManager.createJsonFile(punishFile);
+
+        generatePunishments();
+
+        sender.sendMessage("All done :3");
         return true;
     }
 

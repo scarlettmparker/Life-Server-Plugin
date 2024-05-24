@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
+import java.awt.*;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
@@ -51,6 +52,7 @@ public class CompleteTask implements CommandExecutor {
         String currentTaskID = tempPlayer.getCurrentTask();
         Task tempTask = new Task(currentTaskID);
 
+        System.out.println(tempPlayer.getCurrentTask());
         if (Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             sender.sendMessage(ChatColor.RED + "Player has no active task to complete."
                     + " Start a new task by right clicking a sign at spawn.");
@@ -86,6 +88,13 @@ public class CompleteTask implements CommandExecutor {
 
         tempPlayer.setTokens(tempPlayer.getTokens() + tokensIncrease);
         tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
+        tempPlayer.setCurrentTask("-1");
+
+        // if player is currently punished
+        if (tempPlayer.getPunishments().length != 0) {
+            Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cured of your punishment(s).");
+            tempPlayer.setPunishments(new String[0]);
+        }
 
         // if it's a hard task, continuous new tasks1!!!
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();

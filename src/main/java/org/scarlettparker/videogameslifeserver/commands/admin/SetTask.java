@@ -42,7 +42,6 @@ public class SetTask implements CommandExecutor {
 
         Task tempTask = new Task(args[1]);
 
-
         TPlayer tempPlayer = new TPlayer(playerName);
         Player player = Bukkit.getPlayer(sender.getName());
 
@@ -65,11 +64,14 @@ public class SetTask implements CommandExecutor {
 
         tempTask.setAvailable(false);
         tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getPlayerDescription(), player));
-        tempPlayer.setCurrentTask(args[1]);
+        tempPlayer.setCurrentTask(tempTask.getName());
 
         // make sure to give the correct book
         removeBook(player);
         giveTaskBook(tempTask, player);
+
+        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN +
+                "Your task has been set to task " + tempTask.getName());
 
         return true;
     }

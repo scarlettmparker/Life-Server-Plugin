@@ -60,6 +60,7 @@ public class LifeEvents implements Listener {
 
         Location location = event.getPlayer().getLocation();
 
+        // set off firework at player location
         FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(false).trail(true)
                 .with(FireworkEffect.Type.BALL).withColor(Color.WHITE).withFade(Color.GRAY).build();
         new InstantFirework(fireworkEffect, location);

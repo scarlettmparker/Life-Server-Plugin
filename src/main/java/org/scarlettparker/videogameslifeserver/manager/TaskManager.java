@@ -128,6 +128,9 @@ public class TaskManager {
         String[] currentTasks = tPlayer.getTasks();
         String[] tempTasks = Arrays.copyOf(currentTasks, currentTasks.length + 1);
         tempTasks[currentTasks.length] = String.valueOf(taskID);
+
+        // set player attributes so program doesnt die itself
         tPlayer.setTasks(tempTasks);
+        tPlayer.setCurrentTask(String.valueOf(taskID));
     }
 }

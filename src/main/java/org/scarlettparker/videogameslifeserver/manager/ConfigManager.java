@@ -14,6 +14,8 @@ public class ConfigManager {
             .getPlugin("VideoGamesLifeServer")).getDataFolder(), "playerbase.json");
     public static final File taskFile = new File(Objects.requireNonNull(Bukkit.getServer().getPluginManager()
             .getPlugin("VideoGamesLifeServer")).getDataFolder(), "taskbase.json");
+    public static final File punishFile = new File(Objects.requireNonNull(Bukkit.getServer().getPluginManager()
+            .getPlugin("VideoGamesLifeServer")).getDataFolder(), "punishments.json");
 
     private static final Logger LOGGER = Logger.getLogger(ConfigManager.class.getName());
     private static final Gson gson = new Gson();

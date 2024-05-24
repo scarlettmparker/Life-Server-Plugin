@@ -52,6 +52,7 @@ public class SetTokens implements CommandExecutor {
 
         // update tokens and display
         tempPlayer.setTokens(tokens);
+        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GOLD + "You have been set to " + tokens + " tokens.");
 
         return true;
     }

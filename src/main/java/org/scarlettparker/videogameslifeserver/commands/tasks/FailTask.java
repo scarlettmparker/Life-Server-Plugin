@@ -8,11 +8,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.scarlettparker.videogameslifeserver.objects.Punishment;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
 import java.util.Objects;
 
+import static org.scarlettparker.videogameslifeserver.manager.PunishmentManager.assignRandomPunishment;
+import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 
 public class FailTask implements CommandExecutor {
@@ -23,7 +26,7 @@ public class FailTask implements CommandExecutor {
             return true;
         }
 
-        if (args.length > 2) {
+        if (args.length > 2 || args.length < 1) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /failtask player");
             return true;
         }
@@ -61,7 +64,7 @@ public class FailTask implements CommandExecutor {
         tempTask.setAvailable(true);
 
         // so it doesnt show up when session starts
-        if (!Objects.equals(args[1], "dbg")) {
+        if (args.length != 1 && !Objects.equals(args[1], "dbg")) {
             Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "You have failed your task."
                     + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
         }
@@ -70,8 +73,11 @@ public class FailTask implements CommandExecutor {
         Bukkit.broadcastMessage(playerName + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE + ": "
                 + ChatColor.WHITE + tempTask.getPlayerDescription());
 
+        tempPlayer.setCurrentTask("-1");
+
         int punishment = 0;
         int difficulty = tempTask.getDifficulty();
+
         String difficultyType = "";
         ChatColor difficultyColor = null;
 
@@ -103,9 +109,19 @@ public class FailTask implements CommandExecutor {
             return true;
         }
 
+        // give random punishment and find final in list
+        assignRandomPunishment(tempPlayer, punishment);
+
+        String newPunishment = tempPlayer.getPunishments()[tempPlayer.getPunishments().length - 1];
+        Punishment tempPunishment = new Punishment(newPunishment);
+
         // send message to correct player (i had definitely not previously done it wrong)
         Bukkit.getPlayer(args[0]).sendMessage("Because you failed a " + difficultyColor + difficultyType
-                + ChatColor.WHITE + "task, you have been punished with: " + difficultyColor + punishment);
+                + ChatColor.WHITE + "task, you have been punished with: "
+                + difficultyColor + tempPunishment.getDescription());
+
+        // i love making variables i should do it more
+        applyPunishment(tempPunishment.getName(), Bukkit.getPlayer(args[0]), false);
 
         return true;
     }

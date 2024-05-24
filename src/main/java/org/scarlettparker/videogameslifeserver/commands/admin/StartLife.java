@@ -3,7 +3,6 @@ package org.scarlettparker.videogameslifeserver.commands.admin;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +24,7 @@ public class StartLife implements CommandExecutor {
             return true;
         }
 
-        Bukkit.getLogger().info("3 lives being assigned to each player...");
+        sender.sendMessage("3 lives being assigned to each player...");
         ConfigManager.createJsonFile(playerFile);
 
         // create players
@@ -33,6 +32,7 @@ public class StartLife implements CommandExecutor {
             createPlayer(p);
         }
 
+        sender.sendMessage("All done :3");
         return true;
     }
 

@@ -12,11 +12,14 @@ import org.scarlettparker.videogameslifeserver.commands.tasks.NewTask;
 import org.scarlettparker.videogameslifeserver.commands.tasks.WhatTask;
 import org.scarlettparker.videogameslifeserver.events.InventoryEvents;
 import org.scarlettparker.videogameslifeserver.events.LifeEvents;
+import org.scarlettparker.videogameslifeserver.events.PunishmentEvents;
+
 import java.util.Objects;
 
 public final class Main extends JavaPlugin {
     LifeEvents lifeEvents = new LifeEvents();
     InventoryEvents inventoryEvents = new InventoryEvents();
+    PunishmentEvents punishmentEvents = new PunishmentEvents();
 
     @Override
     public void onEnable() {
@@ -24,6 +27,7 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(lifeEvents, this);
         getServer().getPluginManager().registerEvents(inventoryEvents, this);
+        getServer().getPluginManager().registerEvents(punishmentEvents, this);
 
         // life commands
         Objects.requireNonNull(getCommand("givelife")).setExecutor(new GiveLife());
@@ -46,6 +50,10 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("settask")).setExecutor(new SetTask());
         Objects.requireNonNull(getCommand("starttasks")).setExecutor(new StartTasks());
         Objects.requireNonNull(getCommand("whattask")).setExecutor(new WhatTask());
+
+        // punishment commands
+        Objects.requireNonNull(getCommand("clearpunishments")).setExecutor(new ClearPunishments());
+        Objects.requireNonNull(getCommand("setpunishment")).setExecutor(new SetPunishment());
     }
 
     @Override

@@ -4,7 +4,6 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 
 public class Task {
     private String name;
-    private String playerDescription;
 
     public Task(String name) {
         this.name = name;

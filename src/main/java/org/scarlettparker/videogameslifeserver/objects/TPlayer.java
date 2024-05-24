@@ -48,20 +48,12 @@ public class TPlayer {
     }
 
     public String getCurrentTask() {
-        String[] tasks = getTasks();
-        if (tasks.length == 0) {
-            return "-1";
-        } else {
-            return tasks[tasks.length - 1];
-        }
+        Object currentTask = getJsonObjectAttribute(playerFile, name, "currentTask");
+        return currentTask instanceof String ? (String) currentTask : "-1"; // default value is -1
     }
 
     public void setCurrentTask(String taskID) {
-        String[] tasks = getTasks();
-
-        // change task at final position and update
-        tasks[tasks.length - 1] = taskID;
-        setTasks(tasks);
+        setJsonObjectAttribute(playerFile, name, "currentTask", taskID);
     }
 
     public void setTasks(String[] tasks) {
@@ -104,12 +96,24 @@ public class TPlayer {
         setJsonObjectAttribute(playerFile, name, "shop", shop);
     }
 
-    public Punishment getPunishment() {
-        Object punishment = getJsonObjectAttribute(playerFile, name, "punishment");
-        return punishment instanceof Punishment ? (Punishment) punishment : null; // default value is null
+    public String[] getPunishments() {
+        Object punishments = getJsonObjectAttribute(playerFile, name, "punishments");
+        return punishments instanceof String[] ? (String[]) punishments : new String[0]; // default value is empty array
     }
 
-    public void setPunishment(Punishment punishment) {
-        setJsonObjectAttribute(playerFile, name, "punishment", punishment);
+    public void setPunishments(String[] punishments) {
+        setJsonObjectAttribute(playerFile, name, "punishments", punishments);
+    }
+
+    public void addPunishment(String punishmentID) {
+        String[] currentPunishments = getPunishments();
+        String[] tempPunishments = new String[currentPunishments.length + 1];
+
+        // copy old punishments into new array
+        System.arraycopy(currentPunishments, 0, tempPunishments, 0, currentPunishments.length);
+
+        // add new punishment to last position and update
+        tempPunishments[currentPunishments.length] = punishmentID;
+        setPunishments(tempPunishments);
     }
 }

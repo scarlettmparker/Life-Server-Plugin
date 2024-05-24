@@ -47,3 +47,9 @@ commands:
   shop:
     description: Displays the token shop.
     usage: /<command>
+  clearpunishments:
+    description: Clears a player's punishments.
+    usage: /<command> player
+  setpunishment:
+    description: Adds a punishment to a player.
+    usage: /<command> player punishmentID

@@ -51,7 +51,7 @@ public class SetLife implements CommandExecutor {
 
         // update lives and display
         tempPlayer.setLives(lives);
-
+        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been set to " + lives + " lives.");
         return true;
     }
 }
