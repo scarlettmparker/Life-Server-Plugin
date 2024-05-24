@@ -3,6 +3,7 @@ org\scarlettparker\videogameslifeserver\commands\admin\StartTasks.class
 org\scarlettparker\videogameslifeserver\manager\ConfigManager.class
 org\scarlettparker\videogameslifeserver\objects\Task.class
 org\scarlettparker\videogameslifeserver\utils\FragilityListener.class
+org\scarlettparker\videogameslifeserver\utils\CustomParticleEffect$2.class
 org\scarlettparker\videogameslifeserver\utils\InstantFirework.class
 org\scarlettparker\videogameslifeserver\utils\FragilityEffect.class
 org\scarlettparker\videogameslifeserver\manager\PunishmentManager.class
@@ -13,6 +14,7 @@ org\scarlettparker\videogameslifeserver\commands\tasks\CompleteTask.class
 org\scarlettparker\videogameslifeserver\commands\admin\StartLife.class
 org\scarlettparker\videogameslifeserver\commands\shop\GiveTokens.class
 org\scarlettparker\videogameslifeserver\Main.class
+org\scarlettparker\videogameslifeserver\utils\CustomParticleEffect.class
 org\scarlettparker\videogameslifeserver\events\LifeEvents.class
 org\scarlettparker\videogameslifeserver\utils\WorldUtils.class
 org\scarlettparker\videogameslifeserver\commands\admin\SetTokens.class
@@ -25,6 +27,7 @@ org\scarlettparker\videogameslifeserver\commands\admin\SetLife.class
 org\scarlettparker\videogameslifeserver\commands\shop\Tokens.class
 org\scarlettparker\videogameslifeserver\commands\admin\ClearPunishments.class
 org\scarlettparker\videogameslifeserver\utils\WorldUtils$1.class
+org\scarlettparker\videogameslifeserver\utils\CustomParticleEffect$1.class
 org\scarlettparker\videogameslifeserver\utils\PotionEffectWrapper.class
 org\scarlettparker\videogameslifeserver\utils\PunishmentUtils.class
 org\scarlettparker\videogameslifeserver\commands\tasks\NewTask.class

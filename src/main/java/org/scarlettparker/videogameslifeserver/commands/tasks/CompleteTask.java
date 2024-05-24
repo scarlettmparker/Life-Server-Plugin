@@ -53,7 +53,6 @@ public class CompleteTask implements CommandExecutor {
         String currentTaskID = tempPlayer.getCurrentTask();
         Task tempTask = new Task(currentTaskID);
 
-        System.out.println(tempPlayer.getCurrentTask());
         if (Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             sender.sendMessage(ChatColor.RED + "Player has no active task to complete."
                     + " Start a new task by right clicking a sign at spawn.");

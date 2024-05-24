@@ -154,6 +154,7 @@ public class WorldUtils {
                     // give book and make sure it doesn't keep giving the book
                     giveTaskBook(task, p);
                     p.playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
+                    CustomParticleEffect.playTotemEffect(p);
 
                     this.cancel(); // Cancel the task
                     return;

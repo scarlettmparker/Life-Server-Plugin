@@ -53,7 +53,7 @@ public class Shop implements CommandExecutor, Listener {
         addItem(createItem(Material.AIR, 0, ""), 0);
 
         addItem(createItem(Material.IRON_BLOCK, 1, "1 Token"), 1);
-        addItem(createItem(Material.INFESTED_STONE, 1, "1 Token"), 1);
+        addItem(createItem(Material.INFESTED_STONE, 12, "1 Token"), 1);
         addItem(createMendingBook(1, "7 Tokens"), 7);
 
         addItem(createItem(Material.AIR, 0, ""), 0);
@@ -74,21 +74,21 @@ public class Shop implements CommandExecutor, Listener {
         addItem(createItem(Material.AIR, 0, ""), 0);
         addItem(createItem(Material.AIR, 0, ""), 0);
 
-        addItem(createPotionItem(Material.POTION, 1, "3 Tokens",
-                PotionType.INVISIBILITY, true, false), 3);
-        addItem(createPotionItem(Material.POTION, 1, "3 Tokens",
-                PotionType.FIRE_RESISTANCE, true, false), 3);
-        addItem(createPotionItem(Material.POTION, 1, "3 Tokens",
-                PotionType.SPEED, true, false), 3);
+        addItem(createPotionItem(Material.POTION, 1, "2 Tokens",
+                PotionType.INVISIBILITY, false, false), 2);
+        addItem(createPotionItem(Material.POTION, 1, "2 Tokens",
+                PotionType.SPEED, false, false), 2);
+        addItem(createPotionItem(Material.POTION, 1, "2 Tokens",
+                PotionType.FIRE_RESISTANCE, true, false), 2);
 
-        addItem(createPotionItem(Material.SPLASH_POTION, 1, "3 Tokens",
-                PotionType.POISON, true, false), 3);
-        addItem(createPotionItem(Material.SPLASH_POTION, 1, "3 Tokens",
-                PotionType.WEAKNESS, true, false), 3);
-        addItem(createPotionItem(Material.SPLASH_POTION, 1, "3 Tokens",
-                PotionType.SLOWNESS, true, false), 3);
-        addItem(createPotionItem(Material.SPLASH_POTION, 1, "3 Tokens",
-                PotionType.INSTANT_DAMAGE, false, true), 3);
+        addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
+                PotionType.POISON, true, false), 2);
+        addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
+                PotionType.INSTANT_DAMAGE, false, true), 2);
+        addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
+                PotionType.WEAKNESS, true, false), 2);
+        addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
+                PotionType.SLOWNESS, true, false), 2);
 
         addItem(createItem(Material.AIR, 0, ""), 0);
         addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "45 Tokens"), 45);
@@ -122,8 +122,10 @@ public class Shop implements CommandExecutor, Listener {
 
     private Inventory shopInventory(TPlayer tempPlayer) {
         // show player number of tokens in shop
+        String tokenText = (tempPlayer.getTokens() == 1) ? " token" : " tokens";
+
         Inventory shopInventory = Bukkit.createInventory(null, 45, "You have "
-                + ChatColor.DARK_AQUA + tempPlayer.getTokens() + " tokens" + ChatColor.BLACK + ".");
+                + ChatColor.DARK_AQUA + tempPlayer.getTokens() + tokenText + ChatColor.BLACK + ".");
 
         int index = 0;
         for (ItemStack item : itemOrder) {

@@ -58,7 +58,6 @@ public class PunishmentManager {
         // filter punishments by difficulty
         List<Punishment> punishments = getPunishmentsByDifficulty(difficulty);
         if (punishments.isEmpty()) {
-            System.out.println("No punishments available for difficulty: " + difficulty);
             return false;
         }
 
