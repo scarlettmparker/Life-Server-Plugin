@@ -1,11 +1,14 @@
 package org.scarlettparker.videogameslifeserver.utils;
 
+import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class WorldUtils {
+    static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
 
     public static List<Player> getAllPlayers() {
         return new ArrayList<>(Bukkit.getOnlinePlayers());
@@ -138,6 +142,33 @@ public class WorldUtils {
         }
     }
 
+    public static void bookCountdown(Task task, Player p) {
+        p.sendTitle("Receiving task in...", "", 10, 40, 10);
+
+        BukkitRunnable runnable = new BukkitRunnable() {
+            int time = 5;
+
+            @Override
+            public void run() {
+                if (time == 0) {
+                    // give book and make sure it doesn't keep giving the book
+                    giveTaskBook(task, p);
+                    p.playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
+
+                    this.cancel(); // Cancel the task
+                    return;
+                }
+
+                p.sendTitle(ChatColor.YELLOW + String.valueOf(time), "", 0, 21, 0);
+                p.playNote(p.getLocation(), Instrument.BELL, Note.flat(0, Note.Tone.C));
+
+                time--;
+            }
+        };
+
+        runnable.runTaskTimer(plugin, 60L, 20L);
+    }
+
     private static void setBookMeta(ItemStack book, Task task) {
         BookMeta meta = (BookMeta) book.getItemMeta();
 
@@ -148,12 +179,15 @@ public class WorldUtils {
         if (task.getDifficulty() == 0) {
             messageColor = ChatColor.GREEN;
             difficultyText = "Normal";
-        } else if (task.getDifficulty() == 1 || task.getDifficulty() == 3) {
+        } else if (task.getDifficulty() == 1) {
             messageColor = ChatColor.GOLD;
             difficultyText = "Hard";
         } else if (task.getDifficulty() == 2) {
             messageColor = ChatColor.RED;
             difficultyText = "Red";
+        } else if (task.getDifficulty() == 3) {
+            messageColor = ChatColor.DARK_AQUA;
+            difficultyText = "Raven";
         }
 
         // format the book properly
@@ -186,6 +220,26 @@ public class WorldUtils {
         }
 
         meta.setPages(pages);
+
+        // trolling raven raven because it's funny
+        if (task.getDifficulty() == 3) {
+            pages = new ArrayList<>();
+            pages.add("Task Difficulty: " + messageColor + difficultyText + "\n"
+                    + ChatColor.BLACK + "Hello, " + ChatColor.RED + "RavingRaven" + ChatColor.BLACK
+                    + ".\nAs you may be aware, you illegally gave nether wart to some players in the previous season. "
+                    + "Unfortunately, we can't let you get away with that without punishment, so we have a special task"
+                    + " just for you.\n\n");
+
+            pages.add(ChatColor.BLACK + "Your task is to " + ChatColor.RED + "give nether wart that you have collected"
+                    + "alone to a player of your choice " + ChatColor.BLACK +"before the end of the session"
+                    + ChatColor.BLACK + ".\nLuckily, there are some perks to your task! No yellow player is allowed to"
+                    + " guess your task, but you still must not reveal your task to anybody, or you fail.\n");
+            pages.add(ChatColor.RED + "Failing this task will result in "
+                    + "a hefty punishment" + ChatColor.BLACK + ", so chop chop!\n\n"
+                    + "Much love, the VGS committee.\n\nEnjoy your season!");
+
+            meta.setPages(pages);
+        }
 
         book.setItemMeta(meta);
     }

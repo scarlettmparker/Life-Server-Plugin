@@ -1,5 +1,6 @@
 package org.scarlettparker.videogameslifeserver;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.scarlettparker.videogameslifeserver.commands.admin.*;
 import org.scarlettparker.videogameslifeserver.commands.life.GiveLife;
@@ -13,10 +14,17 @@ import org.scarlettparker.videogameslifeserver.commands.tasks.WhatTask;
 import org.scarlettparker.videogameslifeserver.events.InventoryEvents;
 import org.scarlettparker.videogameslifeserver.events.LifeEvents;
 import org.scarlettparker.videogameslifeserver.events.PunishmentEvents;
+import org.scarlettparker.videogameslifeserver.objects.TPlayer;
+import org.scarlettparker.videogameslifeserver.utils.FragilityListener;
+import org.scarlettparker.videogameslifeserver.utils.PunishmentUtils;
 
 import java.util.Objects;
 
+import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
+import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.getAllPlayers;
+
 public final class Main extends JavaPlugin {
+    // for registering events
     LifeEvents lifeEvents = new LifeEvents();
     InventoryEvents inventoryEvents = new InventoryEvents();
     PunishmentEvents punishmentEvents = new PunishmentEvents();
@@ -28,6 +36,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(lifeEvents, this);
         getServer().getPluginManager().registerEvents(inventoryEvents, this);
         getServer().getPluginManager().registerEvents(punishmentEvents, this);
+        getServer().getPluginManager().registerEvents(new PunishmentUtils(), this);
 
         // life commands
         Objects.requireNonNull(getCommand("givelife")).setExecutor(new GiveLife());
@@ -54,10 +63,22 @@ public final class Main extends JavaPlugin {
         // punishment commands
         Objects.requireNonNull(getCommand("clearpunishments")).setExecutor(new ClearPunishments());
         Objects.requireNonNull(getCommand("setpunishment")).setExecutor(new SetPunishment());
+
+        applyEffects();
     }
 
     @Override
     public void onDisable() {
         Bukkit.getLogger().info("Disabling VGS Plugin");
+    }
+
+    // in case of server reloading
+    private void applyEffects() {
+        for (Player p : getAllPlayers()) {
+            TPlayer tempPlayer = new TPlayer(p.getName());
+            for (String s : tempPlayer.getPunishments()) {
+                applyPunishment(s, p, true);
+            }
+        }
     }
 }

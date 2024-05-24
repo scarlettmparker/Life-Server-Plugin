@@ -12,7 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
 import org.scarlettparker.videogameslifeserver.objects.Death;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
+
+import java.util.Objects;
+
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
+import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.getAllPlayers;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.setPlayerName;
 
@@ -24,15 +28,25 @@ public class StartLife implements CommandExecutor {
             return true;
         }
 
-        sender.sendMessage("3 lives being assigned to each player...");
-        ConfigManager.createJsonFile(playerFile);
-
-        // create players
-        for (Player p : getAllPlayers()) {
-            createPlayer(p);
+        // just some verification stuff in case
+        if (jsonFileExists(playerFile) && (args.length != 1 || !Objects.equals(args[0], "confirm"))) {
+            sender.sendMessage(ChatColor.RED + "Player file already exists. Please type /startlife confirm "
+            + "to confirm you want to reset.");
+            return true;
         }
 
-        sender.sendMessage("All done :3");
+        sender.sendMessage("3 lives being assigned to " + getAllPlayers().size() + " player(s)...");
+        ConfigManager.createJsonFile(playerFile);
+
+        // create players and clear any effects just in case
+        for (Player p : getAllPlayers()) {
+            createPlayer(p);
+            unregister(p);
+            p.setMaxHealth(20.0);
+        }
+
+        sender.sendMessage("Lives successfully assigned to all players. "
+                + "New players will automatically be assigned lives.");
         return true;
     }
 

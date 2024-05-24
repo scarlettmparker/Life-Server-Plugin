@@ -1,8 +1,6 @@
 package org.scarlettparker.videogameslifeserver.events;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -56,6 +54,11 @@ public class LifeEvents implements Listener {
 
             tempPlayer.setLives(lives);
             setPlayerName(event.getPlayer(), lives);
+
+            if (tempPlayer.getPunishments().length != 0) {
+                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+                Bukkit.dispatchCommand(console, "clearpunishments " + tempPlayer.getName());
+            }
         }
 
         Location location = event.getPlayer().getLocation();

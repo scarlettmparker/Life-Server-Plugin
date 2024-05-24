@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.scarlettparker.videogameslifeserver.objects.Punishment;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 
@@ -53,15 +54,33 @@ public class PunishmentManager {
         }
     }
 
-    public static void assignRandomPunishment(TPlayer player, int difficulty) {
+    public static boolean assignRandomPunishment(TPlayer player, int difficulty) {
+        // filter punishments by difficulty
         List<Punishment> punishments = getPunishmentsByDifficulty(difficulty);
         if (punishments.isEmpty()) {
             System.out.println("No punishments available for difficulty: " + difficulty);
-            return;
+            return false;
         }
+
+        // get the player's current punishments
+        String[] currentPunishments = player.getPunishments();
+        Set<String> currentPunishmentsSet = new HashSet<>(Arrays.asList(currentPunishments));
+        punishments.removeIf(punishment -> currentPunishmentsSet.contains(punishment.getName()));
+
+        if (punishments.isEmpty() && difficulty != 2) {
+            // kill player if they're not a red life
+            Bukkit.getPlayer(player.getName()).sendMessage(ChatColor.RED + "You already have every punishment "
+                + "possible. Because of this, you shall lose a life.");
+            Bukkit.getPlayer(player.getName()).setHealth(0.0);
+            return false;
+        }
+
+        // randomly select a punishment from the remaining list
         Random random = new Random();
         Punishment selectedPunishment = punishments.get(random.nextInt(punishments.size()));
+
         player.addPunishment(selectedPunishment.getName());
+        return true;
     }
 
     private static List<Punishment> getPunishmentsByDifficulty(int difficulty) {

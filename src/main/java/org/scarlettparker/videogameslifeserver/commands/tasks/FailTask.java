@@ -64,7 +64,8 @@ public class FailTask implements CommandExecutor {
         tempTask.setAvailable(true);
 
         // so it doesnt show up when session starts
-        if (args.length != 1 && !Objects.equals(args[1], "dbg")) {
+
+        if (args.length < 2 || !Objects.equals(args[1], "dbg")) {
             Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "You have failed your task."
                     + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
         }
@@ -73,6 +74,7 @@ public class FailTask implements CommandExecutor {
         Bukkit.broadcastMessage(playerName + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE + ": "
                 + ChatColor.WHITE + tempTask.getPlayerDescription());
 
+        tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
         tempPlayer.setCurrentTask("-1");
 
         int punishment = 0;
@@ -92,8 +94,8 @@ public class FailTask implements CommandExecutor {
             difficultyColor = ChatColor.RED;
         } else if (difficulty == 3) {
             punishment = 1;
-            difficultyType = "RavingRaven ";
-            difficultyColor = ChatColor.AQUA;
+            difficultyType = "Raven ";
+            difficultyColor = ChatColor.DARK_AQUA;
         }
 
         removeBook(Bukkit.getPlayer(args[0]));
@@ -110,14 +112,29 @@ public class FailTask implements CommandExecutor {
         }
 
         // give random punishment and find final in list
-        assignRandomPunishment(tempPlayer, punishment);
+        if (punishment == 2 && tempPlayer.getPunishments().length != 0) {
+            if (tempPlayer.getTokens() > 0) {
+                Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED +
+                        "Because you are already punished, as a red life, you shall lose a token instead.");
+
+                tempPlayer.setTokens(tempPlayer.getTokens() - 1);
+                Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "You now have "
+                        + tempPlayer.getTokens() + " tokens.");
+            }
+            return true;
+        }
+
+        // if player can't be assigned a random punishment, do nothing
+        if (!assignRandomPunishment(tempPlayer, punishment)) {
+            return true;
+        }
 
         String newPunishment = tempPlayer.getPunishments()[tempPlayer.getPunishments().length - 1];
         Punishment tempPunishment = new Punishment(newPunishment);
 
         // send message to correct player (i had definitely not previously done it wrong)
         Bukkit.getPlayer(args[0]).sendMessage("Because you failed a " + difficultyColor + difficultyType
-                + ChatColor.WHITE + "task, you have been punished with: "
+                + ChatColor.WHITE + "task, you have been punished with "
                 + difficultyColor + tempPunishment.getDescription());
 
         // i love making variables i should do it more

@@ -32,20 +32,18 @@ public class StartTasks implements CommandExecutor {
 
         handleNewSession();
 
-        sender.sendMessage("Creating and assigning tasks to " + getAllPlayers().size() + " players...");
+        sender.sendMessage("Creating and assigning tasks to " + getAllPlayers().size() + " player(s)...");
         ConfigManager.createJsonFile(taskFile);
 
         generateTasks();
 
         // distribute both normal and red tasks
         doTaskDistribution(getAllPlayers(), 0);
-
-        sender.sendMessage("Creating punishments JSON...");
         ConfigManager.createJsonFile(punishFile);
 
         generatePunishments();
 
-        sender.sendMessage("All done :3");
+        sender.sendMessage("Tasks successfully assigned to all players. Players will receive their books shortly.");
         return true;
     }
 

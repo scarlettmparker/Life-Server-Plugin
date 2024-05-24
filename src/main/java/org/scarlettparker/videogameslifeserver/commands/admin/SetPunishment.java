@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.Punishment;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
-import org.scarlettparker.videogameslifeserver.objects.Task;
 
 import java.util.Objects;
 
@@ -47,11 +46,12 @@ public class SetPunishment implements CommandExecutor {
             return true;
         }
 
+        // get player and add punishments
         TPlayer tempPlayer = new TPlayer(playerName);
-        tempPlayer.addPunishment(args[0]);
+        tempPlayer.addPunishment(args[1]);
         applyPunishment(args[1], Bukkit.getPlayer(args[0]), false);
 
-        Bukkit.getPlayer(args[0]).sendMessage("You have been punished with: " + ChatColor.RED +
+        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "You have been punished with " +
                 tempPunishment.getDescription());
 
         return true;

@@ -55,20 +55,13 @@ public class NewTask implements CommandExecutor {
             return true;
         }
 
-        if (tempPlayer.getLives() == 1) {
-            difficulty = 2;
-        }
-
         if (tempPlayer.getTasks() == null) {
             sender.sendMessage(ChatColor.RED
                     + "Tasks not yet initialized. Make sure to run /startlife and then /starttasks.");
             return true;
         }
 
-        String currentTaskID = tempPlayer.getCurrentTask();
-        Task tempTask = new Task(currentTaskID);
-
-        if (!tempTask.getCompleted()) {
+        if (!Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             sender.sendMessage(ChatColor.RED + "You already have an active task! Complete it to begin another!");
             return true;
         }

@@ -9,7 +9,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 
+import java.util.Arrays;
+
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
+import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 
 public class ClearPunishments implements CommandExecutor {
     @Override
@@ -36,6 +39,15 @@ public class ClearPunishments implements CommandExecutor {
         }
 
         TPlayer tempPlayer = new TPlayer(playerName);
+
+        // clear any punishments that aren't potion effects
+        if (Arrays.asList(tempPlayer.getPunishments()).contains("fragile1")) {
+            unregister(Bukkit.getPlayer(args[0]));
+        }
+        if (Arrays.asList(tempPlayer.getPunishments()).contains("hearts6")) {
+            Bukkit.getPlayer(args[0]).setMaxHealth(20.0);
+        }
+
         tempPlayer.setPunishments(new String[0]);
 
         Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cleared of your punishments.");

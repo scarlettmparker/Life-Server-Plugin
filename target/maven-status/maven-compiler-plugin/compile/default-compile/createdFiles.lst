@@ -2,7 +2,9 @@ org\scarlettparker\videogameslifeserver\objects\TPlayer.class
 org\scarlettparker\videogameslifeserver\commands\admin\StartTasks.class
 org\scarlettparker\videogameslifeserver\manager\ConfigManager.class
 org\scarlettparker\videogameslifeserver\objects\Task.class
+org\scarlettparker\videogameslifeserver\utils\FragilityListener.class
 org\scarlettparker\videogameslifeserver\utils\InstantFirework.class
+org\scarlettparker\videogameslifeserver\utils\FragilityEffect.class
 org\scarlettparker\videogameslifeserver\manager\PunishmentManager.class
 org\scarlettparker\videogameslifeserver\commands\life\GiveLife.class
 org\scarlettparker\videogameslifeserver\commands\tasks\FailTask.class
@@ -18,12 +20,16 @@ org\scarlettparker\videogameslifeserver\objects\Death.class
 org\scarlettparker\videogameslifeserver\commands\admin\SetPunishment.class
 org\scarlettparker\videogameslifeserver\manager\TaskManager.class
 org\scarlettparker\videogameslifeserver\events\PunishmentEvents.class
+org\scarlettparker\videogameslifeserver\utils\PunishmentUtils$1.class
 org\scarlettparker\videogameslifeserver\commands\admin\SetLife.class
 org\scarlettparker\videogameslifeserver\commands\shop\Tokens.class
 org\scarlettparker\videogameslifeserver\commands\admin\ClearPunishments.class
+org\scarlettparker\videogameslifeserver\utils\WorldUtils$1.class
+org\scarlettparker\videogameslifeserver\utils\PotionEffectWrapper.class
 org\scarlettparker\videogameslifeserver\utils\PunishmentUtils.class
 org\scarlettparker\videogameslifeserver\commands\tasks\NewTask.class
 org\scarlettparker\videogameslifeserver\commands\tasks\WhatTask.class
 org\scarlettparker\videogameslifeserver\events\InventoryEvents.class
 org\scarlettparker\videogameslifeserver\commands\admin\SetTask.class
 org\scarlettparker\videogameslifeserver\commands\shop\Shop.class
+org\scarlettparker\videogameslifeserver\utils\CustomEffect.class

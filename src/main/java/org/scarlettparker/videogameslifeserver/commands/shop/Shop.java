@@ -1,8 +1,6 @@
 package org.scarlettparker.videogameslifeserver.commands.shop;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -116,6 +114,13 @@ public class Shop implements CommandExecutor, Listener {
         Player player = (Player) sender;
         TPlayer tempPlayer = new TPlayer(player.getName());
 
+        player.openInventory(shopInventory(tempPlayer));
+        tempPlayer.setShopping(true);
+
+        return true;
+    }
+
+    private Inventory shopInventory(TPlayer tempPlayer) {
         // show player number of tokens in shop
         Inventory shopInventory = Bukkit.createInventory(null, 45, "You have "
                 + ChatColor.DARK_AQUA + tempPlayer.getTokens() + " tokens" + ChatColor.BLACK + ".");
@@ -128,10 +133,7 @@ public class Shop implements CommandExecutor, Listener {
             index++;
         }
 
-        player.openInventory(shopInventory);
-        tempPlayer.setShopping(true);
-
-        return true;
+        return shopInventory;
     }
 
     private ItemStack createItem(Material material, int tokenCost, String displayName) {
@@ -194,13 +196,23 @@ public class Shop implements CommandExecutor, Listener {
 
                             // create the item to give based on the type and quantity
                             ItemStack itemToGive = shopItem.clone();
+
                             itemToGive.setAmount(quantity);
+                            ItemMeta itemMeta = itemToGive.getItemMeta();
+                            itemMeta.setDisplayName(null);
+                            itemToGive.setItemMeta(itemMeta);
 
                             player.getInventory().addItem(itemToGive);
 
                             player.sendMessage(ChatColor.GREEN + "You purchased " + quantity + " "
                                     + shopItem.getType().name().replace("_", " ").toLowerCase()
                                     + "(s) for " + tokenValue + " tokens!");
+
+                            // reset shop title so it shows new token value
+                            player.openInventory(shopInventory(tempPlayer));
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);
+
+                            tempPlayer.setShopping(true);
                         } else {
                             player.sendMessage(ChatColor.RED + "You don't have enough tokens for this item.");
                         }

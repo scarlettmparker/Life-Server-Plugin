@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
+import java.util.Objects;
+
 public class WhatTask implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -38,7 +40,7 @@ public class WhatTask implements CommandExecutor {
 
         Task tempTask = new Task(tempPlayer.getCurrentTask());
 
-        if (tempTask.getCompleted()) {
+        if (Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             sender.sendMessage(ChatColor.RED
                     + "You have no active task! Select a new task with /newtask [normal/hard]");
             return true;
@@ -59,6 +61,9 @@ public class WhatTask implements CommandExecutor {
         } else if (taskDifficulty == 2) {
             messageColor = ChatColor.RED;
             difficultyText = "Red";
+        } else if (taskDifficulty == 3) {
+            messageColor = ChatColor.DARK_AQUA;
+            difficultyText = "Raven";
         }
 
         // send the player task information

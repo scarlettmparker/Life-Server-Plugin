@@ -11,9 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
-import java.awt.*;
+import java.util.Arrays;
 import java.util.Objects;
 
+import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 
 public class CompleteTask implements CommandExecutor {
@@ -93,6 +94,14 @@ public class CompleteTask implements CommandExecutor {
         // if player is currently punished
         if (tempPlayer.getPunishments().length != 0) {
             Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cured of your punishment(s).");
+
+            // clear the punishments if they have specific ones
+            if (Arrays.asList(tempPlayer.getPunishments()).contains("fragile1")) {
+                unregister(Bukkit.getPlayer(args[0]));
+            }
+            if (Arrays.asList(tempPlayer.getPunishments()).contains("hearts6")) {
+                Bukkit.getPlayer(args[0]).setMaxHealth(20.0);
+            }
             tempPlayer.setPunishments(new String[0]);
         }
 

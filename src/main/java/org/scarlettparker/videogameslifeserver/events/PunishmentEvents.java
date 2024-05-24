@@ -5,8 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
-
-import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerFile;
 import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
 

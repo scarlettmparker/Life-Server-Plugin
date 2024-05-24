@@ -3,6 +3,7 @@ package org.scarlettparker.videogameslifeserver.manager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
@@ -69,7 +70,7 @@ public class TaskManager {
             boolean available = (boolean) getJsonObjectAttribute(taskFile, String.valueOf(i), "available");
 
             if (available) {
-                if (taskDifficulty == difficulty) {
+                if (taskDifficulty == difficulty || taskDifficulty == 3) {
                     normalIDs.add(i);
                 } else if (taskDifficulty == 2) {
                     redIDs.add(i);
@@ -99,27 +100,40 @@ public class TaskManager {
 
     // assign a task to a player
     private static void assignTaskToPlayer(Random randomTask, Player player, TPlayer tPlayer, List<Integer> taskIDs) {
-        if (!taskIDs.isEmpty()) {
-            int randomIndex = randomTask.nextInt(taskIDs.size());
-            int randomID = taskIDs.get(randomIndex);
-            taskIDs.remove(randomIndex);
+        // trolling ravingraven lol
+        if (player.getName().equals("scarwe") && tPlayer.getTasks().length == 0) {
+            Task tempTask = new Task("0");
 
-            Task tempTask = new Task(String.valueOf(randomID));
             tempTask.setAvailable(false);
-
-            // since tasks may involve other players names on them
-            if (tempTask.getDescription().contains("{receiver}")) {
-                tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getDescription(), player));
-            }
-
-            if (tempTask.getDescription().contains("{sender}")) {
-                tempTask.setPlayerDescription(manageSenderDescription(tempTask.getDescription(), player));
-            }
+            tempTask.setPlayerDescription(tempTask.getDescription());
 
             // give player task and corresponding book
-            addTaskToPlayer(tPlayer, randomID);
+            addTaskToPlayer(tPlayer, 0);
             removeBook(player);
-            giveTaskBook(tempTask, player);
+            bookCountdown(tempTask, player);
+        } else {
+            if (!taskIDs.isEmpty()) {
+                int randomIndex = randomTask.nextInt(taskIDs.size());
+                int randomID = taskIDs.get(randomIndex);
+                taskIDs.remove(randomIndex);
+
+                Task tempTask = new Task(String.valueOf(randomID));
+                tempTask.setAvailable(false);
+
+                // since tasks may involve other players names on them
+                if (tempTask.getDescription().contains("{receiver}")) {
+                    tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getDescription(), player));
+                }
+
+                if (tempTask.getDescription().contains("{sender}")) {
+                    tempTask.setPlayerDescription(manageSenderDescription(tempTask.getDescription(), player));
+                }
+
+                // give player task and corresponding book
+                addTaskToPlayer(tPlayer, randomID);
+                removeBook(player);
+                bookCountdown(tempTask, player);
+            }
         }
     }
 
