@@ -14,7 +14,7 @@ public class FragilityListener implements Listener {
     private static final HashMap<UUID, Integer> fragilityPlayers = new HashMap<>();
     private static Plugin plugin;
 
-    public static void register(Player player, int duration, int amplifier) {
+    public static void register(Player player, int amplifier) {
         if (plugin == null) {
             plugin = JavaPlugin.getProvidingPlugin(FragilityListener.class);
         }
@@ -35,7 +35,8 @@ public class FragilityListener implements Listener {
     public void onHit(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (fragilityPlayers.containsKey(player.getUniqueId())) {
+            if (fragilityPlayers.containsKey(player.getUniqueId())
+                    && event.getDamage() < player.getPlayer().getHealth()) {
                 int amplifier = fragilityPlayers.get(player.getUniqueId());
                 double damage = event.getDamage();
                 event.setDamage(damage * amplifier * 1.35);

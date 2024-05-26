@@ -50,14 +50,14 @@ public class WhatTask implements CommandExecutor {
         String task = args.length > 0 ? args[0] : tempPlayer.getCurrentTask();
         Task tempTask = new Task(task);
 
-        if (Objects.equals(tempTask.getDescription(), "")) {
-            sender.sendMessage(ChatColor.RED + "No such task exists.");
-            return true;
-        }
-
         if (Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             sender.sendMessage(ChatColor.RED
                     + "You have no active task! Players can select a new task by clicking a sign at spawn.");
+            return true;
+        }
+
+        if (Objects.equals(tempTask.getDescription(), "")) {
+            sender.sendMessage(ChatColor.RED + "No such task exists.");
             return true;
         }
 

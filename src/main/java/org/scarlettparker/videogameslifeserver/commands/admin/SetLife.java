@@ -5,11 +5,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 
+import java.util.Objects;
+
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
+import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.handleRevive;
 
 public class SetLife implements CommandExecutor {
     @Override
@@ -56,9 +60,24 @@ public class SetLife implements CommandExecutor {
 
         TPlayer tempPlayer = new TPlayer(playerName);
 
+        // if player is revived (don't actually make them a zombie functionally as it's an admin command)
+        if (tempPlayer.getLives() == 0) {
+            handleRevive(Objects.requireNonNull(Bukkit.getPlayer(tempPlayer.getName())));
+        }
+
         // update lives and display
         tempPlayer.setLives(lives);
         Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been set to " + lives + " lives.");
+
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        if (lives == 1 && Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
+            Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "As you're now a red life, you will be given "
+                    + "continuous red tasks from now on.");
+
+            // run the newtask command so player gets red task
+            Bukkit.dispatchCommand(console, "newtask " + tempPlayer.getName() + " normal");
+        }
+
         return true;
     }
 }

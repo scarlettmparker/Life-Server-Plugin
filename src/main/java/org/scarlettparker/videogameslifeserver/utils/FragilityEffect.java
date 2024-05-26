@@ -12,7 +12,7 @@ public class FragilityEffect implements CustomEffect {
 
     @Override
     public void apply(Player player) {
-        FragilityListener.register(player, this.duration, this.amplifier);
+        FragilityListener.register(player, this.amplifier);
     }
 
     @Override

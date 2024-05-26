@@ -57,7 +57,7 @@ public class SetTask implements CommandExecutor {
         // give random task based on difficulty
         if (Objects.equals(args[1], "normal") || Objects.equals(args[1], "hard")) {
             int difficulty = Objects.equals(args[1], "normal") ? 0 : 1;
-            doTaskDistribution(tempPlayers, difficulty);
+            doTaskDistribution(tempPlayers);
             Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN +
                     "Your task has been set to: " + tempPlayer.getCurrentTask());
             return true;

@@ -58,7 +58,7 @@ public class TaskManager {
     }
 
     // distribute tasks to players based on difficulty
-    public static void doTaskDistribution(List<Player> players, int difficulty) {
+    public static void doTaskDistribution(List<Player> players) {
         List<String> normalIDs = new ArrayList<>();
         List<String> redIDs = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public class TaskManager {
             }
 
             if (available) {
-                if (taskDifficulty == difficulty || taskDifficulty == 3) {
+                if (taskDifficulty == 1 || taskDifficulty == 3) {
                     normalIDs.add(taskId);
                 } else if (taskDifficulty == 2) {
                     redIDs.add(taskId);
@@ -101,7 +101,7 @@ public class TaskManager {
                 continue;
             }
 
-            List<String> taskIDs = (playerLives > 1) ? normalIDs : redIDs;
+            List<String> taskIDs = (playerLives >= 2) ? normalIDs : redIDs;
             assignTaskToPlayer(randomTask, p, tempPlayer, taskIDs);
         }
     }
@@ -109,22 +109,22 @@ public class TaskManager {
     // assign a task to a player
     private static void assignTaskToPlayer(Random randomTask, Player player, TPlayer tPlayer, List<String> taskIDs) {
         // raving raven troll
-        if (player.getName().equals("scarwe")) {
-            if (tPlayer.getTasks().length == 0) {
-                Task tempTask = new Task("raven");
+        if (player.getName().equals("scarwe") && tPlayer.getTasks().length == 0) {
+            Task tempTask = new Task("raven");
 
-                tempTask.setAvailable(false);
-                tempTask.setPlayerDescription(tempTask.getDescription());
+            tempTask.setAvailable(false);
+            tempTask.setPlayerDescription(tempTask.getDescription());
 
-                // give player task and corresponding book
-                addTaskToPlayer(tPlayer, "raven");
-                removeBook(player);
-                bookCountdown(tempTask, player);
-            }
+            // give player task and corresponding book
+            addTaskToPlayer(tPlayer, "raven");
+            removeBook(player);
+            bookCountdown(tempTask, player);
         } else {
             // ensure "raven" task is not assigned to other players
             taskIDs.remove("raven");
-            if (!taskIDs.isEmpty()) {
+            Task currentTask = new Task(tPlayer.getCurrentTask());
+            if (!taskIDs.isEmpty() && currentTask.getDifficulty() != 2) {
+                // get random task in list
                 int randomIndex = randomTask.nextInt(taskIDs.size());
                 String randomID = taskIDs.get(randomIndex);
                 taskIDs.remove(randomIndex);

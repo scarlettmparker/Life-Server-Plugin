@@ -48,6 +48,31 @@ public class StartTasks implements CommandExecutor {
             ConfigManager.createJsonFile(punishFile);
             generatePunishments();
 
+            // get all players
+            JsonObject allPlayers = returnAllObjects(playerFile);
+            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+            for (String key : allPlayers.keySet()) {
+                JsonElement element = allPlayers.get(key);
+                if (element.isJsonObject()) {
+                    JsonObject jsonObject = element.getAsJsonObject();
+                    // get player by name
+                    if (jsonObject.has("name")) {
+                        String name = jsonObject.get("name").getAsString();
+                        TPlayer tempPlayer = new TPlayer(name);
+
+                        // reset player and task stuff
+                        tempPlayer.setCurrentTask("-1");
+                        tempPlayer.setTokens(0);
+                        tempPlayer.setTasks(new String[0]);
+
+                        // clear punishments in case they have one
+                        if (tempPlayer.getPunishments().length != 0) {
+                            Bukkit.dispatchCommand(console, "clearpunishments " + tempPlayer.getName());
+                        }
+                    }
+                }
+            }
+
             sender.sendMessage(ChatColor.GREEN
                     + "Successfully created task file. Please run the command again with no arguments to distribute tasks.");
             return true;
@@ -57,7 +82,7 @@ public class StartTasks implements CommandExecutor {
         sender.sendMessage("Assigning tasks to " + getAllPlayers().size() + " player(s)...");
 
         // distribute both normal and red tasks
-        doTaskDistribution(getAllPlayers(), 0);
+        doTaskDistribution(getAllPlayers());
 
         sender.sendMessage(ChatColor.GREEN +
                 "Successfully assigned tasks to all players. Players will receive their books shortly.");
@@ -82,10 +107,11 @@ public class StartTasks implements CommandExecutor {
                             tempPlayer.setSessionTasks(-1);
                         } else {
                             tempPlayer.setSessionTasks(0);
+                            Task tempTask = new Task(tempPlayer.getCurrentTask());
 
                             // create temporary task and set player description back so it displays correctly please
-                            if (!Objects.equals(tempPlayer.getCurrentTask(), "-1") && tempPlayer.getLives() > 1) {
-                                Task tempTask = new Task(tempPlayer.getCurrentTask());
+                            if (!Objects.equals(tempPlayer.getCurrentTask(), "-1")
+                                    && tempTask.getDifficulty() != 2) {
                                 tempTask.setPlayerDescription(Objects.requireNonNull(getJsonObjectAttribute(taskFile,
                                         tempPlayer.getCurrentTask(), "playerDescription")).toString());
                                 Bukkit.dispatchCommand(console, "failtask " + tempPlayer.getName() + " dbg");

@@ -82,7 +82,6 @@ public class GiveLife implements CommandExecutor{
         if (receiverLives == 1) {
             Player p = Bukkit.getPlayer(receiver);
             handleRevive(p);
-
             rPlayer.setZombie(true);
         }
 

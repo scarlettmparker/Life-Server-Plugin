@@ -24,14 +24,14 @@ public class NewTask implements CommandExecutor {
         }
 
         if (args.length != 2) {
-            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /newtask player difficulty");
+            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /newtask player normal|hard");
             return true;
         }
 
         int difficulty = 0;
 
         if (!args[1].equals("normal") && !args[1].equals("hard")) {
-            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /newtask player [normal|hard]");
+            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /newtask player normal|hard");
             return true;
         }
 
@@ -44,6 +44,7 @@ public class NewTask implements CommandExecutor {
         }
 
         if (Bukkit.getPlayer(args[0]) == null) {
+            System.out.println(Bukkit.getPlayer(args[0]));
             sender.sendMessage(ChatColor.RED + "Invalid player/player is not online.");
             return true;
         }
@@ -78,7 +79,7 @@ public class NewTask implements CommandExecutor {
         ArrayList<Player> tempPlayers = new ArrayList<>();
         tempPlayers.add(Bukkit.getPlayer(args[0]));
 
-        doTaskDistribution(tempPlayers, difficulty);
+        doTaskDistribution(tempPlayers);
         return true;
     }
 }
