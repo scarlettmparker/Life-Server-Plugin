@@ -47,8 +47,8 @@ public class ExcludeTask implements CommandExecutor {
 
             if (tempTask.getExcluded()) {
                 tempTask.setExcluded(false);
-                sender.sendMessage(ChatColor.GREEN + "Task " + args[0] + " is no longer excluded. Players can now be"
-                        + " given this task.");
+                sender.sendMessage(ChatColor.GREEN + "Task " + args[0] + " is now allowed. Players can now be "
+                        + "given this task.");
             } else {
                 tempTask.setExcluded(true);
                 sender.sendMessage(ChatColor.YELLOW + "Task " + args[0] + " is now excluded. Players will not be "
