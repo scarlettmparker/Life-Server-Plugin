@@ -28,41 +28,34 @@ public class ExcludeTask implements CommandExecutor {
             return true;
         }
 
-        boolean excluded = args.length == 1 && Objects.equals(args[0], "excluded");
-
-        if (!excluded && args.length == 1) {
-            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /listtasks [excluded]");
+        if (args.length > 1) {
+            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /excludetask taskid");
             return true;
-        }
-
-        if (!jsonFileExists(taskFile)) {
-            sender.sendMessage(ChatColor.RED + "Task file not yet initialized. Make sure to run /startlife and then /starttasks.");
-            return true;
-        }
-
-        BaseComponent[] messageComponents = TextComponent.fromLegacyText(org.bukkit.ChatColor.GREEN + "List of task IDs: ");
-
-        // retrieve all objects from task file
-        JsonObject taskJson = returnAllObjects(taskFile);
-        if (taskJson != null && !taskJson.entrySet().isEmpty()) {
-            for (String taskName : taskJson.keySet()) {
-                // get the task object from json
-                Task task = gson.fromJson(taskJson.get(taskName), Task.class);
-                if (excluded == task.getExcluded()) {
-                    // create a text component for the task name
-                    TextComponent taskComponent = new TextComponent(taskName + ", ");
-                    taskComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder(task.getDescription()).color(org.bukkit.ChatColor.WHITE.asBungee()).create()));
-                    taskComponent.setColor(net.md_5.bungee.api.ChatColor.YELLOW);
-                    messageComponents = ArrayUtils.addAll(messageComponents, taskComponent);
-                }
-            }
         } else {
-            BaseComponent[] noTasksMessage = TextComponent.fromLegacyText(org.bukkit.ChatColor.YELLOW + "No tasks found.");
-            messageComponents = ArrayUtils.addAll(messageComponents, noTasksMessage);
+            if (!jsonFileExists(taskFile)) {
+                sender.sendMessage(ChatColor.RED
+                        + "Task file not yet initialized. Make sure to run /startlife and then /starttasks.");
+                return true;
+            }
+
+            Task tempTask = new Task(args[0]);
+
+            if (Objects.equals(tempTask.getDescription(), "")) {
+                sender.sendMessage(ChatColor.RED + "No such task exists.");
+                return true;
+            }
+
+            if (tempTask.getExcluded()) {
+                tempTask.setExcluded(false);
+                sender.sendMessage(ChatColor.GREEN + "Task " + args[0] + " is no longer excluded. Players can be "
+                        + "given this task again.");
+            } else {
+                tempTask.setExcluded(true);
+                sender.sendMessage(ChatColor.YELLOW + "Task " + args[0] + " is now excluded. Players will not be "
+                        + "given this task.");
+            }
         }
 
-        ((Player) sender).spigot().sendMessage(messageComponents);
         return true;
     }
 }

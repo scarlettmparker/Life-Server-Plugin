@@ -3,6 +3,7 @@ package org.scarlettparker.videogameslifeserver.manager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
@@ -150,6 +151,12 @@ public class TaskManager {
                 addTaskToPlayer(tPlayer, randomID);
                 removeBook(player);
                 bookCountdown(tempTask, player);
+            } else {
+                // because tasks can't be duplicated ig
+                if (Objects.equals(tPlayer.getCurrentTask(), "-1")) {
+                    player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please wait "
+                            + "until someone completes a task to start a new one.");
+                }
             }
         }
     }
