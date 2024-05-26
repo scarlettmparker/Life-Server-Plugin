@@ -6,8 +6,10 @@ org\scarlettparker\videogameslifeserver\commands\admin\ListTasks$TaskNameCompara
 org\scarlettparker\videogameslifeserver\commands\life\GiveLife.class
 org\scarlettparker\videogameslifeserver\commands\admin\StartLife.class
 org\scarlettparker\videogameslifeserver\utils\CustomParticleEffect.class
+org\scarlettparker\videogameslifeserver\commands\admin\EditTask.class
 org\scarlettparker\videogameslifeserver\events\LifeEvents.class
 org\scarlettparker\videogameslifeserver\utils\WorldUtils.class
+org\scarlettparker\videogameslifeserver\commands\admin\ClearTask.class
 org\scarlettparker\videogameslifeserver\commands\admin\ListTasks.class
 org\scarlettparker\videogameslifeserver\manager\TaskManager.class
 org\scarlettparker\videogameslifeserver\commands\admin\AddTask.class
@@ -23,6 +25,7 @@ org\scarlettparker\videogameslifeserver\commands\admin\StartTasks.class
 org\scarlettparker\videogameslifeserver\manager\ConfigManager.class
 org\scarlettparker\videogameslifeserver\objects\Task.class
 org\scarlettparker\videogameslifeserver\utils\CustomParticleEffect$2.class
+org\scarlettparker\videogameslifeserver\commands\admin\EditTask$TaskCreationStep.class
 org\scarlettparker\videogameslifeserver\commands\admin\DeleteTask.class
 org\scarlettparker\videogameslifeserver\commands\tasks\FailTask.class
 org\scarlettparker\videogameslifeserver\objects\Punishment.class
@@ -30,6 +33,7 @@ org\scarlettparker\videogameslifeserver\commands\tasks\CompleteTask.class
 org\scarlettparker\videogameslifeserver\commands\admin\ExcludeTask.class
 org\scarlettparker\videogameslifeserver\commands\shop\GiveTokens.class
 org\scarlettparker\videogameslifeserver\Main.class
+org\scarlettparker\videogameslifeserver\commands\admin\EditTask$TaskCreationState.class
 org\scarlettparker\videogameslifeserver\commands\admin\SetTokens.class
 org\scarlettparker\videogameslifeserver\objects\Death.class
 org\scarlettparker\videogameslifeserver\commands\admin\AddTask$TaskCreationState.class

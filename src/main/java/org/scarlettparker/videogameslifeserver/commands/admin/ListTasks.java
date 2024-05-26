@@ -99,7 +99,7 @@ public class ListTasks implements CommandExecutor {
         if (difficulty == 0) {
             return ChatColor.GREEN;
         } else if (difficulty == 1) {
-            return ChatColor.YELLOW;
+            return ChatColor.GOLD;
         } else if (difficulty == 2){
             return ChatColor.RED;
         } else {

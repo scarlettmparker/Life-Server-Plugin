@@ -60,7 +60,7 @@ public class AddTask implements CommandExecutor, Listener {
         }
 
         taskCreationStateMap.put(player, new TaskCreationState());
-        player.sendMessage(ChatColor.DARK_AQUA + "Enter the new task ID (type 'cancel' to cancel):");
+        player.sendMessage(ChatColor.DARK_AQUA + "Enter the new task name (type 'cancel' to cancel):");
         return true;
     }
 
@@ -91,13 +91,13 @@ public class AddTask implements CommandExecutor, Listener {
             case ENTER_ID:
                 // this is what we call being lazy
                 if (message.indexOf(' ') >= 0) {
-                    player.sendMessage(ChatColor.RED + "Task IDs may not contain spaces.");
+                    player.sendMessage(ChatColor.RED + "Task names may not contain spaces.");
                 } else if (jsonFileExists(taskFile) && !Objects.equals(new Task(message).getDescription(), "")) {
-                    player.sendMessage(ChatColor.RED + "Task with chosen ID already exists. Choose a different ID.");
+                    player.sendMessage(ChatColor.RED + "Task with chosen name already exists. Choose a different name.");
                 } else {
                     state.taskId = message;
                     state.step = TaskCreationStep.ENTER_DESCRIPTION;
-                    player.sendMessage(ChatColor.GREEN + "ID: " + message);
+                    player.sendMessage(ChatColor.GREEN + "Name: " + message);
                     player.sendMessage(ChatColor.DARK_AQUA + "Enter the task description (type 'cancel' to cancel):");
                 }
                 break;
@@ -144,7 +144,8 @@ public class AddTask implements CommandExecutor, Listener {
                 newTask.setDifficulty(state.difficulty);
 
                 player.sendMessage(ChatColor.GREEN + "Difficulty: " + difficulty);
-                player.sendMessage(ChatColor.GREEN + "Task successfully created. This task can be assigned with: /settask player " + state.taskId);
+                player.sendMessage(ChatColor.GREEN + "Task successfully created. This task can be assigned with: " +
+                        "/settask player " + state.taskId + ". It may also be randomly assigned unless excluded.");
                 taskCreationStateMap.remove(player);
                 break;
             default:

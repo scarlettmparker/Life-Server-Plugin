@@ -79,7 +79,7 @@ public class NewTask implements CommandExecutor {
         ArrayList<Player> tempPlayers = new ArrayList<>();
         tempPlayers.add(Bukkit.getPlayer(args[0]));
 
-        doTaskDistribution(tempPlayers);
+        doTaskDistribution(tempPlayers, difficulty);
         return true;
     }
 }

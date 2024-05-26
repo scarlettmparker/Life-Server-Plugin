@@ -49,7 +49,7 @@ public class SetTask implements CommandExecutor {
         Task tempTask = new Task(args[1]);
 
         TPlayer tempPlayer = new TPlayer(playerName);
-        Player player = Bukkit.getPlayer(sender.getName());
+        Player player = Bukkit.getPlayer(playerName);
 
         ArrayList<Player> tempPlayers = new ArrayList<>();
         tempPlayers.add(player);
@@ -57,7 +57,7 @@ public class SetTask implements CommandExecutor {
         // give random task based on difficulty
         if (Objects.equals(args[1], "normal") || Objects.equals(args[1], "hard")) {
             int difficulty = Objects.equals(args[1], "normal") ? 0 : 1;
-            doTaskDistribution(tempPlayers);
+            doTaskDistribution(tempPlayers, difficulty);
             Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN +
                     "Your task has been set to: " + tempPlayer.getCurrentTask());
             return true;

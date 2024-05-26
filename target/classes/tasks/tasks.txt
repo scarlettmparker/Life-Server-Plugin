@@ -1,4 +1,4 @@
-raven:Give nether wart that you have collected alone to a player of your choice before the end of the session.:3
+raven:Give nether wart that you have collected by yourself to a player of your choice before the end of the session.:3
 0:Get a minimum of 3 players to give you a total of at least 10 gravel.:0
 1:Tell a story and get someone to leave before you finish it.:0
 2:[SL] Dig a hole at least 3x3 wide down to Y = 0. It can be your base if you want.:0
@@ -74,7 +74,7 @@ raven:Give nether wart that you have collected alone to a player of your choice 
 72:[SL] You now have an imaginary friend for the next hour. Talk to them as if they're with you in-game and are part of conversations. You must still interact with players normally during this time.:1
 73:You are now {receiver}'s assassin. Brew or purchase an invisibility potion and kill them without them figuring out who you are. If you're figured out, or if they manage to escape for at least 5 minutes after the attack, you fail the task.:1
 74:For the next hour, you now have an imaginary friend who is exactly like {receiver}. Talk to them as if they're with you in-game and are part of conversations. You must still interact with players normally during this time, even if {receiver} is part of the interaction, as if there's two of them.:1
-75:[SL] Announce in the chat that you are a genie and will grant 3 wishes. Only one wish per player. You succeed if you grant 3 wishes, however, you must get some part of the wish wrong (how much wrong is up to you).:1
+75:[SL] Announce in the chat that you are a genie and will grant 3 wishes. Only one wish per player. You succeed if you grant 3 wishes, however, you must get some part of the wish wrong (how much wrong is up to you, but it can't be something completely different). If you're unable to grant all 3 wishes by the end of the session, you fail.:1
 76:Act as if you're in a TV show, and actively break the fourth wall as much as possible for the next hour. For example - applaud or boo when people arrive, turn to the side and talk to a non-existent audience, and then return to the conversation as if nothing happened. You fail if at least 2 people call you out within the hour.:1
 77:Drink invisibility and punch a green player so that they fall a large distance, thereby damaging or killing them.:2
 78:Trap another player. It can be placed in a base or elsewhere, the only condition is it must kill another player without that player's prior knowledge of said trap.:2

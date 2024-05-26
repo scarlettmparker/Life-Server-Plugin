@@ -17,12 +17,18 @@ commands:
   addtask:
     description: Adds a new task.
     usage: /<command>
+  cleartask:
+    description: Clears a player's task
+    usage: /<command> player
   completetask:
-    description: Completes a user's task.
+    description: Completes a player's task.
     usage: /<command> player
   deletetask:
     description: Deletes a task.
     usage: /<command> taskID
+  edittask:
+    description: Edits a task by its name.
+    usage: /<command>
   excludetask:
     description: Excludes a task.
     usage: /<command> taskID

@@ -82,7 +82,7 @@ public class StartTasks implements CommandExecutor {
         sender.sendMessage("Assigning tasks to " + getAllPlayers().size() + " player(s)...");
 
         // distribute both normal and red tasks
-        doTaskDistribution(getAllPlayers());
+        doTaskDistribution(getAllPlayers(), 0);
 
         sender.sendMessage(ChatColor.GREEN +
                 "Successfully assigned tasks to all players. Players will receive their books shortly.");

@@ -57,8 +57,11 @@ public final class Main extends JavaPlugin {
         // task commands
         AddTask addTaskCommand = new AddTask(this);
         Objects.requireNonNull(getCommand("addtask")).setExecutor(addTaskCommand);
+        Objects.requireNonNull(getCommand("cleartask")).setExecutor(new ClearTask());
         Objects.requireNonNull(getCommand("completetask")).setExecutor(new CompleteTask());
         Objects.requireNonNull(getCommand("deletetask")).setExecutor(new DeleteTask());
+        EditTask editTaskCommand = new EditTask(this);
+        Objects.requireNonNull(getCommand("edittask")).setExecutor(editTaskCommand);
         Objects.requireNonNull(getCommand("excludetask")).setExecutor(new ExcludeTask());
         Objects.requireNonNull(getCommand("failtask")).setExecutor(new FailTask());
         Objects.requireNonNull(getCommand("listtasks")).setExecutor(new ListTasks());

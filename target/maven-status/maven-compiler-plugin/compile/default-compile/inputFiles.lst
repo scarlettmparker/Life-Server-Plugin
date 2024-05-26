@@ -6,6 +6,7 @@ C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettpa
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\utils\FragilityListener.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\tasks\WhatTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\SetTokens.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\ListTasks.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\shop\GiveTokens.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\ExcludeTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\utils\PunishmentUtils.java
@@ -34,4 +35,5 @@ C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettpa
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\objects\Punishment.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\TaskManager.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\AddTask.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\ClearTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\objects\Death.java

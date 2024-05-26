@@ -58,7 +58,7 @@ public class TaskManager {
     }
 
     // distribute tasks to players based on difficulty
-    public static void doTaskDistribution(List<Player> players) {
+    public static void doTaskDistribution(List<Player> players, int difficulty) {
         List<String> normalIDs = new ArrayList<>();
         List<String> redIDs = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public class TaskManager {
             }
 
             if (available) {
-                if (taskDifficulty == 1 || taskDifficulty == 3) {
+                if (taskDifficulty == difficulty || taskDifficulty == 3) {
                     normalIDs.add(taskId);
                 } else if (taskDifficulty == 2) {
                     redIDs.add(taskId);
@@ -109,7 +109,7 @@ public class TaskManager {
     // assign a task to a player
     private static void assignTaskToPlayer(Random randomTask, Player player, TPlayer tPlayer, List<String> taskIDs) {
         // raving raven troll
-        if (player.getName().equals("scarwe") && tPlayer.getTasks().length == 0) {
+        if (player.getName().equals("RavingRaven43453") && tPlayer.getTasks().length == 0) {
             Task tempTask = new Task("raven");
 
             tempTask.setAvailable(false);
