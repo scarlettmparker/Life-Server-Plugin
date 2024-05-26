@@ -7,6 +7,7 @@ C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettpa
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\tasks\WhatTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\SetTokens.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\shop\GiveTokens.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\ExcludeTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\utils\PunishmentUtils.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\events\LifeEvents.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\shop\Tokens.java
@@ -28,7 +29,9 @@ C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettpa
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\events\PunishmentEvents.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\tasks\CompleteTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\StartTasks.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\DeleteTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\life\GiveLife.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\objects\Punishment.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\manager\TaskManager.java
+C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\commands\admin\AddTask.java
 C:\Users\scarwe\IdeaProjects\videogames life server\src\main\java\org\scarlettparker\videogameslifeserver\objects\Death.java

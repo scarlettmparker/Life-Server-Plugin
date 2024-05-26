@@ -32,6 +32,11 @@ public class Task {
         return !(available instanceof Boolean) || (boolean) available; // default value is false
     }
 
+    public boolean getExcluded() {
+        Object excluded = getJsonObjectAttribute(taskFile, String.valueOf(name), "excluded");
+        return !(excluded instanceof Boolean) || (boolean) excluded; // default value is false
+    }
+
     public String getDescription() {
         Object description = getJsonObjectAttribute(taskFile, String.valueOf(name), "description");
         return description instanceof String ? (String) description : ""; // default value is 0
@@ -61,6 +66,10 @@ public class Task {
 
     public void setAvailable(boolean available) {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "available", available);
+    }
+
+    public void setExcluded(boolean excluded) {
+        setJsonObjectAttribute(taskFile, String.valueOf(name), "excluded", excluded);
     }
 
     public void setDescription(String description) {

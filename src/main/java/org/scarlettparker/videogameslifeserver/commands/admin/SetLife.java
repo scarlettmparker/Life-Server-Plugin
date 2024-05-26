@@ -8,7 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
-import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
+
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 
 public class SetLife implements CommandExecutor {
     @Override
@@ -25,6 +26,12 @@ public class SetLife implements CommandExecutor {
 
         if (args.length != 2) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /setlife player lives");
+            return true;
+        }
+
+        if (!jsonFileExists(playerFile)) {
+            sender.sendMessage(ChatColor.RED
+                    + "Player file not yet initialized. Make sure to run /startlife and then /starttasks.");
             return true;
         }
 

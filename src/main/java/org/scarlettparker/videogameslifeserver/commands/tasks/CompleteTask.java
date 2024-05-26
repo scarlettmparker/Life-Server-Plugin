@@ -14,6 +14,8 @@ import org.scarlettparker.videogameslifeserver.objects.Task;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
 import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 
@@ -38,7 +40,7 @@ public class CompleteTask implements CommandExecutor {
         String playerName = args[0];
         TPlayer tempPlayer = new TPlayer(playerName);
 
-        if (tempPlayer.getTasks() == null) {
+        if (!jsonFileExists(taskFile)) {
             sender.sendMessage(ChatColor.RED
                     + "Tasks not yet initialized. Make sure to run /startlife and then /starttasks.");
             return true;
@@ -92,7 +94,7 @@ public class CompleteTask implements CommandExecutor {
 
         // if player is currently punished
         if (tempPlayer.getPunishments().length != 0) {
-            Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cured of your punishment(s).");
+            Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cured of your curse(s).");
 
             // clear the punishments if they have specific ones
             if (Arrays.asList(tempPlayer.getPunishments()).contains("fragile1")) {

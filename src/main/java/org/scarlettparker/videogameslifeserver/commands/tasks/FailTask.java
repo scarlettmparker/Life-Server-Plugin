@@ -15,6 +15,8 @@ import org.scarlettparker.videogameslifeserver.objects.Task;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
 import static org.scarlettparker.videogameslifeserver.manager.PunishmentManager.assignRandomPunishment;
 import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
@@ -41,7 +43,7 @@ public class FailTask implements CommandExecutor {
         String playerName = args[0];
         TPlayer tempPlayer = new TPlayer(playerName);
 
-        if (tempPlayer.getTasks() == null) {
+        if (!jsonFileExists(taskFile)) {
             sender.sendMessage(ChatColor.RED
                     + "Tasks not yet initialized. Make sure to run /startlife and then /starttasks.");
             return true;
@@ -117,7 +119,7 @@ public class FailTask implements CommandExecutor {
         if (punishment == 2 && tempPlayer.getPunishments().length != 0) {
             if (tempPlayer.getTokens() > 0) {
                 Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED +
-                        "Because you are already punished, as a red life, you shall lose a token instead.");
+                        "Because you are already cursed, as a red life, you shall lose a token instead.");
 
                 tempPlayer.setTokens(tempPlayer.getTokens() - 1);
                 Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "You now have "
@@ -136,7 +138,7 @@ public class FailTask implements CommandExecutor {
 
         // send message to correct player (i had definitely not previously done it wrong)
         Bukkit.getPlayer(args[0]).sendMessage("Because you failed a " + difficultyColor + difficultyType
-                + ChatColor.WHITE + "task, you have been punished with "
+                + ChatColor.WHITE + "task, you have been cursed with "
                 + difficultyColor + tempPunishment.getDescription());
 
         // i love making variables i should do it more

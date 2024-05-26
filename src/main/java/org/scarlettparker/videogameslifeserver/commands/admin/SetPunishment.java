@@ -14,7 +14,7 @@ import org.scarlettparker.videogameslifeserver.utils.CustomEffect;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
 import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.getCustomEffect;
@@ -33,6 +33,12 @@ public class SetPunishment implements CommandExecutor {
 
         if (args.length != 2) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /setpunishment player punishmentID");
+            return true;
+        }
+
+        if (!jsonFileExists(punishFile) || !jsonFileExists(playerFile)) {
+            sender.sendMessage(ChatColor.RED
+                    + "Player file not yet initialized. Make sure to run /startlife and then /starttasks.");
             return true;
         }
 

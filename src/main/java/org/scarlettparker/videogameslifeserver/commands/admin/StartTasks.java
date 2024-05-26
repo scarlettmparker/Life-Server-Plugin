@@ -30,20 +30,37 @@ public class StartTasks implements CommandExecutor {
             return true;
         }
 
+        if (!jsonFileExists(playerFile)) {
+            sender.sendMessage(ChatColor.RED
+                    + "Player file not yet initialized. Make sure to run /startlife and then /starttasks.");
+            return true;
+        }
+
+        if (args.length > 0 && !Objects.equals(args[0], "reset")) {
+            sender.sendMessage(ChatColor.RED + "Invalid arguments. Correct usage: /starttasks [reset]");
+            return true;
+        }
+
+        if ((args.length > 0 && Objects.equals(args[0], "reset"))
+                || !jsonFileExists(taskFile) || !jsonFileExists(punishFile)) {
+            ConfigManager.createJsonFile(taskFile);
+            generateTasks();
+            ConfigManager.createJsonFile(punishFile);
+            generatePunishments();
+
+            sender.sendMessage(ChatColor.GREEN
+                    + "Successfully created task file. Please run the command again with no arguments to distribute tasks.");
+            return true;
+        }
+
         handleNewSession();
-
-        sender.sendMessage("Creating and assigning tasks to " + getAllPlayers().size() + " player(s)...");
-        ConfigManager.createJsonFile(taskFile);
-
-        generateTasks();
+        sender.sendMessage("Assigning tasks to " + getAllPlayers().size() + " player(s)...");
 
         // distribute both normal and red tasks
         doTaskDistribution(getAllPlayers(), 0);
-        ConfigManager.createJsonFile(punishFile);
 
-        generatePunishments();
-
-        sender.sendMessage("Tasks successfully assigned to all players. Players will receive their books shortly.");
+        sender.sendMessage(ChatColor.GREEN +
+                "Successfully assigned tasks to all players. Players will receive their books shortly.");
         return true;
     }
 

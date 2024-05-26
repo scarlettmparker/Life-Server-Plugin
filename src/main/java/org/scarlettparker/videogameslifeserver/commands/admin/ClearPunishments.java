@@ -11,7 +11,7 @@ import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 
 import java.util.Arrays;
 
-import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 
 public class ClearPunishments implements CommandExecutor {
@@ -28,6 +28,12 @@ public class ClearPunishments implements CommandExecutor {
 
         if (args.length != 1) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /clearpunishments player");
+            return true;
+        }
+
+        if (!jsonFileExists(playerFile)) {
+            sender.sendMessage(ChatColor.RED
+                    + "Player file not yet initialized. Make sure to run /startlife and then /starttasks.");
             return true;
         }
 
@@ -50,7 +56,7 @@ public class ClearPunishments implements CommandExecutor {
 
         tempPlayer.setPunishments(new String[0]);
 
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cleared of your punishments.");
+        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cleared of your curse(s).");
         return true;
     }
 }

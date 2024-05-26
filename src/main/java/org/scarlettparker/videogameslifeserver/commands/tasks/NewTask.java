@@ -11,6 +11,8 @@ import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 import java.util.*;
 
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
 import static org.scarlettparker.videogameslifeserver.manager.TaskManager.doTaskDistribution;
 
 public class NewTask implements CommandExecutor {
@@ -29,11 +31,17 @@ public class NewTask implements CommandExecutor {
         int difficulty = 0;
 
         if (!args[1].equals("normal") && !args[1].equals("hard")) {
-            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /newtask player [normal/hard]");
+            sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /newtask player [normal|hard]");
             return true;
         }
 
         if (!args[1].equals("normal")) { difficulty = 1; }
+
+        if (!jsonFileExists(taskFile)) {
+            sender.sendMessage(ChatColor.RED
+                    + "Tasks not yet initialized. Make sure to run /startlife and then /starttasks.");
+            return true;
+        }
 
         if (Bukkit.getPlayer(args[0]) == null) {
             sender.sendMessage(ChatColor.RED + "Invalid player/player is not online.");

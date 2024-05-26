@@ -13,7 +13,7 @@ import org.scarlettparker.videogameslifeserver.objects.Task;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerExists;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.manager.TaskManager.doTaskDistribution;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.*;
 
@@ -30,6 +30,12 @@ public class SetTask implements CommandExecutor {
 
         if (args.length != 2) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /settask player taskid");
+            return true;
+        }
+
+        if (!jsonFileExists(playerFile)) {
+            sender.sendMessage(ChatColor.RED
+                    + "Player file not yet initialized. Make sure to run /startlife and then /starttasks.");
             return true;
         }
 
@@ -64,6 +70,7 @@ public class SetTask implements CommandExecutor {
 
         tempTask.setAvailable(false);
         tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getPlayerDescription(), player));
+        tempTask.setPlayerDescription(manageSenderDescription(tempTask.getPlayerDescription(), player));
         tempPlayer.setCurrentTask(tempTask.getName());
 
         // make sure to give the correct book

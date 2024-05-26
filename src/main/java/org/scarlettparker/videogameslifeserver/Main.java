@@ -55,8 +55,13 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(shop, this);
 
         // task commands
+        AddTask addTaskCommand = new AddTask(this);
+        Objects.requireNonNull(getCommand("addtask")).setExecutor(addTaskCommand);
         Objects.requireNonNull(getCommand("completetask")).setExecutor(new CompleteTask());
+        Objects.requireNonNull(getCommand("deletetask")).setExecutor(new DeleteTask());
+        Objects.requireNonNull(getCommand("excludetask")).setExecutor(new ExcludeTask());
         Objects.requireNonNull(getCommand("failtask")).setExecutor(new FailTask());
+        Objects.requireNonNull(getCommand("listtasks")).setExecutor(new ListTasks());
         Objects.requireNonNull(getCommand("newtask")).setExecutor(new NewTask());
         Objects.requireNonNull(getCommand("settask")).setExecutor(new SetTask());
         Objects.requireNonNull(getCommand("starttasks")).setExecutor(new StartTasks());

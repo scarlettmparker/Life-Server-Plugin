@@ -11,6 +11,9 @@ import org.scarlettparker.videogameslifeserver.objects.Task;
 
 import java.util.Objects;
 
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
+
 public class WhatTask implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -19,8 +22,14 @@ public class WhatTask implements CommandExecutor {
             return true;
         }
 
-        if (args.length > 0) {
-            sender.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /whattask");
+        if (!jsonFileExists(taskFile)) {
+            sender.sendMessage(ChatColor.RED
+                    + "Tasks not yet initialized. Make sure to run /startlife and then /starttasks.");
+            return true;
+        }
+
+        if (args.length > 0 && !sender.isOp()) {
+            sender.sendMessage(ChatColor.RED + "You must be an operator to search tasks by their ID. Correct usage: /whattask");
             return true;
         }
 
@@ -38,11 +47,17 @@ public class WhatTask implements CommandExecutor {
             return true;
         }
 
-        Task tempTask = new Task(tempPlayer.getCurrentTask());
+        String task = args.length > 0 ? args[0] : tempPlayer.getCurrentTask();
+        Task tempTask = new Task(task);
+
+        if (Objects.equals(tempTask.getDescription(), "")) {
+            sender.sendMessage(ChatColor.RED + "No such task exists.");
+            return true;
+        }
 
         if (Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             sender.sendMessage(ChatColor.RED
-                    + "Yo have no active task! Players can select a new task by clicking a sign at spawn.");
+                    + "You have no active task! Players can select a new task by clicking a sign at spawn.");
             return true;
         }
 

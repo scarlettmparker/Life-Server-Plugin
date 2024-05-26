@@ -12,17 +12,29 @@ commands:
     description: Starts the life server.
     usage: /<command> lives
   setlife:
-    description: Updates a player's lives
+    description: Updates a player's lives.
     usage: /<command> player lives
+  addtask:
+    description: Adds a new task.
+    usage: /<command>
   completetask:
     description: Completes a user's task.
     usage: /<command> player
+  deletetask:
+    description: Deletes a task.
+    usage: /<command> taskID
+  excludetask:
+    description: Excludes a task.
+    usage: /<command> taskID
   failtask:
     description: Fails a user's task.
     usage: /<command> player
+  listtasks:
+    description: Lists all (non-excluded) tasks.
+    usage: /<command> [allowed|excluded]
   newtask:
     description: Gives a player a new task.
-    usage: /<command> normal/hard  player
+    usage: /<command> normal|hard player
   sessiontasks:
     description: Initializes the tasks for the session.
     usage: /<command>

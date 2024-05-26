@@ -22,7 +22,7 @@ public class PunishmentUtils implements Listener {
         // only show when player joins
         if (tellPlayer) {
             Punishment tempPunishment = new Punishment(punishment);
-            player.sendMessage(ChatColor.RED + "Reminder: You are currently being punished with "
+            player.sendMessage(ChatColor.RED + "Reminder: You are currently cursed with "
                     + tempPunishment.getDescription());
         }
 

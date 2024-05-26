@@ -3,10 +3,10 @@ package org.scarlettparker.videogameslifeserver.manager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
+import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -24,11 +24,10 @@ public class TaskManager {
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String line;
-            int taskName = 0;
 
             while ((line = reader.readLine()) != null) {
                 String[] attributes = line.split(":");
-                Task tempTask = new Task(String.valueOf(taskName));
+                Task tempTask = new Task(attributes[0]);
 
                 String json = convertTaskToJson(tempTask);
 
@@ -36,13 +35,12 @@ public class TaskManager {
                 addJsonObject(taskFile, json);
 
                 // set task attributes
-                tempTask.setDescription(attributes[0]);
-                tempTask.setPlayerDescription(attributes[0]);
-                tempTask.setDifficulty(Integer.parseInt(attributes[1]));
+                tempTask.setDescription(attributes[1]);
+                tempTask.setPlayerDescription(attributes[1]);
+                tempTask.setDifficulty(Integer.parseInt(attributes[2]));
                 tempTask.setAvailable(true);
                 tempTask.setCompleted(false);
-
-                taskName += 1;
+                tempTask.setExcluded(false);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,7 +48,7 @@ public class TaskManager {
     }
 
     // convert a task object to json string
-    private static String convertTaskToJson(Task task) {
+    public static String convertTaskToJson(Task task) {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         try {
             return ow.writeValueAsString(task);
@@ -61,19 +59,29 @@ public class TaskManager {
 
     // distribute tasks to players based on difficulty
     public static void doTaskDistribution(List<Player> players, int difficulty) {
-        List<Integer> normalIDs = new ArrayList<>();
-        List<Integer> redIDs = new ArrayList<>();
+        List<String> normalIDs = new ArrayList<>();
+        List<String> redIDs = new ArrayList<>();
 
         // gather task ids by difficulty
-        for (int i = 0; i < totalFileObjects(taskFile); i++) {
-            int taskDifficulty = (int) getJsonObjectAttribute(taskFile, String.valueOf(i), "difficulty");
-            boolean available = (boolean) getJsonObjectAttribute(taskFile, String.valueOf(i), "available");
+        JsonObject allTasks = returnAllObjects(taskFile);
+
+        for (String key : allTasks.keySet()) {
+            JsonObject task = allTasks.getAsJsonObject(key);
+            String taskId = key;
+            int taskDifficulty = task.get("difficulty").getAsInt();
+            boolean available = task.get("available").getAsBoolean();
+            boolean excluded = task.get("excluded").getAsBoolean();
+
+            // check if the task is excluded
+            if (excluded) {
+                continue;
+            }
 
             if (available) {
                 if (taskDifficulty == difficulty || taskDifficulty == 3) {
-                    normalIDs.add(i);
+                    normalIDs.add(taskId);
                 } else if (taskDifficulty == 2) {
-                    redIDs.add(i);
+                    redIDs.add(taskId);
                 }
             }
         }
@@ -82,7 +90,7 @@ public class TaskManager {
     }
 
     // distribute tasks to players
-    private static void distributeTasksToPlayers(List<Player> players, List<Integer> normalIDs, List<Integer> redIDs) {
+    private static void distributeTasksToPlayers(List<Player> players, List<String> normalIDs, List<String> redIDs) {
         Random randomTask = new Random();
 
         for (Player p : players) {
@@ -93,39 +101,48 @@ public class TaskManager {
                 continue;
             }
 
-            List<Integer> taskIDs = (playerLives > 1) ? normalIDs : redIDs;
+            List<String> taskIDs = (playerLives > 1) ? normalIDs : redIDs;
             assignTaskToPlayer(randomTask, p, tempPlayer, taskIDs);
         }
     }
 
     // assign a task to a player
-    private static void assignTaskToPlayer(Random randomTask, Player player, TPlayer tPlayer, List<Integer> taskIDs) {
-        // trolling ravingraven lol
-        if (player.getName().equals("scarwe") && tPlayer.getTasks().length == 0) {
-            Task tempTask = new Task("0");
+    private static void assignTaskToPlayer(Random randomTask, Player player, TPlayer tPlayer, List<String> taskIDs) {
+        // raving raven troll
+        if (player.getName().equals("scarwe")) {
+            if (tPlayer.getTasks().length == 0) {
+                Task tempTask = new Task("raven");
 
-            tempTask.setAvailable(false);
-            tempTask.setPlayerDescription(tempTask.getDescription());
+                tempTask.setAvailable(false);
+                tempTask.setPlayerDescription(tempTask.getDescription());
 
-            // give player task and corresponding book
-            addTaskToPlayer(tPlayer, 0);
-            removeBook(player);
-            bookCountdown(tempTask, player);
+                // give player task and corresponding book
+                addTaskToPlayer(tPlayer, "raven");
+                removeBook(player);
+                bookCountdown(tempTask, player);
+            }
         } else {
+            // ensure "raven" task is not assigned to other players
+            taskIDs.remove("raven");
             if (!taskIDs.isEmpty()) {
                 int randomIndex = randomTask.nextInt(taskIDs.size());
-                int randomID = taskIDs.get(randomIndex);
+                String randomID = taskIDs.get(randomIndex);
                 taskIDs.remove(randomIndex);
 
-                Task tempTask = new Task(String.valueOf(randomID));
+                Task tempTask = new Task(randomID);
                 tempTask.setAvailable(false);
 
                 // since tasks may involve other players names on them
-                if (tempTask.getDescription().contains("{receiver}")) {
+                String description = tempTask.getDescription().toLowerCase();
+                String receiverPlaceholder = "{receiver}".toLowerCase();
+                String senderPlaceholder = "{sender}".toLowerCase();
+
+                // in case {receiver} has been entered weirdly
+                if (description.contains(receiverPlaceholder)) {
                     tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getDescription(), player));
                 }
 
-                if (tempTask.getDescription().contains("{sender}")) {
+                if (description.contains(senderPlaceholder)) {
                     tempTask.setPlayerDescription(manageSenderDescription(tempTask.getDescription(), player));
                 }
 
@@ -138,13 +155,13 @@ public class TaskManager {
     }
 
     // add a task to a player's task list
-    private static void addTaskToPlayer(TPlayer tPlayer, int taskID) {
+    private static void addTaskToPlayer(TPlayer tPlayer, String taskID) {
         String[] currentTasks = tPlayer.getTasks();
         String[] tempTasks = Arrays.copyOf(currentTasks, currentTasks.length + 1);
-        tempTasks[currentTasks.length] = String.valueOf(taskID);
+        tempTasks[currentTasks.length] = taskID;
 
-        // set player attributes so program doesnt die itself
+        // set player attributes so program doesn't die itself
         tPlayer.setTasks(tempTasks);
-        tPlayer.setCurrentTask(String.valueOf(taskID));
+        tPlayer.setCurrentTask(taskID);
     }
 }

@@ -3,10 +3,12 @@ package org.scarlettparker.videogameslifeserver.commands.admin;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.manager.ConfigManager;
@@ -38,6 +40,9 @@ public class StartLife implements CommandExecutor {
         sender.sendMessage("3 lives being assigned to " + getAllPlayers().size() + " player(s)...");
         ConfigManager.createJsonFile(playerFile);
 
+        setGameRules();
+        sender.sendMessage("Game rules successfully initialized.");
+
         // create players and clear any effects just in case
         for (Player p : getAllPlayers()) {
             createPlayer(p);
@@ -45,7 +50,7 @@ public class StartLife implements CommandExecutor {
             p.setMaxHealth(20.0);
         }
 
-        sender.sendMessage("Lives successfully assigned to all players. "
+        sender.sendMessage(ChatColor.GREEN + "Lives successfully assigned to all players. "
                 + "New players will automatically be assigned lives.");
         return true;
     }
@@ -75,5 +80,15 @@ public class StartLife implements CommandExecutor {
 
         // display the name correctly
         setPlayerName(p, tempPlayer.getLives());
+    }
+
+    private void setGameRules() {
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+
+        // set the game rules for the server to run properly
+        Bukkit.dispatchCommand(console, "gamerule logAdminCommands false");
+        Bukkit.dispatchCommand(console, "gamerule sendCommandFeedback false");
+        Bukkit.dispatchCommand(console, "gamerule keepInventory true");
+        Bukkit.dispatchCommand(console, "gamerule showDeathMessages false");
     }
 }

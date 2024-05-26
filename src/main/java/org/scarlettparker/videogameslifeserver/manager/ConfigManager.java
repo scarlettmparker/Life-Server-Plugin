@@ -123,17 +123,18 @@ public class ConfigManager {
         }
     }
 
-    public static int totalFileObjects(File jsonFile) {
-        JsonObject jsonObject = readJsonFile(jsonFile);
-        if (jsonObject != null) {
-            return jsonObject.size();
-        } else {
-            return 0;
-        }
-    }
-
     public static JsonObject returnAllObjects(File jsonFile) {
         return readJsonFile(jsonFile);
+    }
+
+    public static boolean deleteJsonObjectByName(File jsonFile, String name) {
+        JsonObject jsonObject = readJsonFile(jsonFile);
+        if (jsonObject != null && jsonObject.has(name)) {
+            jsonObject.remove(name);
+            writeJsonToFile(jsonFile, jsonObject);
+            return true;
+        }
+        return false;
     }
 
     public static boolean playerExists(String playerName) {
