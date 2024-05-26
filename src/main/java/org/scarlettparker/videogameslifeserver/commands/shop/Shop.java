@@ -5,15 +5,22 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Shop implements CommandExecutor, Listener {
+    static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
 
     private final Map<ItemStack, Integer> itemValues = new HashMap<>();
     private final List<ItemStack> itemOrder = new ArrayList<>();
@@ -106,6 +114,11 @@ public class Shop implements CommandExecutor, Listener {
             return true;
         }
 
+        if (!sender.isOp()) {
+            sender.sendMessage(ChatColor.RED + "You must be an operator to run this command.");
+            return true;
+        }
+
         if (args.length > 0) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage! Correct usage: /whattask");
             return true;
@@ -118,6 +131,27 @@ public class Shop implements CommandExecutor, Listener {
         tempPlayer.setShopping(true);
 
         return true;
+    }
+
+    @EventHandler
+    public void onVillagerClick(PlayerInteractEntityEvent e) {
+        if (e.getRightClicked().getType() == EntityType.VILLAGER) {
+            // get villager and ensure name matches
+            Villager villager = (Villager) e.getRightClicked();
+            NamespacedKey key = new NamespacedKey(plugin, "shop_villager");
+            if (villager.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+                String value = villager.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                if ("forum_marketplace".equals(value)) {
+                    e.setCancelled(true);
+
+                    // get person who right clicked and open the shop
+                    Player player = e.getPlayer();
+                    TPlayer tempPlayer = new TPlayer(player.getName());
+                    player.openInventory(shopInventory(tempPlayer));
+                    tempPlayer.setShopping(true);
+                }
+            }
+        }
     }
 
     private Inventory shopInventory(TPlayer tempPlayer) {

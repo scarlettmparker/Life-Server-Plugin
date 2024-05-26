@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.scarlettparker.videogameslifeserver.commands.admin.*;
 import org.scarlettparker.videogameslifeserver.commands.life.GiveLife;
-import org.scarlettparker.videogameslifeserver.commands.shop.GiveTokens;
+import org.scarlettparker.videogameslifeserver.commands.shop.Gift;
 import org.scarlettparker.videogameslifeserver.commands.shop.Shop;
 import org.scarlettparker.videogameslifeserver.commands.shop.Tokens;
 import org.scarlettparker.videogameslifeserver.commands.tasks.CompleteTask;
@@ -47,8 +47,9 @@ public final class Main extends JavaPlugin {
 
         // token commands
         Objects.requireNonNull(getCommand("tokens")).setExecutor(new Tokens());
-        Objects.requireNonNull(getCommand("givetokens")).setExecutor(new GiveTokens());
+        Objects.requireNonNull(getCommand("gift")).setExecutor(new Gift());
         Objects.requireNonNull(getCommand("settokens")).setExecutor(new SetTokens());
+        Objects.requireNonNull(getCommand("setvillagershop")).setExecutor(new SetVillagerShop());
         Objects.requireNonNull(getCommand("shop")).setExecutor(new Shop());
 
         Shop shop = new Shop();

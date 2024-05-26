@@ -25,7 +25,7 @@ import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBoo
 public class FailTask implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // must be an operator to use the command
-        if (sender instanceof Player && !sender.isOp()) {
+        if (sender instanceof Player && !sender.hasPermission("vgs.tasks.failtask")) {
             sender.sendMessage(ChatColor.RED + "You must be an operator to run this command.");
             return true;
         }

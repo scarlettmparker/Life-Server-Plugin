@@ -31,7 +31,6 @@ org\scarlettparker\videogameslifeserver\commands\tasks\FailTask.class
 org\scarlettparker\videogameslifeserver\objects\Punishment.class
 org\scarlettparker\videogameslifeserver\commands\tasks\CompleteTask.class
 org\scarlettparker\videogameslifeserver\commands\admin\ExcludeTask.class
-org\scarlettparker\videogameslifeserver\commands\shop\GiveTokens.class
 org\scarlettparker\videogameslifeserver\Main.class
 org\scarlettparker\videogameslifeserver\commands\admin\EditTask$TaskCreationState.class
 org\scarlettparker\videogameslifeserver\commands\admin\SetTokens.class
@@ -45,5 +44,7 @@ org\scarlettparker\videogameslifeserver\utils\PotionEffectWrapper.class
 org\scarlettparker\videogameslifeserver\utils\PunishmentUtils.class
 org\scarlettparker\videogameslifeserver\commands\tasks\WhatTask.class
 org\scarlettparker\videogameslifeserver\events\InventoryEvents.class
+org\scarlettparker\videogameslifeserver\commands\admin\SetVillagerShop.class
 org\scarlettparker\videogameslifeserver\commands\admin\SetTask.class
+org\scarlettparker\videogameslifeserver\commands\shop\Gift.class
 org\scarlettparker\videogameslifeserver\utils\CustomEffect.class

@@ -71,7 +71,7 @@ public class WhatTask implements CommandExecutor {
             messageColor = ChatColor.GREEN;
             difficultyText = "Normal";
         } else if (taskDifficulty == 1) {
-            messageColor = ChatColor.YELLOW;
+            messageColor = ChatColor.GOLD;
             difficultyText = "Hard";
         } else if (taskDifficulty == 2) {
             messageColor = ChatColor.RED;

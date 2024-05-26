@@ -41,9 +41,6 @@ commands:
   newtask:
     description: Gives a player a new task.
     usage: /<command> normal|hard player
-  sessiontasks:
-    description: Initializes the tasks for the session.
-    usage: /<command>
   settask:
     description: Sets a player's task.
     usage: /<command> player taskID
@@ -56,14 +53,17 @@ commands:
   tokens:
     description: Displays current number of tokens.
     usage: /<command>
-  givetokens:
-    description: Gives a player a number of tokens.
+  gift:
+    description: Gift a player a number of tokens.
     usage: /<command> player tokens
   settokens:
     description: Sets a player's tokens.
     usage: /<command> player tokens
   shop:
     description: Displays the token shop.
+    usage: /<command>
+  setvillagershop:
+    description: Sets up the villager shop.
     usage: /<command>
   clearpunishments:
     description: Clears a player's punishments.
