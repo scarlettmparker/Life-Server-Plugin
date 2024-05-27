@@ -2,20 +2,18 @@ package org.scarlettparker.videogameslifeserver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.scarlettparker.videogameslifeserver.commands.admin.*;
+import org.scarlettparker.videogameslifeserver.commands.punish.*;
 import org.scarlettparker.videogameslifeserver.commands.life.GiveLife;
-import org.scarlettparker.videogameslifeserver.commands.shop.Gift;
-import org.scarlettparker.videogameslifeserver.commands.shop.Shop;
-import org.scarlettparker.videogameslifeserver.commands.shop.Tokens;
-import org.scarlettparker.videogameslifeserver.commands.tasks.CompleteTask;
-import org.scarlettparker.videogameslifeserver.commands.tasks.FailTask;
-import org.scarlettparker.videogameslifeserver.commands.tasks.NewTask;
-import org.scarlettparker.videogameslifeserver.commands.tasks.WhatTask;
+import org.scarlettparker.videogameslifeserver.commands.life.SetLife;
+import org.scarlettparker.videogameslifeserver.commands.life.StartLife;
+import org.scarlettparker.videogameslifeserver.commands.shop.*;
+import org.scarlettparker.videogameslifeserver.commands.tasks.*;
 import org.scarlettparker.videogameslifeserver.events.InventoryEvents;
 import org.scarlettparker.videogameslifeserver.events.LifeEvents;
 import org.scarlettparker.videogameslifeserver.events.PunishmentEvents;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.utils.FragilityListener;
+import org.scarlettparker.videogameslifeserver.utils.KnockbackListener;
 import org.scarlettparker.videogameslifeserver.utils.PunishmentUtils;
 
 import java.util.Objects;
@@ -39,6 +37,7 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PunishmentUtils(), this);
         getServer().getPluginManager().registerEvents(new FragilityListener(), this);
+        getServer().getPluginManager().registerEvents(new KnockbackListener(), this);
 
         // life commands
         Objects.requireNonNull(getCommand("givelife")).setExecutor(new GiveLife());

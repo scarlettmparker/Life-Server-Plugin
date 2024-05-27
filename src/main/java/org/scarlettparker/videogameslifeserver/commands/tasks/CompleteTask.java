@@ -16,7 +16,8 @@ import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
-import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
+import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregisterFragility;
+import static org.scarlettparker.videogameslifeserver.utils.KnockbackListener.unregisterKnockback;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 
 public class CompleteTask implements CommandExecutor {
@@ -98,7 +99,10 @@ public class CompleteTask implements CommandExecutor {
 
             // clear the punishments if they have specific ones
             if (Arrays.asList(tempPlayer.getPunishments()).contains("fragile1")) {
-                unregister(Bukkit.getPlayer(args[0]));
+                unregisterFragility(Bukkit.getPlayer(args[0]));
+            }
+            if (Arrays.asList(tempPlayer.getPunishments()).contains("knockback")) {
+                unregisterKnockback(Bukkit.getPlayer(args[0]));
             }
             if (Arrays.asList(tempPlayer.getPunishments()).contains("hearts6")) {
                 Bukkit.getPlayer(args[0]).setMaxHealth(20.0);

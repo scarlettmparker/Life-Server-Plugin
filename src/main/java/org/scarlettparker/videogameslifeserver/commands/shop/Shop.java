@@ -5,14 +5,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -51,9 +49,9 @@ public class Shop implements CommandExecutor, Listener {
 
         addItem(createItem(Material.SUGAR_CANE, 16, "1 Token"), 1);
         addItem(createItem(Material.BAMBOO, 16, "1 Token"), 1);
+        addItem(createItem(Material.CACTUS, 16, "1 Token"), 1);
         addItem(createItem(Material.EXPERIENCE_BOTTLE, 64, "1 Token"), 1);
 
-        addItem(createItem(Material.AIR, 0, ""), 0);
         addItem(createItem(Material.AIR, 0, ""), 0);
         addItem(createItem(Material.AIR, 0, ""), 0);
         addItem(createItem(Material.AIR, 0, ""), 0);
@@ -102,8 +100,8 @@ public class Shop implements CommandExecutor, Listener {
         addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "45 Tokens"), 45);
     }
 
-    private void addItem(ItemStack item, int quantity) {
-        itemValues.put(item, quantity);
+    private void addItem(ItemStack item, int tokenCost) {
+        itemValues.put(item, tokenCost);
         itemOrder.add(item);
     }
 
@@ -172,8 +170,8 @@ public class Shop implements CommandExecutor, Listener {
         return shopInventory;
     }
 
-    private ItemStack createItem(Material material, int tokenCost, String displayName) {
-        ItemStack itemStack = new ItemStack(material, tokenCost);
+    private ItemStack createItem(Material material, int quantity, String displayName) {
+        ItemStack itemStack = new ItemStack(material, quantity);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GREEN + displayName);
@@ -182,9 +180,9 @@ public class Shop implements CommandExecutor, Listener {
         return itemStack;
     }
 
-    private ItemStack createPotionItem(Material material, int tokenCost, String displayName,
+    private ItemStack createPotionItem(Material material, int quantity, String displayName,
                                        PotionType potionType, boolean extended, boolean upgraded) {
-        ItemStack itemStack = new ItemStack(material, tokenCost);
+        ItemStack itemStack = new ItemStack(material, quantity);
         PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
         potionMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
         potionMeta.setDisplayName(ChatColor.GREEN + displayName);
@@ -192,8 +190,8 @@ public class Shop implements CommandExecutor, Listener {
         return itemStack;
     }
 
-    private ItemStack createMendingBook(int tokenCost, String displayName) {
-        ItemStack itemStack = new ItemStack(Material.ENCHANTED_BOOK, tokenCost);
+    private ItemStack createMendingBook(int quantity, String displayName) {
+        ItemStack itemStack = new ItemStack(Material.ENCHANTED_BOOK, quantity);
         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemStack.getItemMeta();
         meta.addStoredEnchant(Enchantment.MENDING, 1, true);
         meta.setDisplayName(ChatColor.GREEN + displayName);
@@ -219,7 +217,7 @@ public class Shop implements CommandExecutor, Listener {
                 ItemStack shopItem = entry.getKey();
                 if (clickedItem.isSimilar(shopItem)) {
                     // get values from shop
-                    int tokenValue = entry.getValue();
+                    int tokenCost = entry.getValue();
                     int quantity = clickedItem.getAmount();
 
                     // if players inventory is full
@@ -227,8 +225,8 @@ public class Shop implements CommandExecutor, Listener {
                         player.sendMessage(ChatColor.RED + "Your inventory is full! "
                                 + "Please empty a slot before buying an item.");
                     } else {
-                        if (tempPlayer.getTokens() >= tokenValue) {
-                            tempPlayer.setTokens(tempPlayer.getTokens() - tokenValue);
+                        if (tempPlayer.getTokens() >= tokenCost) {
+                            tempPlayer.setTokens(tempPlayer.getTokens() - tokenCost);
 
                             // create the item to give based on the type and quantity
                             ItemStack itemToGive = shopItem.clone();
@@ -242,7 +240,7 @@ public class Shop implements CommandExecutor, Listener {
 
                             player.sendMessage(ChatColor.GREEN + "You purchased " + quantity + " "
                                     + shopItem.getType().name().replace("_", " ").toLowerCase()
-                                    + "(s) for " + tokenValue + " tokens!");
+                                    + "(s) for " + tokenCost + " tokens!");
 
                             // reset shop title so it shows new token value
                             player.openInventory(shopInventory(tempPlayer));

@@ -11,12 +11,21 @@ public class PotionEffectWrapper implements CustomEffect {
     }
 
     @Override
-    public void apply(Player player) {
+    public void applyFragility(Player player) {
+        player.addPotionEffect(potionEffect);
+    }
+
+    public void applyKnockback(Player player) {
         player.addPotionEffect(potionEffect);
     }
 
     @Override
     public int getDuration() {
         return potionEffect.getDuration();
+    }
+
+    @Override
+    public String getType() {
+        return "";
     }
 }

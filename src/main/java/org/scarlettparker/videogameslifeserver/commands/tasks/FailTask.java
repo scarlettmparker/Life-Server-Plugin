@@ -12,13 +12,11 @@ import org.scarlettparker.videogameslifeserver.objects.Punishment;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
 import static org.scarlettparker.videogameslifeserver.manager.PunishmentManager.assignRandomPunishment;
-import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregister;
 import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 

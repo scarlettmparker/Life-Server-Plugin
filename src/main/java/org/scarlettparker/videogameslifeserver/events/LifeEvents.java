@@ -17,7 +17,7 @@ import org.scarlettparker.videogameslifeserver.utils.InstantFirework;
 
 import java.util.Objects;
 
-import static org.scarlettparker.videogameslifeserver.commands.admin.StartLife.createPlayer;
+import static org.scarlettparker.videogameslifeserver.commands.life.StartLife.createPlayer;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.setPlayerName;
 

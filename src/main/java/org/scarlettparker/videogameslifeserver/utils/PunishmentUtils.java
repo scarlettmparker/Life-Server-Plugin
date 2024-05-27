@@ -16,7 +16,6 @@ import java.util.Objects;
 public class PunishmentUtils implements Listener {
     static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
     private static final int duration = 30;
-    private static final int blindnessDuration = 45; // to prevent epileptic seizures
 
     public static void applyPunishment(String punishment, Player player, boolean tellPlayer) {
         // only show when player joins
@@ -30,18 +29,22 @@ public class PunishmentUtils implements Listener {
         TPlayer tempPlayer = new TPlayer(player.getName());
 
         // if the punishment is active
-        if (customPunishment != null && !(customPunishment instanceof FragilityEffect)) {
+        if (customPunishment != null && !(customPunishment instanceof PunishmentEffect)) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
                     if (Bukkit.getPlayer(player.getName()) != null
                             && Arrays.asList(tempPlayer.getPunishments()).contains(punishment)) {
-                        customPunishment.apply(player);
+                        customPunishment.applyFragility(player);
                     }
                 }
             }, 0, 20);
         } else if (customPunishment != null) {
-            customPunishment.apply(player);
+            if (Objects.equals(customPunishment.getType(), "fragile")) {
+                customPunishment.applyFragility(player);
+            } else if (Objects.equals(customPunishment.getType(), "knockback")) {
+                customPunishment.applyKnockback(player);
+            }
         } else {
             player.setMaxHealth(12.0);
         }
@@ -54,10 +57,10 @@ public class PunishmentUtils implements Listener {
             customPunishment = new PotionEffectWrapper(new PotionEffect(PotionEffectType.WEAKNESS, duration, 1));
         } else if (Objects.equals(punishment, "weak1")) {
             customPunishment = new PotionEffectWrapper(new PotionEffect(PotionEffectType.WEAKNESS, duration, 0));
-        } else if (Objects.equals(punishment, "blind")) {
-            customPunishment = new PotionEffectWrapper(new PotionEffect(PotionEffectType.BLINDNESS, blindnessDuration, 0));
         } else if (Objects.equals(punishment, "fragile1")) {
-            customPunishment = new FragilityEffect(1, 1);
+            customPunishment = new PunishmentEffect("fragile", 1, 1);
+        } else if (Objects.equals(punishment, "knockback")) {
+            customPunishment = new PunishmentEffect("knockback", 1, 1);
         }
 
         return customPunishment;

@@ -24,7 +24,7 @@ public class FragilityListener implements Listener {
         }
     }
 
-    public static void unregister(Player player) {
+    public static void unregisterFragility(Player player) {
         if (plugin == null) {
             plugin = JavaPlugin.getProvidingPlugin(FragilityListener.class);
         }

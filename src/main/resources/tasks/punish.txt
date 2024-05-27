@@ -1,5 +1,5 @@
 weak2:Weakness II until you complete another task.:1
-blind:blindness until you complete another task.:1
-fragile1:Fragility (you take 1.35x damage) until you complete another task.:1
+fragile1:Fragility (35% increased damage) until you complete another task.:1
 hearts6:6 hearts until you complete another task.:1
+knockback:Featherweight (7x increased knockback) until you complete another task.:1
 weak1:Weakness I until you complete another task.:2
