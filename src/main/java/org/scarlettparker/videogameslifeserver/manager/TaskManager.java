@@ -67,7 +67,6 @@ public class TaskManager {
 
         for (String key : allTasks.keySet()) {
             JsonObject task = allTasks.getAsJsonObject(key);
-            String taskId = key;
             int taskDifficulty = task.get("difficulty").getAsInt();
             boolean excluded = task.get("excluded").getAsBoolean();
 
@@ -77,9 +76,9 @@ public class TaskManager {
             }
 
             if (taskDifficulty == difficulty || taskDifficulty == 3) {
-                normalIDs.add(taskId);
+                normalIDs.add(key);
             } else if (taskDifficulty == 2) {
-                redIDs.add(taskId);
+                redIDs.add(key);
             }
         }
 
