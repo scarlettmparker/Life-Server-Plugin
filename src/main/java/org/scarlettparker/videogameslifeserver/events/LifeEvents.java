@@ -85,7 +85,6 @@ public class LifeEvents implements Listener {
         TPlayer tempPlayer = new TPlayer(player.getName());
         int lives = tempPlayer.getLives();
 
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         if (lives == 1 && Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
             player.sendMessage(ChatColor.RED + "As you're now a red life, you will be given "
                     + "continuous red tasks from now on.");
