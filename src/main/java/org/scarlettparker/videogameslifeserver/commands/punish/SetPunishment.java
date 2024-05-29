@@ -19,7 +19,7 @@ public class SetPunishment implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // for cleanliness
-        String playerName;
+        Player player = Bukkit.getPlayer(args[0]);
 
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
@@ -38,11 +38,9 @@ public class SetPunishment implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+        if (!playerExists(args[0]) || player == null) {
             sender.sendMessage(ChatColor.RED + "Specified player is not online.");
             return true;
-        } else {
-            playerName = args[0];
         }
 
         Punishment tempPunishment = new Punishment(args[1]);
@@ -53,12 +51,12 @@ public class SetPunishment implements CommandExecutor {
         }
 
         // get player and add punishments
-        TPlayer tempPlayer = new TPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
         tempPlayer.addPunishment(args[1]);
-        applyPunishment(args[1], Bukkit.getPlayer(args[0]), false);
+        applyPunishment(args[1], player, false);
 
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "You have been punished with " +
+        player.sendMessage(ChatColor.RED + "You have been punished with " +
                 tempPunishment.getDescription());
 
         return true;

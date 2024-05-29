@@ -19,7 +19,7 @@ public class ClearPunishments implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // for cleanliness
-        String playerName;
+        Player player = Bukkit.getPlayer(args[0]);
 
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
@@ -38,29 +38,32 @@ public class ClearPunishments implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+
+        if (!playerExists(args[0]) || player == null) {
             sender.sendMessage(ChatColor.RED + "Specified player is not online.");
             return true;
-        } else {
-            playerName = args[0];
         }
 
-        TPlayer tempPlayer = new TPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
         // clear any punishments that aren't potion effects
-        if (Arrays.asList(tempPlayer.getPunishments()).contains("fragile1")) {
-            unregisterFragility(Bukkit.getPlayer(args[0]));
+        if (hasPunishment(tempPlayer, "fragile1")) {
+            unregisterFragility(player);
         }
-        if (Arrays.asList(tempPlayer.getPunishments()).contains("knockback")) {
-            unregisterKnockback(Bukkit.getPlayer(args[0]));
+        if (hasPunishment(tempPlayer, "knockback")) {
+            unregisterKnockback(player);
         }
-        if (Arrays.asList(tempPlayer.getPunishments()).contains("hearts6")) {
-            Bukkit.getPlayer(args[0]).setMaxHealth(20.0);
+        if (hasPunishment(tempPlayer, "hearts6")) {
+            player.setMaxHealth(20.0);
         }
 
         tempPlayer.setPunishments(new String[0]);
 
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cleared of your curse(s).");
+        player.sendMessage(ChatColor.GREEN + "You have been cleared of your curse(s).");
         return true;
+    }
+
+    private boolean hasPunishment(TPlayer player, String punishment) {
+        return Arrays.asList(player.getPunishments()).contains(punishment);
     }
 }
