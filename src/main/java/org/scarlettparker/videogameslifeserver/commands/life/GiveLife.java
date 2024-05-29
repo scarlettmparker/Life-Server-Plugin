@@ -17,7 +17,7 @@ public class GiveLife implements CommandExecutor{
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        String receiver;
+        Player receiver = Bukkit.getPlayer(args[0]);
 
         // for cleanliness
         if (!(sender instanceof Player)) {
@@ -30,12 +30,11 @@ public class GiveLife implements CommandExecutor{
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+        if (!playerExists(args[0]) || receiver == null) {
             sender.sendMessage(ChatColor.RED + "Specified player does not exist/is not online.");
             return true;
         } else {
-            receiver = args[0];
-            if (Objects.equals(receiver, sender.getName())) {
+            if (Objects.equals(receiver, sender)) {
                 sender.sendMessage(ChatColor.RED + "You cannot give yourself lives.");
                 return true;
             }
@@ -43,7 +42,7 @@ public class GiveLife implements CommandExecutor{
 
         // sender and receiver
         TPlayer sPlayer = new TPlayer(sender.getName());
-        TPlayer rPlayer = new TPlayer(receiver);
+        TPlayer rPlayer = new TPlayer(receiver.getName());
 
         if (sPlayer.getLives() < 1) {
             sender.sendMessage(ChatColor.RED + "You are dead. You cannot give lives.");
@@ -80,8 +79,7 @@ public class GiveLife implements CommandExecutor{
 
         // player has been revived (mathematically obviously)
         if (receiverLives == 1) {
-            Player p = Bukkit.getPlayer(receiver);
-            handleRevive(p);
+            handleRevive(receiver);
             rPlayer.setZombie(true);
         }
 
@@ -90,11 +88,11 @@ public class GiveLife implements CommandExecutor{
 
         // player gets confirmation message
         sender.sendMessage(ChatColor.GREEN + "Successfully sent a life to "
-                + receiver + ".");
-        Bukkit.getPlayer(receiver).sendMessage( ChatColor.GREEN + sender.getName() + " has given you a life!");
+                + receiver.getName() + ".");
+        receiver.sendMessage( ChatColor.GREEN + sender.getName() + " has given you a life!");
 
         // awesome effect moment
-        Bukkit.getPlayer(receiver).playEffect(EntityEffect.TOTEM_RESURRECT);
+        receiver.playEffect(EntityEffect.TOTEM_RESURRECT);
         ((Player) sender).playEffect(EntityEffect.TOTEM_RESURRECT);
 
         return true;
