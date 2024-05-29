@@ -75,7 +75,7 @@ public class Gift implements CommandExecutor {
         // player gets confirmation message
         sender.sendMessage("Successfully gifted " + ChatColor.GOLD + tokens
                 + " tokens" + ChatColor.WHITE + " to " + receiver + ".");
-        Bukkit.getPlayer(receiver).sendMessage(sender.getName() + " has gift you " + ChatColor.GOLD
+        Bukkit.getPlayer(receiver).sendMessage(sender.getName() + " has gifted you " + ChatColor.GOLD
                 + tokens + " tokens" + ChatColor.WHITE + ".");
 
         return true;
