@@ -62,9 +62,6 @@ public class FailTask implements CommandExecutor {
             return true;
         }
 
-        tempTask.setCompleted(true);
-        tempTask.setAvailable(true);
-
         // so it doesnt show up when session starts
 
         if (args.length < 2 || !Objects.equals(args[1], "dbg")) {

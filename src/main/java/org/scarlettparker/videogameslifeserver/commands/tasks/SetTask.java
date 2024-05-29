@@ -51,10 +51,6 @@ public class SetTask implements CommandExecutor {
         TPlayer tempPlayer = new TPlayer(playerName);
         Player player = Bukkit.getPlayer(playerName);
 
-        // idk why i didn't see this happening
-        Task oldTask = new Task(tempPlayer.getCurrentTask());
-        oldTask.setAvailable(true);
-
         ArrayList<Player> tempPlayers = new ArrayList<>();
         tempPlayers.add(player);
 
@@ -70,7 +66,7 @@ public class SetTask implements CommandExecutor {
             return true;
         }
 
-        tempTask.setAvailable(false);
+        tempTask.setExcluded(true);
         tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getPlayerDescription(), player));
         tempTask.setPlayerDescription(manageSenderDescription(tempTask.getPlayerDescription(), player));
         tempPlayer.setCurrentTask(tempTask.getName());

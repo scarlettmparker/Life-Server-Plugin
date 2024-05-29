@@ -39,7 +39,6 @@ public class TaskManager {
                 tempTask.setDescription(attributes[1]);
                 tempTask.setPlayerDescription(attributes[1]);
                 tempTask.setDifficulty(Integer.parseInt(attributes[2]));
-                tempTask.setAvailable(true);
                 tempTask.setCompleted(false);
                 tempTask.setExcluded(false);
             }
@@ -70,7 +69,6 @@ public class TaskManager {
             JsonObject task = allTasks.getAsJsonObject(key);
             String taskId = key;
             int taskDifficulty = task.get("difficulty").getAsInt();
-            boolean available = task.get("available").getAsBoolean();
             boolean excluded = task.get("excluded").getAsBoolean();
 
             // check if the task is excluded
@@ -78,12 +76,10 @@ public class TaskManager {
                 continue;
             }
 
-            if (available) {
-                if (taskDifficulty == difficulty || taskDifficulty == 3) {
-                    normalIDs.add(taskId);
-                } else if (taskDifficulty == 2) {
-                    redIDs.add(taskId);
-                }
+            if (taskDifficulty == difficulty || taskDifficulty == 3) {
+                normalIDs.add(taskId);
+            } else if (taskDifficulty == 2) {
+                redIDs.add(taskId);
             }
         }
 
@@ -113,7 +109,7 @@ public class TaskManager {
         if (player.getName().equals("RavingRaven43453") && tPlayer.getTasks().length == 0) {
             Task tempTask = new Task("raven");
 
-            tempTask.setAvailable(false);
+            tempTask.setExcluded(true);
             tempTask.setPlayerDescription(tempTask.getDescription());
 
             // give player task and corresponding book
@@ -131,7 +127,7 @@ public class TaskManager {
                 taskIDs.remove(randomIndex);
 
                 Task tempTask = new Task(randomID);
-                tempTask.setAvailable(false);
+                tempTask.setExcluded(true);
 
                 // since tasks may involve other players names on them
                 String description = tempTask.getDescription().toLowerCase();
@@ -154,8 +150,8 @@ public class TaskManager {
             } else {
                 // because tasks can't be duplicated ig
                 if (Objects.equals(tPlayer.getCurrentTask(), "-1")) {
-                    player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please wait "
-                            + "until someone completes a task to start a new one.");
+                    player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please annoy "
+                            + "the admins into creating new tasks.");
                 }
             }
         }

@@ -63,7 +63,6 @@ public class CompleteTask implements CommandExecutor {
         }
 
         tempTask.setCompleted(true);
-        tempTask.setAvailable(true);
 
         Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "Congratulations on completing your task!"
                 + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
@@ -81,6 +80,7 @@ public class CompleteTask implements CommandExecutor {
             tokensIncrease = 15;
         } else if (difficulty == 2) {
             tokensIncrease = 3;
+            tempTask.setExcluded(false);
         } else if (difficulty == 3) {
             tokensIncrease = 9;
         }

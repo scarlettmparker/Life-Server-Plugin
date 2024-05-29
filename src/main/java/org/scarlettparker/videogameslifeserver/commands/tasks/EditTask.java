@@ -95,11 +95,12 @@ public class EditTask implements CommandExecutor, Listener {
                     state.step = TaskCreationStep.ENTER_DESCRIPTION;
                     player.sendMessage(ChatColor.GREEN + "Name: " + message);
                     player.sendMessage(ChatColor.DARK_AQUA + "Enter the new task description (type 'cancel' to cancel, 'none' to leave unchanged):");
+                    player.sendMessage( "Current description: " + ChatColor.DARK_AQUA + (new Task(message).getDescription()));
                 }
                 break;
             case ENTER_DESCRIPTION:
                 if (message.equalsIgnoreCase("none")) {
-                    state.description = null; // Indicate that the description should remain unchanged
+                    state.description = null; // indicate that the description should remain unchanged
                     player.sendMessage(ChatColor.YELLOW + "Description left unchanged.");
                 } else {
                     state.description = message;
@@ -110,7 +111,7 @@ public class EditTask implements CommandExecutor, Listener {
                 break;
             case ENTER_DIFFICULTY:
                 if (message.equalsIgnoreCase("none")) {
-                    state.difficulty = -1; // Indicate that the difficulty should remain unchanged
+                    state.difficulty = -1; // indicate that the difficulty should remain unchanged
                     player.sendMessage(ChatColor.YELLOW + "Difficulty left unchanged.");
                 } else {
                     int difficulty;
