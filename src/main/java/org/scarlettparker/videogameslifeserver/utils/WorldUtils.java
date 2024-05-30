@@ -248,7 +248,7 @@ public class WorldUtils {
         Inventory inv = player.getInventory();
         for (ItemStack is : inv) {
             // skip over non items
-            if (is == null || is.equals(Material.AIR)) {
+            if (is == null || is.getType().equals(Material.AIR)) {
                 continue;
             }
             if (!is.hasItemMeta()) {
