@@ -47,13 +47,13 @@ public class ClearPunishments implements CommandExecutor {
         TPlayer tempPlayer = new TPlayer(player.getName());
 
         // clear any punishments that aren't potion effects
-        if (hasPunishment(tempPlayer, "fragile1")) {
+        if (tempPlayer.hasPunishment("fragile1")) {
             unregisterFragility(player);
         }
-        if (hasPunishment(tempPlayer, "knockback")) {
+        if (tempPlayer.hasPunishment("knockback")) {
             unregisterKnockback(player);
         }
-        if (hasPunishment(tempPlayer, "hearts6")) {
+        if (tempPlayer.hasPunishment("hearts6")) {
             player.setMaxHealth(20.0);
         }
 
@@ -61,9 +61,5 @@ public class ClearPunishments implements CommandExecutor {
 
         player.sendMessage(ChatColor.GREEN + "You have been cleared of your curse(s).");
         return true;
-    }
-
-    private boolean hasPunishment(TPlayer player, String punishment) {
-        return Arrays.asList(player.getPunishments()).contains(punishment);
     }
 }

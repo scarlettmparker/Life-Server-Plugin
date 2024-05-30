@@ -33,13 +33,14 @@ public class CompleteTask implements CommandExecutor {
             return true;
         }
 
-        if (Bukkit.getPlayer(args[0]) == null) {
+        Player player = Bukkit.getPlayer(args[0]);
+
+        if (player == null) {
             sender.sendMessage(ChatColor.RED + "Invalid player/player is not online.");
             return true;
         }
 
-        String playerName = args[0];
-        TPlayer tempPlayer = new TPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
         if (!jsonFileExists(taskFile)) {
             sender.sendMessage(ChatColor.RED
@@ -64,10 +65,10 @@ public class CompleteTask implements CommandExecutor {
 
         tempTask.setCompleted(true);
 
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "Congratulations on completing your task!"
+        player.sendMessage(ChatColor.GREEN + "Congratulations on completing your task!"
                 + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
 
-        Bukkit.broadcastMessage(playerName + " has" + ChatColor.GREEN + " completed their task" + ChatColor.WHITE + ": "
+        Bukkit.broadcastMessage(player.getName() + " has" + ChatColor.GREEN + " completed their task" + ChatColor.WHITE + ": "
                 + ChatColor.WHITE + tempTask.getPlayerDescription());
 
         int tokensIncrease = 0;
@@ -86,7 +87,7 @@ public class CompleteTask implements CommandExecutor {
         }
 
         // send message to correct player (i had definitely not previously done it wrong)
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.WHITE + "You have gained " + ChatColor.GOLD
+        player.sendMessage(ChatColor.WHITE + "You have gained " + ChatColor.GOLD
                 + tokensIncrease + " tokens " + ChatColor.WHITE + "for completing your task.");
 
         tempPlayer.setTokens(tempPlayer.getTokens() + tokensIncrease);
@@ -95,17 +96,17 @@ public class CompleteTask implements CommandExecutor {
 
         // if player is currently punished
         if (tempPlayer.getPunishments().length != 0) {
-            Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been cured of your curse(s).");
+            player.sendMessage(ChatColor.GREEN + "You have been cured of your curse(s).");
 
             // clear the punishments if they have specific ones
-            if (Arrays.asList(tempPlayer.getPunishments()).contains("fragile1")) {
-                unregisterFragility(Bukkit.getPlayer(args[0]));
+            if (tempPlayer.hasPunishment("fragile1")) {
+                unregisterFragility(player);
             }
-            if (Arrays.asList(tempPlayer.getPunishments()).contains("knockback")) {
-                unregisterKnockback(Bukkit.getPlayer(args[0]));
+            if (tempPlayer.hasPunishment("knockback")) {
+                unregisterKnockback(player);
             }
-            if (Arrays.asList(tempPlayer.getPunishments()).contains("hearts6")) {
-                Bukkit.getPlayer(args[0]).setMaxHealth(20.0);
+            if (tempPlayer.hasPunishment("hearts6")) {
+                player.setMaxHealth(20.0);
             }
             tempPlayer.setPunishments(new String[0]);
         }
@@ -114,7 +115,7 @@ public class CompleteTask implements CommandExecutor {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
         // remove book from player
-        removeBook(Bukkit.getPlayer(args[0]));
+        removeBook(player);
 
         if (tempPlayer.getLives() == 1) {
             Bukkit.dispatchCommand(console, "newtask " + tempPlayer.getName() + " normal");
