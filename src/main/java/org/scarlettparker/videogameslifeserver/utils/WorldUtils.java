@@ -71,7 +71,7 @@ public class WorldUtils {
         Player tempPlayer = Bukkit.getPlayer(name);
         Location location = tempPlayer.getLocation();
         World world = location.getWorld();
-        Inventory inv = Bukkit.getPlayer(name).getInventory();
+        Inventory inv = tempPlayer.getInventory();
 
         for (ItemStack is : inv) {
             try {
@@ -86,7 +86,7 @@ public class WorldUtils {
         Bukkit.broadcastMessage(ChatColor.RED + name + " has lost all of their lives."
                 + ChatColor.WHITE + " They are now permanently dead unless" + ChatColor.BLUE
                 + " revived by another player" + ChatColor.WHITE + ".");
-        Bukkit.getPlayer(name).setGameMode(GameMode.SPECTATOR);
+        tempPlayer.setGameMode(GameMode.SPECTATOR);
     }
 
     public static void handleRevive(Player p) {
@@ -248,7 +248,7 @@ public class WorldUtils {
         Inventory inv = player.getInventory();
         for (ItemStack is : inv) {
             // skip over non items
-            if (is == null || is.equals(Material.AIR)) {
+            if (is == null || is.getType().equals(Material.AIR)) {
                 continue;
             }
             if (!is.hasItemMeta()) {

@@ -30,7 +30,7 @@ public class Tokens implements CommandExecutor {
             return true;
         }
 
-        Bukkit.getPlayer(sender.getName()).sendMessage(ChatColor.WHITE + "You have "
+        sender.sendMessage(ChatColor.WHITE + "You have "
                 + ChatColor.GOLD + tempPlayer.getTokens() + " tokens" + ChatColor.WHITE + ".");
 
         return true;

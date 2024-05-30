@@ -20,7 +20,7 @@ import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.*;
 public class SetTask implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // for cleanliness
-        String playerName;
+        Player player = Bukkit.getPlayer(args[0]);
 
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
@@ -39,17 +39,14 @@ public class SetTask implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+        if (!playerExists(args[0]) || player == null) {
             sender.sendMessage(ChatColor.RED + "Specified player is not online.");
             return true;
-        } else {
-            playerName = args[0];
         }
 
         Task tempTask = new Task(args[1]);
 
-        TPlayer tempPlayer = new TPlayer(playerName);
-        Player player = Bukkit.getPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
         ArrayList<Player> tempPlayers = new ArrayList<>();
         tempPlayers.add(player);
@@ -75,7 +72,7 @@ public class SetTask implements CommandExecutor {
         removeBook(player);
         giveTaskBook(tempTask, player);
 
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN +
+        player.sendMessage(ChatColor.GREEN +
                 "Your task has been set to: " + tempTask.getName());
 
         return true;

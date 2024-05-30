@@ -33,8 +33,7 @@ public class FragilityListener implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             if (fragilityPlayers.containsKey(player.getUniqueId())
                     && event.getDamage() < player.getPlayer().getHealth()) {
                 int amplifier = fragilityPlayers.get(player.getUniqueId());

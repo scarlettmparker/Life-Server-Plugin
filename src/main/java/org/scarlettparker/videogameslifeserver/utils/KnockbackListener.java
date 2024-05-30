@@ -38,18 +38,15 @@ public class KnockbackListener implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             if (knockbackPlayers.containsKey(player.getUniqueId())) {
                 Vector knockbackDirection = null;
 
-                if (event instanceof EntityDamageByEntityEvent) {
-                    EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) event;
+                if (event instanceof EntityDamageByEntityEvent entityEvent) {
                     Entity damager = entityEvent.getDamager();
 
                     // if the player has been hit by a projectile
-                    if (damager instanceof Projectile) {
-                        Projectile projectile = (Projectile) damager;
+                    if (damager instanceof Projectile projectile) {
                         ProjectileSource shooter = projectile.getShooter();
                         if (shooter instanceof Entity) {
                             // set knockback direction to direction the projectile was firing

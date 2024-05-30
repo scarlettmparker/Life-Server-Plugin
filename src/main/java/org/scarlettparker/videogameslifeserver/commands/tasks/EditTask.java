@@ -48,12 +48,11 @@ public class EditTask implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
             return true;
         }
 
-        Player player = (Player) sender;
         if (!player.isOp()) {
             player.sendMessage(ChatColor.RED + "You must be an operator to run this command.");
             return true;
@@ -116,21 +115,13 @@ public class EditTask implements CommandExecutor, Listener {
                 } else {
                     int difficulty;
                     switch (message.toLowerCase()) {
-                        case "0":
-                        case "normal":
-                            difficulty = 0;
-                            break;
-                        case "1":
-                        case "hard":
-                            difficulty = 1;
-                            break;
-                        case "2":
-                        case "red":
-                            difficulty = 2;
-                            break;
-                        default:
+                        case "0", "normal" -> difficulty = 0;
+                        case "1", "hard" -> difficulty = 1;
+                        case "2", "red" -> difficulty = 2;
+                        default -> {
                             player.sendMessage(ChatColor.RED + "Invalid difficulty. Valid difficulties: 0 (normal), 1 (hard), 2 (red).");
                             return;
+                        }
                     }
                     state.difficulty = difficulty;
                     player.sendMessage(ChatColor.GREEN + "Difficulty: " + difficulty);

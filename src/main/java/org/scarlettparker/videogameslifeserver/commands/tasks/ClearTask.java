@@ -15,7 +15,7 @@ import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBoo
 public class ClearTask implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // for cleanliness
-        String playerName;
+        Player player = Bukkit.getPlayer(args[0]);
 
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
@@ -34,16 +34,14 @@ public class ClearTask implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+        if (!playerExists(args[0]) || player == null) {
             sender.sendMessage(ChatColor.RED + "Specified player is not online.");
             return true;
-        } else {
-            playerName = args[0];
         }
 
-        TPlayer tempPlayer = new TPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
-        removeBook(Bukkit.getPlayer(playerName));
+        removeBook(player);
         tempPlayer.setCurrentTask("-1");
 
         sender.sendMessage(ChatColor.GREEN + "Your task has been cleared.");

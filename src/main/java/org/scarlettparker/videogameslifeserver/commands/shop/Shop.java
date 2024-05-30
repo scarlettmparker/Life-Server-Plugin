@@ -42,43 +42,27 @@ public class Shop implements CommandExecutor, Listener {
         addItem(createItem(Material.BAKED_POTATO, 16, "2 Tokens"), 2);
         addItem(createItem(Material.GOLDEN_APPLE, 1, "2 Tokens"), 2);
 
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
+        fillBlankSlots(4);
 
         addItem(createItem(Material.SUGAR_CANE, 16, "1 Token"), 1);
         addItem(createItem(Material.BAMBOO, 16, "1 Token"), 1);
         addItem(createItem(Material.CACTUS, 16, "1 Token"), 1);
         addItem(createItem(Material.EXPERIENCE_BOTTLE, 64, "1 Token"), 1);
 
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
+        fillBlankSlots(5);
 
         addItem(createItem(Material.IRON_BLOCK, 1, "1 Token"), 1);
         addItem(createItem(Material.INFESTED_STONE, 12, "1 Token"), 1);
         addItem(createMendingBook(1, "7 Tokens"), 7);
 
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
+        fillBlankSlots(6);
 
         addItem(createItem(Material.NETHERITE_SCRAP, 1, "3 Tokens"), 3);
         addItem(createItem(Material.WOLF_SPAWN_EGG, 2, "5 Tokens"), 5);
         addItem(createItem(Material.DIAMOND, 3, "2 Tokens"), 2);
         addItem(createItem(Material.BLAZE_ROD, 16, "8 Tokens"), 8);
 
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
-        addItem(createItem(Material.AIR, 0, ""), 0);
+        fillBlankSlots(5);
 
         addItem(createPotionItem(Material.POTION, 1, "2 Tokens",
                 PotionType.INVISIBILITY, false, false), 2);
@@ -96,7 +80,8 @@ public class Shop implements CommandExecutor, Listener {
         addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
                 PotionType.SLOWNESS, true, false), 2);
 
-        addItem(createItem(Material.AIR, 0, ""), 0);
+        fillBlankSlots(1);
+
         addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "45 Tokens"), 45);
     }
 
@@ -105,9 +90,15 @@ public class Shop implements CommandExecutor, Listener {
         itemOrder.add(item);
     }
 
+    private void fillBlankSlots(int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            addItem(createItem(Material.AIR, 0, ""), 0);
+        }
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
             return true;
         }
@@ -122,7 +113,6 @@ public class Shop implements CommandExecutor, Listener {
             return true;
         }
 
-        Player player = (Player) sender;
         TPlayer tempPlayer = new TPlayer(player.getName());
 
         player.openInventory(shopInventory(tempPlayer));
@@ -201,9 +191,8 @@ public class Shop implements CommandExecutor, Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
+        if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        Player player = (Player) event.getWhoClicked();
         TPlayer tempPlayer = new TPlayer(player.getName());
 
         if (tempPlayer.getShopping() && event.getView().getTitle().startsWith("You have")) {

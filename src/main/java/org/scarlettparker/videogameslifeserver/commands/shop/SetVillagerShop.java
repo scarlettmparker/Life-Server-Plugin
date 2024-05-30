@@ -15,7 +15,7 @@ public class SetVillagerShop implements CommandExecutor {
     static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
             return true;
         }
@@ -25,19 +25,15 @@ public class SetVillagerShop implements CommandExecutor {
             return true;
         }
 
-        Player player = (Player) sender;
-
         // ensure the player is looking at a villager
-        if (player.getTargetEntity(5) instanceof Villager) {
-            Villager villager = (Villager) player.getTargetEntity(5);
+        if (player.getTargetEntity(5) instanceof Villager villager) {
             // set the metadata
             NamespacedKey key = new NamespacedKey(plugin, "shop_villager");
             villager.getPersistentDataContainer().set(key, PersistentDataType.STRING, "forum_marketplace");
             player.sendMessage(ChatColor.GREEN + "Villager is now a shop villager.");
-            return true;
         } else {
             player.sendMessage(ChatColor.RED + "You are not looking at a villager.");
-            return true;
         }
+        return true;
     }
 }

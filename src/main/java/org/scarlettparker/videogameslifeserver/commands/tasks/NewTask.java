@@ -42,14 +42,15 @@ public class NewTask implements CommandExecutor {
             return true;
         }
 
-        if (Bukkit.getPlayer(args[0]) == null) {
-            System.out.println(Bukkit.getPlayer(args[0]));
+        Player player = Bukkit.getPlayer((args[0]));
+
+        if (player == null) {
+            System.out.println(player);
             sender.sendMessage(ChatColor.RED + "Invalid player/player is not online.");
             return true;
         }
 
-        String playerName = args[0];
-        TPlayer tempPlayer = new TPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
         if (tempPlayer.getSessionTasks() >= 2 && tempPlayer.getLives() != 1) {
             sender.sendMessage(ChatColor.RED + "Player has already attempted 2 tasks this session."
@@ -76,7 +77,7 @@ public class NewTask implements CommandExecutor {
 
         // such a weird way of doing things but i guess we'll see if it can be used for multi player tasks
         ArrayList<Player> tempPlayers = new ArrayList<>();
-        tempPlayers.add(Bukkit.getPlayer(args[0]));
+        tempPlayers.add(player);
 
         doTaskDistribution(tempPlayers, difficulty);
         return true;

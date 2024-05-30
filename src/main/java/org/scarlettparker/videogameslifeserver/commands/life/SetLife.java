@@ -20,7 +20,7 @@ public class SetLife implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // for cleanliness
         int lives;
-        String playerName;
+        Player player = Bukkit.getPlayer(args[0]);
 
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
@@ -39,11 +39,9 @@ public class SetLife implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+        if (!playerExists(args[0]) || player == null) {
             sender.sendMessage(ChatColor.RED + "Specified player is not online.");
             return true;
-        } else {
-            playerName = args[0];
         }
 
         try {
@@ -58,7 +56,7 @@ public class SetLife implements CommandExecutor {
             return true;
         }
 
-        TPlayer tempPlayer = new TPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
         // if player is revived (don't actually make them a zombie functionally as it's an admin command)
         if (tempPlayer.getLives() == 0) {
@@ -67,11 +65,11 @@ public class SetLife implements CommandExecutor {
 
         // update lives and display
         tempPlayer.setLives(lives);
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GREEN + "You have been set to " + lives + " lives.");
+        player.sendMessage(ChatColor.GREEN + "You have been set to " + lives + " lives.");
 
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         if (lives == 1 && Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
-            Bukkit.getPlayer(args[0]).sendMessage(ChatColor.RED + "As you're now a red life, you will be given "
+            player.sendMessage(ChatColor.RED + "As you're now a red life, you will be given "
                     + "continuous red tasks from now on.");
 
             // run the newtask command so player gets red task

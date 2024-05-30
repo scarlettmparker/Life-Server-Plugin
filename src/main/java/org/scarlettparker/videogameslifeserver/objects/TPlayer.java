@@ -1,6 +1,9 @@
 package org.scarlettparker.videogameslifeserver.objects;
 
 import org.bukkit.Bukkit;
+
+import java.util.Arrays;
+
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.handleFinalDeath;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.setPlayerName;
@@ -115,5 +118,9 @@ public class TPlayer {
         // add new punishment to last position and update
         tempPunishments[currentPunishments.length] = punishmentID;
         setPunishments(tempPunishments);
+    }
+
+    public boolean hasPunishment(String punishment) {
+        return Arrays.asList(getPunishments()).contains(punishment);
     }
 }

@@ -16,7 +16,7 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.play
 public class Gift implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        String receiver;
+        Player receiver = Bukkit.getPlayer(args[0]);
         int tokens;
 
         // for cleanliness
@@ -37,12 +37,11 @@ public class Gift implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+        if (!playerExists(args[0]) || receiver == null) {
             sender.sendMessage(ChatColor.RED + "Specified player does not exist/is not online.");
             return true;
         } else {
-            receiver = args[0];
-            if (Objects.equals(receiver, sender.getName())) {
+            if (Objects.equals(receiver, sender)) {
                 sender.sendMessage(ChatColor.RED + "You cannot gift yourself tokens.");
                 return true;
             }
@@ -55,7 +54,7 @@ public class Gift implements CommandExecutor {
 
         // sender and receiver
         TPlayer sPlayer = new TPlayer(sender.getName());
-        TPlayer rPlayer = new TPlayer(receiver);
+        TPlayer rPlayer = new TPlayer(receiver.getName());
 
         if (sPlayer.getLives() < 1) {
             sender.sendMessage(ChatColor.RED + "You are dead. You cannot gift tokens.");
@@ -75,7 +74,7 @@ public class Gift implements CommandExecutor {
         // player gets confirmation message
         sender.sendMessage("Successfully gifted " + ChatColor.GOLD + tokens
                 + " tokens" + ChatColor.WHITE + " to " + receiver + ".");
-        Bukkit.getPlayer(receiver).sendMessage(sender.getName() + " has gifted you " + ChatColor.GOLD
+        receiver.sendMessage(sender.getName() + " has gifted you " + ChatColor.GOLD
                 + tokens + " tokens" + ChatColor.WHITE + ".");
 
         return true;
