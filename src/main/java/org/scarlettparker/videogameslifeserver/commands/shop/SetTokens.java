@@ -16,7 +16,7 @@ public class SetTokens implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // for cleanliness
         int tokens;
-        String playerName;
+        Player player = Bukkit.getPlayer(args[0]);
 
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
@@ -35,11 +35,9 @@ public class SetTokens implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || Bukkit.getPlayer(args[0]) == null) {
+        if (!playerExists(args[0]) || player == null) {
             sender.sendMessage(ChatColor.RED + "Specified player is not online.");
             return true;
-        } else {
-            playerName = args[0];
         }
 
         try {
@@ -54,11 +52,11 @@ public class SetTokens implements CommandExecutor {
             return true;
         }
 
-        TPlayer tempPlayer = new TPlayer(playerName);
+        TPlayer tempPlayer = new TPlayer(player.getName());
 
         // update tokens and display
         tempPlayer.setTokens(tokens);
-        Bukkit.getPlayer(args[0]).sendMessage(ChatColor.GOLD + "You have been set to " + tokens + " tokens.");
+        player.sendMessage(ChatColor.GOLD + "You have been set to " + tokens + " tokens.");
 
         return true;
     }
