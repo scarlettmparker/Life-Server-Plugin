@@ -39,7 +39,6 @@ public class InstantFirework{
     private Class<?> getClass(String prefix, String nmsClassString) throws ClassNotFoundException {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
         String name = prefix + version + nmsClassString.toLowerCase();
-        Class<?> nmsClass = Class.forName(name);
-        return nmsClass;
+        return Class.forName(name);
     }
 }
