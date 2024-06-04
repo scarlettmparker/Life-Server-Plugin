@@ -125,23 +125,23 @@
 
 ## Life Rules
 
-### Players cannot hold more than 4 lives at a time.
-### Players once revived cannot be gifted more than one life.
-### Players may only attempt 2 tasks per session.
+Players cannot hold more than 4 lives at a time.
+Players once revived cannot be gifted more than one life.
+Players may only attempt 2 tasks per session.
 
 ## World Events
 
-### Player information such as deaths and task history are stored in the playerbase.json file.
-### It's recommended to turn on keepInventory with `/gamerule keepInventory true` as players will drop their items when losing their final life.
-### It's recommended to turn off showDeathMessages with `/gamerule showDeathMessages false` as there are custom death messages are in place.
+Player information such as deaths and task history are stored in the playerbase.json file.
+It's recommended to turn on keepInventory with `/gamerule keepInventory true` as players will drop their items when losing their final life.
+ It's recommended to turn off showDeathMessages with `/gamerule showDeathMessages false` as there are custom death messages are in place.
 
 # Example Usage
 
 ## Here are some example usages of the commands:
-### - To give a life to a player named Scarlett: `/givelife Scarlett`
-### - To set the number of lives for a player named Scarlett to 5: `/setlife Scarlett 5`
-### - To set the punishment for a player named Scarlett: `/setlife Scarlett knockback`
-### - To add a new task: `/addtask`, and follow through the steps message by message.
-### - To clear the task of a player named Scarlett: `/cleartask Scarlett`
-### - To clear the punishments of a player named Scarlett: `/clearpunishments Scarlett`
+- To give a life to a player named Scarlett: `/givelife Scarlett`
+- To set the number of lives for a player named Scarlett to 5: `/setlife Scarlett 5`
+- To set the punishment for a player named Scarlett: `/setlife Scarlett knockback`
+- To add a new task: `/addtask`, and follow through the steps message by message.
+- To clear the task of a player named Scarlett: `/cleartask Scarlett`
+ - To clear the punishments of a player named Scarlett: `/clearpunishments Scarlett`
 

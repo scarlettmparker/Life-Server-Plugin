@@ -1,5 +1,0 @@
-weak:Weakness II until you complete another task.:1
-slow:Slowness II until you complete another task.:1
-fragile:Fragility (1.35x damage) until you complete another task.:1
-hearts7:Reduced to 7 hearts until you complete another task.:1
-weak:Weakness I until you complete another task.:2

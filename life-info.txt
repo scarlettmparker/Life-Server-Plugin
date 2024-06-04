@@ -1,0 +1,47 @@
+Players are all given a task at the start of the session (written in a book)
+If someone fails their task or someone guesses it, they are punished
+If someone lies about completing a task or about someone guessing it, they are deducted a life.
+
+Medium tasks:
+Make a pun at every opportunity in a conversation, minimum of 3 successful puns
+Don't refer to another player by their name/username for 20 minutes
+
+Punishments for hard tasks:
+    - Receive a bad effect for the next 30 minutes
+    - Reduced to 7 hearts for the next 30 minutes
+    - No natural health regeneration for the next 10 minutes
+    - Heavily increased knockback for the next 30 minutes
+    - Sunlight will burn the player for the next 30 minutes
+    - Shuffle inventory every 5 minutes for the next 30 minutes
+    - Everytime you get hit, you get levitatation for 15 seconds for the next 30 minutes
+
+Bad potion effects:
+    - Slowness II
+    - Weakness I
+    - Mining Fatigue I
+    - Blindness
+    - Hunger
+    - Fragility
+
+5 tokens for normal task
+10 tokens for hard task
+
+Shop prices:
+    - 10 Levels of EXP: 1 token
+    - Golden apple: 2 tokens
+    - 2 random iron tools: 3 tokens
+    - 2 random pieces of iron armour: 3 tokens
+    - Level I potion: 3 tokens
+    - Level II potion: 6 tokens
+    - 12 Nether Wart: 6 tokens
+
+Potions (level II)
+    - Resistance II
+    - Regeneration II
+    - Speed II
+    - Invisibility 
+Potions (level I)
+    - Speed I
+    - Instant Health I
+    - Regeneration I
+    - Fire Resistance
