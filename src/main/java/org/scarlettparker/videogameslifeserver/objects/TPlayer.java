@@ -59,6 +59,15 @@ public class TPlayer {
         setJsonObjectAttribute(playerFile, name, "currentTask", taskID);
     }
 
+    public String getNextTask() {
+        Object nextTask = getJsonObjectAttribute(playerFile, name, "nextTask");
+        return nextTask instanceof String ? (String) nextTask : "-1";
+    }
+
+    public void setNextTask(String taskID) {
+        setJsonObjectAttribute(playerFile, name, "nextTask", taskID);
+    }
+
     public void setTasks(String[] tasks) {
         setJsonObjectAttribute(playerFile, name, "tasks", tasks);
     }

@@ -20,6 +20,7 @@ org\scarlettparker\videogameslifeserver\commands\tasks\NewTask.class
 org\scarlettparker\videogameslifeserver\commands\shop\SetVillagerShop.class
 org\scarlettparker\videogameslifeserver\commands\tasks\EditTask$TaskCreationState.class
 org\scarlettparker\videogameslifeserver\commands\shop\Shop.class
+org\scarlettparker\videogameslifeserver\commands\tasks\ForceTask.class
 org\scarlettparker\videogameslifeserver\objects\TPlayer.class
 org\scarlettparker\videogameslifeserver\manager\ConfigManager.class
 org\scarlettparker\videogameslifeserver\objects\Task.class
@@ -42,6 +43,7 @@ org\scarlettparker\videogameslifeserver\utils\WorldUtils$1.class
 org\scarlettparker\videogameslifeserver\utils\PotionEffectWrapper.class
 org\scarlettparker\videogameslifeserver\utils\PunishmentUtils.class
 org\scarlettparker\videogameslifeserver\commands\life\StartLife.class
+org\scarlettparker\videogameslifeserver\commands\tasks\ExcludePlayer.class
 org\scarlettparker\videogameslifeserver\commands\tasks\WhatTask.class
 org\scarlettparker\videogameslifeserver\events\InventoryEvents.class
 org\scarlettparker\videogameslifeserver\commands\tasks\ClearTask.class

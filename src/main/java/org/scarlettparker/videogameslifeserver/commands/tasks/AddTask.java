@@ -32,6 +32,7 @@ public class AddTask implements CommandExecutor, Listener {
         ENTER_ID,
         ENTER_DESCRIPTION,
         ENTER_DIFFICULTY,
+        ENTER_TOKENS,
         COMPLETED
     }
 
@@ -40,6 +41,7 @@ public class AddTask implements CommandExecutor, Listener {
         private String taskId;
         private String description;
         private int difficulty;
+        private int tokens;
 
         public TaskCreationState() {
             this.step = TaskCreationStep.ENTER_ID;
@@ -104,7 +106,7 @@ public class AddTask implements CommandExecutor, Listener {
                 state.description = message;
                 state.step = TaskCreationStep.ENTER_DIFFICULTY;
                 player.sendMessage(ChatColor.GREEN + "Description: " + message);
-                player.sendMessage(ChatColor.DARK_AQUA + "Enter the task difficulty (0, 1, 2 or normal, hard, red) (type 'cancel' to cancel):");
+                player.sendMessage(ChatColor.DARK_AQUA + "Enter the task difficulty (0, 1, 2, 3 or normal, hard, red, special) (type 'cancel' to cancel):");
                 break;
             case ENTER_DIFFICULTY:
                 int difficulty;
@@ -112,12 +114,43 @@ public class AddTask implements CommandExecutor, Listener {
                     case "0", "normal" -> difficulty = 0;
                     case "1", "hard" -> difficulty = 1;
                     case "2", "red" -> difficulty = 2;
+                    case "3", "special" -> difficulty = 3;
                     default -> {
-                        player.sendMessage(ChatColor.RED + "Invalid difficulty. Valid difficulties: 0 (normal), 1 (hard), 2 (red).");
+                        player.sendMessage(ChatColor.RED + "Invalid difficulty. Valid difficulties: 0 (normal), 1 (hard), 2 (red), or 3 (special).");
                         return;
                     }
                 }
                 state.difficulty = difficulty;
+                state.step = TaskCreationStep.ENTER_TOKENS;
+                player.sendMessage(ChatColor.GREEN + "Difficulty: " + message);
+                player.sendMessage(ChatColor.DARK_AQUA + "Enter the token reward (enter 0 for default):");
+                break;
+            case ENTER_TOKENS:
+                int tokens;
+                try {
+                    tokens = Integer.parseInt(message);
+                } catch (Exception e) {
+                    player.sendMessage(ChatColor.RED + "Please enter a valid integer for number of tokens.");
+                    return;
+                }
+
+                if (tokens == 0) {
+                    if (state.difficulty == 0) {
+                        tokens = 6;
+                    } else if (state.difficulty == 1) {
+                        tokens = 15;
+                    } else if (state.difficulty == 2) {
+                        tokens = 3;
+                    } else if (state.difficulty == 3) {
+                        tokens = 11;
+                    }
+                }
+
+                if (tokens < 0) {
+                    player.sendMessage(ChatColor.RED + "Token reward cannot be below 1.");
+                }
+
+                state.tokens = tokens;
                 state.step = TaskCreationStep.COMPLETED;
 
                 Task newTask = new Task(state.taskId);
@@ -132,8 +165,9 @@ public class AddTask implements CommandExecutor, Listener {
                 newTask.setCompleted(false);
                 newTask.setExcluded(false);
                 newTask.setDifficulty(state.difficulty);
+                newTask.setReward(state.tokens);
 
-                player.sendMessage(ChatColor.GREEN + "Difficulty: " + difficulty);
+                player.sendMessage(ChatColor.GREEN + "Token reward: " + state.tokens);
                 player.sendMessage(ChatColor.GREEN + "Task successfully created. This task can be assigned with: " +
                         "/settask player " + state.taskId + ". It may also be randomly assigned unless excluded.");
                 taskCreationStateMap.remove(player);

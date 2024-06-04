@@ -56,7 +56,8 @@ public class WorldUtils {
             colorPrefix = "&7";
         }
 
-        newName = lifeColor + p.getName() + contrastColor + " [" + lifeColor + title + contrastColor + "]";
+        newName = lifeColor + p.getName() + contrastColor
+                + " [" + lifeColor + title + contrastColor + "]";
         command = "nte player " + p.getName() + " prefix " + colorPrefix;
 
         // custom name AND tag name now displays
@@ -187,7 +188,7 @@ public class WorldUtils {
             difficultyText = "Red";
         } else if (task.getDifficulty() == 3) {
             messageColor = ChatColor.DARK_AQUA;
-            difficultyText = "Raven";
+            difficultyText = "Special";
         }
 
         // format the book properly
@@ -220,27 +221,6 @@ public class WorldUtils {
         }
 
         meta.setPages(pages);
-
-        // trolling raven raven because it's funny
-        if (task.getDifficulty() == 3) {
-            pages = new ArrayList<>();
-            pages.add("Task Difficulty: " + messageColor + difficultyText + "\n"
-                    + ChatColor.BLACK + "Hello, " + ChatColor.RED + "RavingRaven" + ChatColor.BLACK
-                    + ".\nAs you may be aware, you illegally gave nether wart to some players in the previous season. "
-                    + "Unfortunately, we can't let you get away with that without punishment, so we have a special task"
-                    + " just for you.\n\n");
-
-            pages.add(ChatColor.BLACK + "Your task is to " + ChatColor.RED + "give nether wart that you have collected"
-                    + " by yourself to a player of your choice " + ChatColor.BLACK +"before the end of the session"
-                    + ChatColor.BLACK + ".\nLuckily, there are some perks to your task! No yellow player is allowed to"
-                    + " guess your task, but you still must not reveal your task to anybody, or you fail.\n");
-            pages.add(ChatColor.RED + "Failing this task will result in "
-                    + "a hefty punishment" + ChatColor.BLACK + ", so chop chop!\n\n"
-                    + "Much love, the VGS committee.\n\nEnjoy your season!");
-
-            meta.setPages(pages);
-        }
-
         book.setItemMeta(meta);
     }
 

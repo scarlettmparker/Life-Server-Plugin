@@ -91,7 +91,7 @@ public class StartLife implements CommandExecutor {
         Bukkit.dispatchCommand(console, "gamerule logAdminCommands false");
         Bukkit.dispatchCommand(console, "gamerule sendCommandFeedback false");
         Bukkit.dispatchCommand(console, "gamerule keepInventory true");
-        Bukkit.dispatchCommand(console, "gamerule showDeathMessages true");
+        Bukkit.dispatchCommand(console, "gamerule showDeathMessages false");
         Bukkit.dispatchCommand(console, "difficulty normal");
     }
 }

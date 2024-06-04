@@ -75,6 +75,7 @@ public class CompleteTask implements CommandExecutor {
         int difficulty = tempTask.getDifficulty();
 
         // give user different number of tokens based on task
+
         if (difficulty == 0) {
             tokensIncrease = 6;
         } else if (difficulty == 1) {
@@ -84,6 +85,10 @@ public class CompleteTask implements CommandExecutor {
             tempTask.setExcluded(false);
         } else if (difficulty == 3) {
             tokensIncrease = 9;
+        }
+
+        if (tempTask.getReward() != -1) {
+            tokensIncrease = tempTask.getReward();
         }
 
         // send message to correct player (i had definitely not previously done it wrong)

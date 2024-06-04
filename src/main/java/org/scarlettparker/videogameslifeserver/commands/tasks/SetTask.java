@@ -19,9 +19,6 @@ import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.*;
 
 public class SetTask implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        // for cleanliness
-        Player player = Bukkit.getPlayer(args[0]);
-
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
             sender.sendMessage(ChatColor.RED + "You must be an operator to run this command.");
@@ -32,6 +29,9 @@ public class SetTask implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /settask player taskid");
             return true;
         }
+
+        // for cleanliness
+        Player player = Bukkit.getPlayer(args[0]);
 
         if (!jsonFileExists(playerFile)) {
             sender.sendMessage(ChatColor.RED
@@ -64,8 +64,7 @@ public class SetTask implements CommandExecutor {
         }
 
         tempTask.setExcluded(true);
-        tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getPlayerDescription(), player));
-        tempTask.setPlayerDescription(manageSenderDescription(tempTask.getPlayerDescription(), player));
+        tempTask.setPlayerDescription(manageReceiverDescription(manageSenderDescription(tempTask.getDescription(), player), player));
         tempPlayer.setCurrentTask(tempTask.getName());
 
         // make sure to give the correct book

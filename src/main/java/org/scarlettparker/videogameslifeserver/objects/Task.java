@@ -32,6 +32,11 @@ public class Task {
         return !(excluded instanceof Boolean) || (boolean) excluded; // default value is false
     }
 
+    public String[] getExcludedPlayers() {
+        Object excludedPlayers = getJsonObjectAttribute(taskFile, name, "excludedPlayers");
+        return excludedPlayers instanceof String[] ? (String[]) excludedPlayers : new String[0]; // default value is empty array
+    }
+
     public String getDescription() {
         Object description = getJsonObjectAttribute(taskFile, String.valueOf(name), "description");
         return description instanceof String ? (String) description : ""; // default value is 0
@@ -40,6 +45,16 @@ public class Task {
     public String getPlayerDescription() {
         Object playerDescription = getJsonObjectAttribute(taskFile, String.valueOf(name), "playerDescription");
         return playerDescription instanceof String ? (String) playerDescription : ""; // default value is 0
+    }
+
+    public int getPriority() {
+        Object reward = getJsonObjectAttribute(taskFile, String.valueOf(name), "priority");
+        return reward instanceof Integer ? (Integer) reward : 0; // default value is 0
+    }
+
+    public int getReward() {
+        Object reward = getJsonObjectAttribute(taskFile, String.valueOf(name), "reward");
+        return reward instanceof Integer ? (Integer) reward : -1; // default value is -1
     }
 
     public String getReceiver() {
@@ -63,12 +78,24 @@ public class Task {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "excluded", excluded);
     }
 
+    public void setExcludedPlayers(String[] tasks) {
+        setJsonObjectAttribute(taskFile, name, "excludedPlayers", tasks);
+    }
+
     public void setDescription(String description) {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "description", description);
     }
 
     public void setPlayerDescription(String playerDescription) {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "playerDescription", playerDescription);
+    }
+
+    public void setPriority(int priority) {
+        setJsonObjectAttribute(taskFile, String.valueOf(name), "priority", priority);
+    }
+
+    public void setReward(int reward) {
+        setJsonObjectAttribute(taskFile, String.valueOf(name), "reward", reward);
     }
 
     public void setReceiver(String receiver) {

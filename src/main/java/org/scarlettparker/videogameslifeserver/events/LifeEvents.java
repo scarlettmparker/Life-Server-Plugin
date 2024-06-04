@@ -1,16 +1,19 @@
 package org.scarlettparker.videogameslifeserver.events;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import org.scarlettparker.videogameslifeserver.objects.Death;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.utils.InstantFirework;
@@ -19,6 +22,7 @@ import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.commands.life.StartLife.createPlayer;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
+import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.getAllPlayers;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.setPlayerName;
 
 public class LifeEvents implements Listener {
@@ -27,6 +31,10 @@ public class LifeEvents implements Listener {
         // check if player exists in file
         if (playerFile.exists() && !playerExists(event.getPlayer().getName())) {
             createPlayer(event.getPlayer());
+
+            // for players that have joined for the first time
+            TPlayer temp = new TPlayer(event.getPlayer().getName());
+            temp.setSessionTasks(-1);
         } else {
             TPlayer tempPlayer = new TPlayer(event.getPlayer().getName());
             int lives = tempPlayer.getLives();
@@ -62,6 +70,21 @@ public class LifeEvents implements Listener {
 
             tempPlayer.setLives(lives);
             setPlayerName(event.getPlayer(), lives);
+
+            // change death message
+            String deathMessage = event.getDeathMessage();
+            for (Player p : getAllPlayers()) {
+                if (deathMessage.contains(p.getName())) {
+                    if (tempPlayer.getLives() < 1) {
+                        deathMessage = "";
+                        break;
+                    }
+                    deathMessage = deathMessage.replace(p.getName(), p.getDisplayName());
+                }
+            }
+
+            // broadcast the death message to everyone
+            if (!Objects.equals(deathMessage, "")) { Bukkit.broadcastMessage(deathMessage); }
 
             // to send console commands
             ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();

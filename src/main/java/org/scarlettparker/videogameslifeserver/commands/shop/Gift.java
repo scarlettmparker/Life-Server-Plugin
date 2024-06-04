@@ -16,12 +16,14 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.play
 public class Gift implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        Player receiver = Bukkit.getPlayer(args[0]);
-        int tokens;
-
         // for cleanliness
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
+            return true;
+        }
+
+        if (!sender.isOp()) {
+            sender.sendMessage(ChatColor.RED + "This command is disabled to players until the third session.");
             return true;
         }
 
@@ -29,6 +31,9 @@ public class Gift implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /gift player tokens");
             return true;
         }
+
+        int tokens;
+        Player receiver = Bukkit.getPlayer(args[0]);
 
         try {
             tokens = Integer.parseInt(args[1]);
@@ -73,7 +78,7 @@ public class Gift implements CommandExecutor {
 
         // player gets confirmation message
         sender.sendMessage("Successfully gifted " + ChatColor.GOLD + tokens
-                + " tokens" + ChatColor.WHITE + " to " + receiver + ".");
+                + " tokens" + ChatColor.WHITE + " to " + receiver.getName() + ".");
         receiver.sendMessage(sender.getName() + " has gifted you " + ChatColor.GOLD
                 + tokens + " tokens" + ChatColor.WHITE + ".");
 

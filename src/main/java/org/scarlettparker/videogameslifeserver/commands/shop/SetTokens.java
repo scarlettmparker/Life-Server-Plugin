@@ -14,10 +14,6 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 public class SetTokens implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        // for cleanliness
-        int tokens;
-        Player player = Bukkit.getPlayer(args[0]);
-
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
             sender.sendMessage(ChatColor.RED + "You must be an operator to run this command.");
@@ -28,6 +24,10 @@ public class SetTokens implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /settokens player tokens");
             return true;
         }
+
+        // for cleanliness
+        int tokens;
+        Player player = Bukkit.getPlayer(args[0]);
 
         if (!jsonFileExists(playerFile)) {
             sender.sendMessage(ChatColor.RED

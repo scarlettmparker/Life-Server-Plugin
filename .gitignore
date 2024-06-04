@@ -1,0 +1,7 @@
+dependency-reduced-pom.xml
+pom.xml
+videogameslifeserver.iml
+target/
+.idea/
+src/main/resources/tasks/
+.gitattributes

@@ -104,43 +104,51 @@ public class TaskManager {
 
     // assign a task to a player
     private static void assignTaskToPlayer(Random randomTask, Player player, TPlayer tPlayer, List<String> taskIDs) {
-        // raving raven troll
-        if (player.getName().equals("RavingRaven43453") && tPlayer.getTasks().length == 0) {
-            Task tempTask = new Task("raven");
+        if (!Objects.equals(tPlayer.getNextTask(), "-1")) {
+            Task nextTask = new Task(tPlayer.getNextTask());
+            nextTask.setExcluded(true);
 
-            tempTask.setExcluded(true);
-            tempTask.setPlayerDescription(tempTask.getDescription());
+            // in case {receiver} has been entered weirdly
+            nextTask.setPlayerDescription(manageReceiverDescription(
+                    manageSenderDescription(nextTask.getDescription(), player), player));
 
             // give player task and corresponding book
-            addTaskToPlayer(tPlayer, "raven");
+            addTaskToPlayer(tPlayer, nextTask.getName());
             removeBook(player);
-            bookCountdown(tempTask, player);
+            bookCountdown(nextTask, player);
         } else {
-            // ensure "raven" task is not assigned to other players
-            taskIDs.remove("raven");
             Task currentTask = new Task(tPlayer.getCurrentTask());
             if (!taskIDs.isEmpty() && currentTask.getDifficulty() != 2) {
                 // get random task in list
                 int randomIndex = randomTask.nextInt(taskIDs.size());
                 String randomID = taskIDs.get(randomIndex);
-                taskIDs.remove(randomIndex);
-
                 Task tempTask = new Task(randomID);
+
+                // temporary id set to remove from
+                List<String> tempIDs = taskIDs;
+                if (Arrays.asList(tempTask.getExcludedPlayers()).contains(tPlayer.getName())) {
+                    while (!tempIDs.isEmpty()) {
+                        // reset the task
+                        randomIndex = randomTask.nextInt(taskIDs.size());
+                        randomID = tempIDs.get(randomIndex);
+
+                        tempTask = new Task(randomID);
+                        tempIDs.remove(randomIndex);
+                    }
+                }
+
+                if (tempIDs.isEmpty()) {
+                    player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please annoy "
+                            + "the admins into creating new tasks.");
+                    return;
+                }
+
+                taskIDs.remove(randomIndex);
                 tempTask.setExcluded(true);
 
-                // since tasks may involve other players names on them
-                String description = tempTask.getDescription().toLowerCase();
-                String receiverPlaceholder = "{receiver}".toLowerCase();
-                String senderPlaceholder = "{sender}".toLowerCase();
-
                 // in case {receiver} has been entered weirdly
-                if (description.contains(receiverPlaceholder)) {
-                    tempTask.setPlayerDescription(manageReceiverDescription(tempTask.getDescription(), player));
-                }
-
-                if (description.contains(senderPlaceholder)) {
-                    tempTask.setPlayerDescription(manageSenderDescription(tempTask.getDescription(), player));
-                }
+                tempTask.setPlayerDescription(manageReceiverDescription(
+                        manageSenderDescription(tempTask.getDescription(), player), player));
 
                 // give player task and corresponding book
                 addTaskToPlayer(tPlayer, randomID);

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
@@ -36,8 +37,8 @@ public class WhatTask implements CommandExecutor {
         TPlayer tempPlayer = new TPlayer(sender.getName());
 
         if (tempPlayer.getTasks().length == 0) {
-            sender.sendMessage(ChatColor.RED
-                    + "Tasks not yet initialized. Make sure to run /startlife and then /starttasks.");
+            sender.sendMessage(ChatColor.RED + "Player has no active task to complete."
+                    + " Start a new task by right clicking a sign at spawn.");
             return true;
         }
 
@@ -78,13 +79,18 @@ public class WhatTask implements CommandExecutor {
             difficultyText = "Red";
         } else if (taskDifficulty == 3) {
             messageColor = ChatColor.DARK_AQUA;
-            difficultyText = "Raven";
+            difficultyText = "Special";
         }
 
         // send the player task information
         sender.sendMessage(messageColor + "Your current task is: "
                 + ChatColor.WHITE + tempTask.getPlayerDescription());
         sender.sendMessage("Your current task's difficulty is: " + messageColor + difficultyText);
+
+        if (sender.isOp() && !Arrays.asList(tempTask.getExcludedPlayers()).isEmpty()) {
+            sender.sendMessage("Task excluded players: " + ChatColor.YELLOW
+                    + Arrays.toString(tempTask.getExcludedPlayers()));
+        }
 
         return true;
     }

@@ -80,6 +80,7 @@ public class NewTask implements CommandExecutor {
         tempPlayers.add(player);
 
         doTaskDistribution(tempPlayers, difficulty);
+        tempPlayer.setNextTask("-1");
         return true;
     }
 }

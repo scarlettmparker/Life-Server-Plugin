@@ -29,12 +29,18 @@ commands:
   edittask:
     description: Edits a task by its name.
     usage: /<command>
+  excludeplayer:
+    description: Excludes a player from a task.
+    usage: /<command> taskID player
   excludetask:
     description: Excludes a task.
     usage: /<command> taskID
   failtask:
     description: Fails a user's task.
     usage: /<command> player
+  forcetask:
+    description: Force a player's next task.
+    usage: /<command> player taskID
   listtasks:
     description: Lists all (non-excluded) tasks.
     usage: /<command> [allowed|excluded]
