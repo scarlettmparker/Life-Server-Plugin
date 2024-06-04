@@ -125,15 +125,15 @@
 
 ## Life Rules
 
-Players cannot hold more than 4 lives at a time.
-Players once revived cannot be gifted more than one life.
-Players may only attempt 2 tasks per session.
+- Players cannot hold more than 4 lives at a time.
+- Players once revived cannot be gifted more than one life.
+- Players may only attempt 2 tasks per session.
 
 ## World Events
 
-Player information such as deaths and task history are stored in the playerbase.json file.
-It's recommended to turn on keepInventory with `/gamerule keepInventory true` as players will drop their items when losing their final life.
- It's recommended to turn off showDeathMessages with `/gamerule showDeathMessages false` as there are custom death messages are in place.
+- Player information such as deaths and task history are stored in the playerbase.json file.
+- It's recommended to turn on keepInventory with `/gamerule keepInventory true` as players will drop their items when losing their final life.
+- It's recommended to turn off showDeathMessages with `/gamerule showDeathMessages false` as there are custom death messages are in place.
 
 # Example Usage
 
