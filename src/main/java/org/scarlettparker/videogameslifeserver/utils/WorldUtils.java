@@ -175,7 +175,7 @@ public class WorldUtils {
             difficultyText = "Red";
         } else if (task.getDifficulty() == 3) {
             messageColor = ChatColor.DARK_AQUA;
-            difficultyText = "Special";
+            difficultyText = "Shiny";
         }
 
         // format the book properly

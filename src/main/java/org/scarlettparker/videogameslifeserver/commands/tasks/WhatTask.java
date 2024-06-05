@@ -36,14 +36,14 @@ public class WhatTask implements CommandExecutor {
 
         TPlayer tempPlayer = new TPlayer(sender.getName());
 
-        if (tempPlayer.getTasks().length == 0) {
+        if (tempPlayer.getTasks().length == 0 && args.length == 0) {
             sender.sendMessage(ChatColor.RED + "Player has no active task to complete."
                     + " Start a new task by right clicking a sign at spawn.");
             return true;
         }
 
         // because perhaps some people will try to be funny
-        if (tempPlayer.getLives() <= 0) {
+        if (tempPlayer.getLives() <= 0 && args.length == 0) {
             sender.sendMessage(ChatColor.RED + "You are a spectator. You cannot complete new tasks.");
             return true;
         }
@@ -51,7 +51,7 @@ public class WhatTask implements CommandExecutor {
         String task = args.length > 0 ? args[0] : tempPlayer.getCurrentTask();
         Task tempTask = new Task(task);
 
-        if (Objects.equals(tempPlayer.getCurrentTask(), "-1")) {
+        if (Objects.equals(tempPlayer.getCurrentTask(), "-1") && args.length == 0) {
             sender.sendMessage(ChatColor.RED
                     + "You have no active task! Players can select a new task by clicking a sign at spawn.");
             return true;
@@ -79,17 +79,26 @@ public class WhatTask implements CommandExecutor {
             difficultyText = "Red";
         } else if (taskDifficulty == 3) {
             messageColor = ChatColor.DARK_AQUA;
-            difficultyText = "Special";
+            difficultyText = "Shiny";
         }
 
         // send the player task information
-        sender.sendMessage(messageColor + "Your current task is: "
-                + ChatColor.WHITE + tempPlayer.getTaskDescription());
+        if (args.length == 0) {
+            sender.sendMessage(messageColor + "Your current task is: "
+                    + ChatColor.WHITE + tempPlayer.getTaskDescription());
+        } else {
+            sender.sendMessage(messageColor + "Your current task is: "
+                    + ChatColor.WHITE + tempTask.getDescription());
+        }
+
         sender.sendMessage("Your current task's difficulty is: " + messageColor + difficultyText);
 
         if (sender.isOp() && !Arrays.asList(tempTask.getExcludedPlayers()).isEmpty()) {
             sender.sendMessage("Task excluded players: " + ChatColor.YELLOW
                     + Arrays.toString(tempTask.getExcludedPlayers()));
+        }
+        if (sender.isOp()) {
+            sender.sendMessage("Task priority: " + ChatColor.YELLOW + tempTask.getPriority());
         }
 
         return true;

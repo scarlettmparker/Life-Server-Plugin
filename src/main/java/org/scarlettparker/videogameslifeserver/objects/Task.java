@@ -43,13 +43,13 @@ public class Task {
     }
 
     public int getPriority() {
-        Object reward = getJsonObjectAttribute(taskFile, String.valueOf(name), "priority");
-        return reward instanceof Integer ? (Integer) reward : 0; // default value is 0
+        Object priority = getJsonObjectAttribute(taskFile, String.valueOf(name), "priority");
+        return priority instanceof Integer ? (Integer) priority : 0; // default value is 0
     }
 
     public int getReward() {
         Object reward = getJsonObjectAttribute(taskFile, String.valueOf(name), "reward");
-        return reward instanceof Integer ? (Integer) reward : -1; // default value is -1
+        return reward instanceof Integer ? (Integer) reward : 0; // default value is 0
     }
 
     public void setDifficulty(int difficulty) {

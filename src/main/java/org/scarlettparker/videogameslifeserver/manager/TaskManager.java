@@ -112,14 +112,20 @@ public class TaskManager {
             Task nextTask = new Task(tPlayer.getNextTask());
             nextTask.setExcluded(true);
 
-            // in case {receiver} has been entered weirdly
-            tPlayer.setTaskDescription(manageReceiverDescription(
-                    manageSenderDescription(nextTask.getDescription(), player), player));
+            if (nextTask.getDescription().contains("{player}")) {
+                // multi player tasks
+                List<Player> onlinePlayers = getAllPlayers();
+                manageMultiplePlayersDescription(nextTask, onlinePlayers);
+            } else {
+                // in case {receiver} has been entered weirdly
+                tPlayer.setTaskDescription(manageReceiverDescription(
+                        manageSenderDescription(nextTask.getDescription(), player), player));
 
-            // give player task and corresponding book
-            addTaskToPlayer(tPlayer, nextTask.getName());
-            removeBook(player);
-            bookCountdown(nextTask, player);
+                // give player task and corresponding book
+                addTaskToPlayer(tPlayer, nextTask.getName());
+                removeBook(player);
+                bookCountdown(nextTask, player);
+            }
         } else {
             Task currentTask = new Task(tPlayer.getCurrentTask());
             if (!taskIDs.isEmpty() && currentTask.getDifficulty() != 2) {
@@ -137,13 +143,13 @@ public class TaskManager {
                     tempTask.setExcluded(true);
 
                     // manage description stuff
-                    tPlayer.setTaskDescription(manageReceiverDescription(
-                            manageSenderDescription(tempTask.getDescription(), player), player));
                     if (tempTask.getDescription().contains("{player}")) {
                         // multi player tasks
                         List<Player> onlinePlayers = getAllPlayers();
                         manageMultiplePlayersDescription(tempTask, onlinePlayers);
                     } else {
+                        tPlayer.setTaskDescription(manageReceiverDescription(
+                                manageSenderDescription(tempTask.getDescription(), player), player));
                         addTaskToPlayer(tPlayer, taskID);
                         removeBook(player);
                         bookCountdown(tempTask, player);
@@ -195,7 +201,7 @@ public class TaskManager {
                 // add to forced players list if they have this task as their next task~
                 if (Objects.equals(tPlayer.getNextTask(), task.getName())) {
                     forcedPlayers.add(player);
-                } else {
+                } else if (Objects.equals(tPlayer.getCurrentTask(), "-1")){
                     eligiblePlayers.add(player);
                 }
             }
@@ -227,17 +233,23 @@ public class TaskManager {
 
             // replace {player} tags with the names of other players
             List<Player> descriptionPlayers = new ArrayList<>(involvedPlayers);
+
+            // update task description for the current player
+            updatedDescription = updatedDescription.replaceFirst("\\{receiver}", descriptionPlayers.get(1).getName());
             descriptionPlayers.remove(i);
 
             for (int j = 0; j < playerTagsCount - 1; j++) {
                 updatedDescription = updatedDescription.replaceFirst("\\{player}", descriptionPlayers.get(j).getName());
             }
 
-            // update task description for the current player
             tPlayer.setTaskDescription(updatedDescription);
             addTaskToPlayer(tPlayer, task.getName());
-            removeBook(currentPlayer);
-            bookCountdown(task, currentPlayer);
+        }
+
+        // why is it in another loop??? I DUNNO
+        for (Player player : involvedPlayers) {
+            removeBook(player);
+            bookCountdown(task, player);
         }
 
         // set next task for remaining eligible players

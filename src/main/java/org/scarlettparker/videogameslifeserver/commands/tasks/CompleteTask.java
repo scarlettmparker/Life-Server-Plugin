@@ -87,7 +87,7 @@ public class CompleteTask implements CommandExecutor {
             tokensIncrease = 9;
         }
 
-        if (tempTask.getReward() != -1) {
+        if (tempTask.getReward() != 0) {
             tokensIncrease = tempTask.getReward();
         }
 

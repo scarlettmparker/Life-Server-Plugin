@@ -112,34 +112,38 @@ public class EditTask implements CommandExecutor, Listener {
                 break;
             case ENTER_DIFFICULTY:
                 int difficulty;
-                switch (message.toLowerCase()) {
-                    case "0", "normal" -> difficulty = 0;
-                    case "1", "hard" -> difficulty = 1;
-                    case "2", "red" -> difficulty = 2;
-                    case "3", "special" -> difficulty = 3;
-                    default -> {
-                        player.sendMessage(ChatColor.RED + "Invalid difficulty. Valid difficulties: 0 (normal), 1 (hard), 2 (red), or 3 (special).");
-                        return;
+                if (message.equalsIgnoreCase("none")) {
+                    state.difficulty = -1; // indicate that the description should remain unchanged
+                    player.sendMessage(ChatColor.YELLOW + "Description left unchanged.");
+                } else {
+                    switch (message.toLowerCase()) {
+                        case "0", "normal" -> difficulty = 0;
+                        case "1", "hard" -> difficulty = 1;
+                        case "2", "red" -> difficulty = 2;
+                        case "3", "special" -> difficulty = 3;
+                        default -> {
+                            player.sendMessage(ChatColor.RED + "Invalid difficulty. Valid difficulties: 0 (normal), 1 (hard), 2 (red), or 3 (special).");
+                            return;
+                        }
                     }
+                    state.difficulty = difficulty;
+                    player.sendMessage(ChatColor.GREEN + "Difficulty: " + message);
                 }
-                state.difficulty = difficulty;
                 state.step = TaskCreationStep.ENTER_TOKENS;
-                player.sendMessage(ChatColor.GREEN + "Difficulty: " + message);
                 player.sendMessage(ChatColor.DARK_AQUA + "Enter the new token reward (0 for default) (type 'cancel' to cancel, 'none' to leave unchanged):");
                 break;
             case ENTER_TOKENS:
-                int tokens;
-
+                int tokens = 0;
                 if (message.equalsIgnoreCase("none")) {
                     state.tokens = -1; // indicate that the tokens should remain unchanged
                     player.sendMessage(ChatColor.YELLOW + "Token reward left unchanged.");
-                }
-
-                try {
-                    tokens = Integer.parseInt(message);
-                } catch (Exception e) {
-                    player.sendMessage(ChatColor.RED + "Please enter a valid integer for number of tokens.");
-                    return;
+                } else {
+                    try {
+                        tokens = Integer.parseInt(message);
+                    } catch (Exception e) {
+                        player.sendMessage(ChatColor.RED + "Please enter a valid integer for number of tokens.");
+                        return;
+                    }
                 }
 
                 if (tokens == 0) {
@@ -153,6 +157,8 @@ public class EditTask implements CommandExecutor, Listener {
                         tokens = 11;
                     }
                 }
+
+                state.tokens = tokens;
 
                 if (tokens < 0 && state.tokens != -1) {
                     player.sendMessage(ChatColor.RED + "Token reward cannot be below 1.");

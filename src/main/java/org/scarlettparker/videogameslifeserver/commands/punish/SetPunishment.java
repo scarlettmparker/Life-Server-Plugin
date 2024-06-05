@@ -18,9 +18,6 @@ import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.appl
 public class SetPunishment implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        // for cleanliness
-        Player player = Bukkit.getPlayer(args[0]);
-
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
             sender.sendMessage(ChatColor.RED + "You must be an operator to run this command.");
@@ -38,11 +35,12 @@ public class SetPunishment implements CommandExecutor {
             return true;
         }
 
-        if (!playerExists(args[0]) || player == null) {
+        if (!playerExists(args[0])) {
             sender.sendMessage(ChatColor.RED + "Specified player is not online.");
             return true;
         }
 
+        Player player = Bukkit.getPlayer(args[0]);
         Punishment tempPunishment = new Punishment(args[1]);
 
         if (Objects.equals(tempPunishment.getDescription(), "")) {
