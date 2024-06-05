@@ -117,6 +117,15 @@ public class TPlayer {
         setJsonObjectAttribute(playerFile, name, "punishments", punishments);
     }
 
+    public String getTaskDescription() {
+        Object taskDescription = getJsonObjectAttribute(playerFile, name, "taskDescription");
+        return taskDescription instanceof String ? (String) taskDescription : "-1";
+    }
+
+    public void setTaskDescription(String description) {
+        setJsonObjectAttribute(playerFile, name, "taskDescription", description);
+    }
+
     public void addPunishment(String punishmentID) {
         String[] currentPunishments = getPunishments();
         String[] tempPunishments = new String[currentPunishments.length + 1];

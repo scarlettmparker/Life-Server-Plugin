@@ -18,7 +18,6 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.*;
 
 public class TaskManager {
-
     public static void generateTasks() {
         String path = "tasks/tasks.txt";
         InputStream is = TaskManager.class.getClassLoader().getResourceAsStream(path);
@@ -37,7 +36,6 @@ public class TaskManager {
 
                 // set task attributes
                 tempTask.setDescription(attributes[1]);
-                tempTask.setPlayerDescription(attributes[1]);
                 tempTask.setDifficulty(Integer.parseInt(attributes[2]));
                 tempTask.setCompleted(false);
                 tempTask.setExcluded(false);
@@ -87,8 +85,6 @@ public class TaskManager {
 
     // distribute tasks to players
     private static void distributeTasksToPlayers(List<Player> players, List<String> normalIDs, List<String> redIDs) {
-        Random randomTask = new Random();
-
         for (Player p : players) {
             TPlayer tempPlayer = new TPlayer(p.getName());
             int playerLives = tempPlayer.getLives();
@@ -98,18 +94,26 @@ public class TaskManager {
             }
 
             List<String> taskIDs = (playerLives >= 2) ? normalIDs : redIDs;
-            assignTaskToPlayer(randomTask, p, tempPlayer, taskIDs);
+            System.out.println(taskIDs);
+
+            // sort tasks by priority
+            taskIDs.sort(Comparator.comparingInt(taskID -> new Task((String) taskID).getPriority()).reversed());
+            assignTaskToPlayer(p, tempPlayer, taskIDs);
         }
     }
 
     // assign a task to a player
-    private static void assignTaskToPlayer(Random randomTask, Player player, TPlayer tPlayer, List<String> taskIDs) {
+    private static void assignTaskToPlayer(Player player, TPlayer tPlayer, List<String> taskIDs) {
+        if (!Objects.equals(tPlayer.getCurrentTask(), "-1")) {
+            return;
+        }
+
         if (!Objects.equals(tPlayer.getNextTask(), "-1")) {
             Task nextTask = new Task(tPlayer.getNextTask());
             nextTask.setExcluded(true);
 
             // in case {receiver} has been entered weirdly
-            nextTask.setPlayerDescription(manageReceiverDescription(
+            tPlayer.setTaskDescription(manageReceiverDescription(
                     manageSenderDescription(nextTask.getDescription(), player), player));
 
             // give player task and corresponding book
@@ -119,50 +123,39 @@ public class TaskManager {
         } else {
             Task currentTask = new Task(tPlayer.getCurrentTask());
             if (!taskIDs.isEmpty() && currentTask.getDifficulty() != 2) {
-                // get random task in list
-                int randomIndex = randomTask.nextInt(taskIDs.size());
-                String randomID = taskIDs.get(randomIndex);
-                Task tempTask = new Task(randomID);
+                Iterator<String> iterator = taskIDs.iterator();
+                while (iterator.hasNext()) {
+                    String taskID = iterator.next();
+                    Task tempTask = new Task(taskID);
 
-                // temporary id set to remove from
-                List<String> tempIDs = taskIDs;
-                if (Arrays.asList(tempTask.getExcludedPlayers()).contains(tPlayer.getName())) {
-                    while (!tempIDs.isEmpty()) {
-                        // reset the task
-                        randomIndex = randomTask.nextInt(taskIDs.size());
-                        randomID = tempIDs.get(randomIndex);
-
-                        tempTask = new Task(randomID);
-                        tempIDs.remove(randomIndex);
+                    if (Arrays.asList(tempTask.getExcludedPlayers()).contains(tPlayer.getName())) {
+                        continue;
                     }
-                }
 
-                if (tempIDs.isEmpty()) {
-                    player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please annoy "
-                            + "the admins into creating new tasks.");
+                    // safely remove the taskID from the list
+                    iterator.remove();
+                    tempTask.setExcluded(true);
+
+                    // manage description stuff
+                    tPlayer.setTaskDescription(manageReceiverDescription(
+                            manageSenderDescription(tempTask.getDescription(), player), player));
+                    if (tempTask.getDescription().contains("{player}")) {
+                        // multi player tasks
+                        List<Player> onlinePlayers = getAllPlayers();
+                        manageMultiplePlayersDescription(tempTask, onlinePlayers);
+                    } else {
+                        addTaskToPlayer(tPlayer, taskID);
+                        removeBook(player);
+                        bookCountdown(tempTask, player);
+                    }
                     return;
                 }
-
-                taskIDs.remove(randomIndex);
-                tempTask.setExcluded(true);
-
-                // in case {receiver} has been entered weirdly
-                tempTask.setPlayerDescription(manageReceiverDescription(
-                        manageSenderDescription(tempTask.getDescription(), player), player));
-
-                // give player task and corresponding book
-                addTaskToPlayer(tPlayer, randomID);
-                removeBook(player);
-                bookCountdown(tempTask, player);
-            } else {
-                // because tasks can't be duplicated ig
-                if (Objects.equals(tPlayer.getCurrentTask(), "-1")) {
-                    player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please annoy "
-                            + "the admins into creating new tasks.");
-                }
+            } else if (Objects.equals(tPlayer.getCurrentTask(), "-1")) {
+                player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please annoy the admins into creating new tasks.");
             }
         }
     }
+
 
     // add a task to a player's task list
     private static void addTaskToPlayer(TPlayer tPlayer, String taskID) {
@@ -173,5 +166,88 @@ public class TaskManager {
         // set player attributes so program doesn't die itself
         tPlayer.setTasks(tempTasks);
         tPlayer.setCurrentTask(taskID);
+    }
+
+    public static String manageReceiverDescription(String description, Player p) {
+        List<Player> allPlayers = getAllPlayers();
+        if (allPlayers.size() > 1) {
+            allPlayers.remove(p.getPlayer());
+        }
+        int random = new Random().nextInt(allPlayers.size());
+        Player pickedPlayer = allPlayers.get(random);
+        return description.replace("{receiver}", pickedPlayer.getName());
+    }
+
+    public static String manageSenderDescription(String description, Player p) {
+        return description.replace("{sender}", p.getName());
+    }
+
+    public static void manageMultiplePlayersDescription(Task task, List<Player> onlinePlayers) {
+        String description = task.getDescription();
+        List<Player> eligiblePlayers = new ArrayList<>();
+        List<Player> forcedPlayers = new ArrayList<>();
+        Random random = new Random();
+
+        // filter eligible players who have no current tasks and are not excluded
+        for (Player player : onlinePlayers) {
+            TPlayer tPlayer = new TPlayer(player.getName());
+            if (!Arrays.asList(task.getExcludedPlayers()).contains(player.getName())) {
+                // add to forced players list if they have this task as their next task~
+                if (Objects.equals(tPlayer.getNextTask(), task.getName())) {
+                    forcedPlayers.add(player);
+                } else {
+                    eligiblePlayers.add(player);
+                }
+            }
+        }
+
+        int playerTagsCount = description.split("\\{player\\}").length;
+
+        // check if there are enough eligible players
+        if (forcedPlayers.size() + eligiblePlayers.size() < playerTagsCount) {
+            return;
+        }
+
+        // add forced players first
+        List<Player> involvedPlayers = new ArrayList<>(forcedPlayers);
+
+        // select random unique eligible players if needed
+        while (involvedPlayers.size() < playerTagsCount) {
+            Player pickedPlayer = eligiblePlayers.get(random.nextInt(eligiblePlayers.size()));
+            if (!involvedPlayers.contains(pickedPlayer)) {
+                involvedPlayers.add(pickedPlayer);
+            }
+        }
+
+        // assign the task to all involved players with the correct description
+        for (int i = 0; i < involvedPlayers.size(); i++) {
+            Player currentPlayer = involvedPlayers.get(i);
+            TPlayer tPlayer = new TPlayer(currentPlayer.getName());
+            String updatedDescription = description;
+
+            // replace {player} tags with the names of other players
+            List<Player> descriptionPlayers = new ArrayList<>(involvedPlayers);
+            descriptionPlayers.remove(i);
+
+            for (int j = 0; j < playerTagsCount - 1; j++) {
+                updatedDescription = updatedDescription.replaceFirst("\\{player}", descriptionPlayers.get(j).getName());
+            }
+
+            // update task description for the current player
+            tPlayer.setTaskDescription(updatedDescription);
+            addTaskToPlayer(tPlayer, task.getName());
+            removeBook(currentPlayer);
+            bookCountdown(task, currentPlayer);
+        }
+
+        // set next task for remaining eligible players
+        for (Player player : eligiblePlayers) {
+            if (!involvedPlayers.contains(player)) {
+                TPlayer tPlayer = new TPlayer(player.getName());
+                tPlayer.setNextTask("-1");
+            }
+        }
+
+        task.setExcluded(true);
     }
 }

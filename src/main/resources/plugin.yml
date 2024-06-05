@@ -47,6 +47,9 @@ commands:
   newtask:
     description: Gives a player a new task.
     usage: /<command> normal|hard player
+  setpriority:
+    description: Set a task's priority.
+    usage: /<command> taskID priority
   settask:
     description: Sets a player's task.
     usage: /<command> player taskID

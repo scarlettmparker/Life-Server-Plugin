@@ -8,18 +8,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class WorldUtils {
     static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
 
     public static List<Player> getAllPlayers() {
-        return new ArrayList<>(Bukkit.getOnlinePlayers());
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        Collections.shuffle(players);
+        return players;
     }
 
     public static void setPlayerName(Player p, int lives) {
@@ -114,23 +114,10 @@ public class WorldUtils {
         }
     }
 
-    public static String manageReceiverDescription(String description, Player p) {
-        List<Player> allPlayers = getAllPlayers();
-        if (allPlayers.size() > 1) {
-            allPlayers.remove(p.getPlayer());
-        }
-        int random = new Random().nextInt(allPlayers.size());
-        Player pickedPlayer = allPlayers.get(random);
-        return description.replace("{receiver}", pickedPlayer.getName());
-    }
-
-    public static String manageSenderDescription(String description, Player p) {
-        return description.replace("{sender}", p.getName());
-    }
-
     public static void giveTaskBook(Task task, Player p) {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK, 1);
-        setBookMeta(book, task);
+        TPlayer tempPlayer = new TPlayer(p.getName());
+        setBookMeta(book, task, tempPlayer);
 
         // if the player's inventory is full
         if (p.getInventory().firstEmpty() == -1) {
@@ -170,7 +157,7 @@ public class WorldUtils {
         runnable.runTaskTimer(plugin, 60L, 20L);
     }
 
-    private static void setBookMeta(ItemStack book, Task task) {
+    private static void setBookMeta(ItemStack book, Task task, TPlayer tempPlayer) {
         BookMeta meta = (BookMeta) book.getItemMeta();
 
         ChatColor messageColor = null;
@@ -196,7 +183,7 @@ public class WorldUtils {
         meta.setAuthor("VGS Life Series");
 
         // split description into segments of 268 characters
-        String playerDescription = task.getPlayerDescription();
+        String playerDescription = tempPlayer.getTaskDescription();
         List<String> pages = new ArrayList<>();
         StringBuilder currentPage = new StringBuilder("Task Difficulty: " + messageColor
                 + difficultyText + ChatColor.BLACK + "\n");

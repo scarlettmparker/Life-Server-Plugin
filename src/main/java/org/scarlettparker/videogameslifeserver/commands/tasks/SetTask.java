@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
-import static org.scarlettparker.videogameslifeserver.manager.TaskManager.doTaskDistribution;
+import static org.scarlettparker.videogameslifeserver.manager.TaskManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.*;
 
 public class SetTask implements CommandExecutor {
@@ -64,7 +64,7 @@ public class SetTask implements CommandExecutor {
         }
 
         tempTask.setExcluded(true);
-        tempTask.setPlayerDescription(manageReceiverDescription(manageSenderDescription(tempTask.getDescription(), player), player));
+        tempPlayer.setTaskDescription(manageReceiverDescription(manageSenderDescription(tempTask.getDescription(), player), player));
         tempPlayer.setCurrentTask(tempTask.getName());
 
         // make sure to give the correct book

@@ -14,8 +14,6 @@ import java.util.Objects;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 
 public class ExcludeTask implements CommandExecutor {
-    private final Gson gson = new Gson();
-
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {

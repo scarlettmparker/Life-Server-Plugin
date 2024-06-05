@@ -90,6 +90,9 @@
 - **Description**: Gives a player a new task.
 - **Usage**: `/newtask <normal|hard> <player>`
 
+### /setpriority
+- **Description**: Sets the priorty of a task.
+- **Usage**: `/setpriority <taskID> priority`
 ### /settask
 - **Description**: Sets a player's task.
 - **Usage**: `/settask <player> <taskID>`
@@ -121,7 +124,7 @@
 - **Punishment IDs**: 
 - **Usage**: `/setpunishment <player> <punishmentID>`
 
-# Rules and Events
+# Extra Information
 
 ## Life Rules
 
@@ -134,6 +137,13 @@
 - Player information such as deaths and task history are stored in the playerbase.json file.
 - It's recommended to turn on keepInventory with `/gamerule keepInventory true` as players will drop their items when losing their final life.
 - It's recommended to turn off showDeathMessages with `/gamerule showDeathMessages false` as there are custom death messages are in place.
+
+## Task Tags
+
+- There are three task tags you can add to the task description, and are as follows:
+- `{receiver}` will add a random online player to the task description, for tasks that are targeted at another player.
+- `{sender}` will add the current task holder's name to the task description.
+- `{player}` will add another player to the task, meaning multiple players will receive this task. For example, a task with the description "Beat {player} in a fist fight" will give 2 players the task, and they will see the opposing player's name in the description.
 
 # Example Usage
 

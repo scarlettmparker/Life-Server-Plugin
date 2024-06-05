@@ -72,7 +72,7 @@ public class FailTask implements CommandExecutor {
 
         // tell everyone the user has failed their task
         Bukkit.broadcastMessage(player.getName() + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE + ": "
-                + ChatColor.WHITE + tempTask.getPlayerDescription());
+                + ChatColor.WHITE + tempPlayer.getTaskDescription());
 
         tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
         tempPlayer.setCurrentTask("-1");
@@ -92,10 +92,6 @@ public class FailTask implements CommandExecutor {
             punishment = 2;
             difficultyType = "red ";
             difficultyColor = ChatColor.RED;
-        } else if (difficulty == 3) {
-            punishment = 1;
-            difficultyType = "Raven ";
-            difficultyColor = ChatColor.DARK_AQUA;
         }
 
         removeBook(player);

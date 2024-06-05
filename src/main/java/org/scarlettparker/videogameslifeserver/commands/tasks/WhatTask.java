@@ -84,7 +84,7 @@ public class WhatTask implements CommandExecutor {
 
         // send the player task information
         sender.sendMessage(messageColor + "Your current task is: "
-                + ChatColor.WHITE + tempTask.getPlayerDescription());
+                + ChatColor.WHITE + tempPlayer.getTaskDescription());
         sender.sendMessage("Your current task's difficulty is: " + messageColor + difficultyText);
 
         if (sender.isOp() && !Arrays.asList(tempTask.getExcludedPlayers()).isEmpty()) {

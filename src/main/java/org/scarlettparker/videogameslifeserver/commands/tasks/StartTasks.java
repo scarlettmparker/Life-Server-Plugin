@@ -112,8 +112,8 @@ public class StartTasks implements CommandExecutor {
                             // create temporary task and set player description back so it displays correctly please
                             if (!Objects.equals(tempPlayer.getCurrentTask(), "-1")
                                     && tempTask.getDifficulty() != 2) {
-                                tempTask.setPlayerDescription(Objects.requireNonNull(getJsonObjectAttribute(taskFile,
-                                        tempPlayer.getCurrentTask(), "playerDescription")).toString());
+                                tempPlayer.setTaskDescription(Objects.requireNonNull(getJsonObjectAttribute(playerFile,
+                                        tempPlayer.getName(), "taskDescription")).toString());
                                 Bukkit.dispatchCommand(console, "failtask " + tempPlayer.getName() + " dbg");
                             }
                         }

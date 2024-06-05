@@ -68,6 +68,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("forcetask")).setExecutor(new ForceTask());
         Objects.requireNonNull(getCommand("listtasks")).setExecutor(new ListTasks());
         Objects.requireNonNull(getCommand("newtask")).setExecutor(new NewTask());
+        Objects.requireNonNull(getCommand("setpriority")).setExecutor(new SetPriority());
         Objects.requireNonNull(getCommand("settask")).setExecutor(new SetTask());
         Objects.requireNonNull(getCommand("starttasks")).setExecutor(new StartTasks());
         Objects.requireNonNull(getCommand("whattask")).setExecutor(new WhatTask());

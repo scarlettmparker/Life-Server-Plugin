@@ -69,7 +69,7 @@ public class CompleteTask implements CommandExecutor {
                 + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
 
         Bukkit.broadcastMessage(player.getName() + " has" + ChatColor.GREEN + " completed their task" + ChatColor.WHITE + ": "
-                + ChatColor.WHITE + tempTask.getPlayerDescription());
+                + ChatColor.WHITE + tempPlayer.getTaskDescription());
 
         int tokensIncrease = 0;
         int difficulty = tempTask.getDifficulty();

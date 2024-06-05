@@ -159,13 +159,13 @@ public class EditTask implements CommandExecutor, Listener {
                 }
 
                 state.step = TaskCreationStep.COMPLETED;
+                player.sendMessage(ChatColor.GREEN + "Token reward: " + tokens);
 
                 Task editedTask = new Task(state.taskId);
 
                 // edit attributes of current task
                 if (state.description != null) {
                     editedTask.setDescription(state.description);
-                    editedTask.setPlayerDescription(state.description);
                 }
 
                 if (state.difficulty != -1) {

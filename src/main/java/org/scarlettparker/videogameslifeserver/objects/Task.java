@@ -42,11 +42,6 @@ public class Task {
         return description instanceof String ? (String) description : ""; // default value is 0
     }
 
-    public String getPlayerDescription() {
-        Object playerDescription = getJsonObjectAttribute(taskFile, String.valueOf(name), "playerDescription");
-        return playerDescription instanceof String ? (String) playerDescription : ""; // default value is 0
-    }
-
     public int getPriority() {
         Object reward = getJsonObjectAttribute(taskFile, String.valueOf(name), "priority");
         return reward instanceof Integer ? (Integer) reward : 0; // default value is 0
@@ -55,15 +50,6 @@ public class Task {
     public int getReward() {
         Object reward = getJsonObjectAttribute(taskFile, String.valueOf(name), "reward");
         return reward instanceof Integer ? (Integer) reward : -1; // default value is -1
-    }
-
-    public String getReceiver() {
-        Object receiver = getJsonObjectAttribute(taskFile, String.valueOf(name), "receiver");
-        return receiver instanceof String ? (String) receiver : ""; // default value is 0
-    }
-
-    public void setID(String id) {
-        this.name = id;
     }
 
     public void setDifficulty(int difficulty) {
@@ -86,19 +72,11 @@ public class Task {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "description", description);
     }
 
-    public void setPlayerDescription(String playerDescription) {
-        setJsonObjectAttribute(taskFile, String.valueOf(name), "playerDescription", playerDescription);
-    }
-
     public void setPriority(int priority) {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "priority", priority);
     }
 
     public void setReward(int reward) {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "reward", reward);
-    }
-
-    public void setReceiver(String receiver) {
-        setJsonObjectAttribute(taskFile, String.valueOf(name), "receiver", receiver);
     }
 }
