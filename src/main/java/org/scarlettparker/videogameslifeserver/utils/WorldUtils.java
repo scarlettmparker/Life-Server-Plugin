@@ -208,6 +208,40 @@ public class WorldUtils {
         }
 
         meta.setPages(pages);
+
+        if (Objects.equals(task.getName(), "president")) {
+            pages = new ArrayList<>();
+
+            char c[] = tempPlayer.getTaskDescription().toCharArray();
+            c[0] = Character.toLowerCase(c[0]);
+            String taskDescription = new String(c);
+
+            pages.add("Task Difficulty: " + messageColor + difficultyText + "\n"
+                    + ChatColor.BLACK + "Good afternoon, " + tempPlayer.getName() + ", and congratulations on making "
+                    + "your way to the primaries!\n\nYou see, you're quite the hot-shot politican, and are ready to "
+                    + ChatColor.DARK_AQUA + "run for president of the server!\n");
+
+            pages.add(ChatColor.BLACK + "However, the other party has gotten quite popular, too -"
+                    + " so you must" + ChatColor.DARK_AQUA + " win over the members of the server through a session long campaign."
+                    + ChatColor.BLACK + "\n\nYour full task description can be found on the next page.");
+
+            pages.add(ChatColor.BLACK + "Your task is to " + taskDescription + "\n\nYou should both meet up and"
+                    + ChatColor.DARK_AQUA + " discuss a time to hold the vote at spawn"
+                    + ChatColor.BLACK + ", near the end of the session, after your campaigns.");
+
+            pages.add(ChatColor.BLACK + "As you're of such high esteem, " + ChatColor.DARK_AQUA
+                    + "no yellow players are allowed to guess your task." + ChatColor.BLACK + "\n\nHowever, "
+                    + "you are " + ChatColor.DARK_AQUA + "not allowed to manually fail this task.\n\n"
+                    + ChatColor.BLACK + "To reiterate, " + ChatColor.RED + "you are NOT allowed to manually fail this task.");
+
+            pages.add(ChatColor.BLACK + "You will not be punished if you are not elected, though winning the election"
+                    + " will" + ChatColor.DARK_AQUA + " award you a large prize" + ChatColor.BLACK
+                    + ", along with a " + ChatColor.DARK_AQUA + "special rare item.\n\n"
+                    + ChatColor.BLACK + "Good luck, future president! Your country salutes you.");
+
+            meta.setPages(pages);
+        }
+
         book.setItemMeta(meta);
     }
 

@@ -42,6 +42,11 @@ public class Task {
         return description instanceof String ? (String) description : ""; // default value is 0
     }
 
+    public String getPlayerDescription() {
+        Object playerDescription = getJsonObjectAttribute(taskFile, String.valueOf(name), "playerDescription");
+        return playerDescription instanceof String ? (String) playerDescription : ""; // default value is 0
+    }
+
     public int getPriority() {
         Object priority = getJsonObjectAttribute(taskFile, String.valueOf(name), "priority");
         return priority instanceof Integer ? (Integer) priority : 0; // default value is 0

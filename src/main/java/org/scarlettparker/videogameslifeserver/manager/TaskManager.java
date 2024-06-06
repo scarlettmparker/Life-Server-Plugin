@@ -3,6 +3,7 @@ package org.scarlettparker.videogameslifeserver.manager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
@@ -115,7 +116,7 @@ public class TaskManager {
             if (nextTask.getDescription().contains("{player}")) {
                 // multi player tasks
                 List<Player> onlinePlayers = getAllPlayers();
-                manageMultiplePlayersDescription(nextTask, onlinePlayers);
+                manageMultiplePlayersDescription(tPlayer, nextTask, onlinePlayers);
             } else {
                 // in case {receiver} has been entered weirdly
                 tPlayer.setTaskDescription(manageReceiverDescription(
@@ -146,7 +147,7 @@ public class TaskManager {
                     if (tempTask.getDescription().contains("{player}")) {
                         // multi player tasks
                         List<Player> onlinePlayers = getAllPlayers();
-                        manageMultiplePlayersDescription(tempTask, onlinePlayers);
+                        manageMultiplePlayersDescription(tPlayer, tempTask, onlinePlayers);
                     } else {
                         tPlayer.setTaskDescription(manageReceiverDescription(
                                 manageSenderDescription(tempTask.getDescription(), player), player));
@@ -188,7 +189,7 @@ public class TaskManager {
         return description.replace("{sender}", p.getName());
     }
 
-    public static void manageMultiplePlayersDescription(Task task, List<Player> onlinePlayers) {
+    public static void manageMultiplePlayersDescription(TPlayer tempPlayer, Task task, List<Player> onlinePlayers) {
         String description = task.getDescription();
         List<Player> eligiblePlayers = new ArrayList<>();
         List<Player> forcedPlayers = new ArrayList<>();
@@ -211,6 +212,9 @@ public class TaskManager {
 
         // check if there are enough eligible players
         if (forcedPlayers.size() + eligiblePlayers.size() < playerTagsCount) {
+            Bukkit.getPlayer(tempPlayer.getName()).sendMessage(ChatColor.RED
+                    + "You were assigned a multiplayer task but there are not enough players online. "
+                    + "Contact the admins to manually set your task.");
             return;
         }
 
