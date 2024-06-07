@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.*;
@@ -95,11 +96,22 @@ public class TaskManager {
             }
 
             List<String> taskIDs = (playerLives >= 2) ? normalIDs : redIDs;
-            System.out.println(taskIDs);
 
-            // sort tasks by priority
-            taskIDs.sort(Comparator.comparingInt(taskID -> new Task((String) taskID).getPriority()).reversed());
-            assignTaskToPlayer(p, tempPlayer, taskIDs);
+            // group tasks by priority
+            Map<Integer, List<String>> tasksByPriority = taskIDs.stream()
+                    .collect(Collectors.groupingBy(taskID -> new Task(taskID).getPriority()));
+
+            // shuffle each priority group
+            List<String> shuffledTaskIDs = new ArrayList<>();
+            tasksByPriority.keySet().stream()
+                    .sorted(Comparator.reverseOrder()) // higher priority tasks come first
+                    .forEach(priority -> {
+                        List<String> priorityTasks = tasksByPriority.get(priority);
+                        Collections.shuffle(priorityTasks);
+                        shuffledTaskIDs.addAll(priorityTasks);
+                    });
+
+            assignTaskToPlayer(p, tempPlayer, shuffledTaskIDs);
         }
     }
 

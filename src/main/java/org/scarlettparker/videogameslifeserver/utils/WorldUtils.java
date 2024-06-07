@@ -209,6 +209,7 @@ public class WorldUtils {
 
         meta.setPages(pages);
 
+        // i love hard coding stuff
         if (Objects.equals(task.getName(), "president")) {
             pages = new ArrayList<>();
 
@@ -238,10 +239,30 @@ public class WorldUtils {
                     + " will" + ChatColor.DARK_AQUA + " award you a large prize" + ChatColor.BLACK
                     + ", along with a " + ChatColor.DARK_AQUA + "special rare item.\n\n"
                     + ChatColor.BLACK + "Good luck, future president! Your country salutes you.");
-
-            meta.setPages(pages);
         }
 
+        if (Objects.equals(task.getName(), "trivia")) {
+            pages = new ArrayList<>();
+            pages.add("Task Difficulty: " + messageColor + difficultyText + "\n"
+                    + ChatColor.BLACK + "Your task is to build a place to host a trivia game and get at least 3 "
+                    + "players to participate. The questions should be based on the previous life server (examples "
+                    + "are given in the book if you didn't participate), but can be about any part of the server you "
+                    + "want.");
+            pages.add("The winner should also be announced to the chat, as they will be given a prize as well. You "
+                    + "may build the place to host the trivia game wherever you like on the server, it just must be "
+                    + "on the surface. Turn to the next page for some example questions. Scoring is up to your discretion.");
+            pages.add("1. Name at least 2 players who won the previous life server.\n\n"
+                    + "Acceptable answers: Harry (OrcaHedral), Jon (SpectralBlue), Scarlett (scarwe), Dylan (OperationDusty),"
+                    + " \nLucy (UndeadP0WER), Tal (Tal_Doesnt_Exist), Ollie (FizzyKinkajou).");
+            pages.add("2. What caused Harry (OrcaHedral)'s first death?\n\n"
+                    + "Answer: His ender pearl glitched in the end, causing him to fall into the void.");
+            pages.add("3. Who had the most kills in the previous life server?\n\n"
+                    + "Acceptable answers: Evil Harry (Spectralwraith), Chris (LightingLord)");
+            pages.add("4. What was the weapon that William (TerrariaTrees) used to attack Scarlett (scarwe) with called?\n\n"
+                    + "Answer: Scarlett Slayer (The Scarlett Slayer is also acceptable).");
+        }
+
+        meta.setPages(pages);
         book.setItemMeta(meta);
     }
 
