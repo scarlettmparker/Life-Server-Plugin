@@ -86,8 +86,30 @@ public class TaskManager {
     }
 
     // distribute tasks to players
-    private static void distributeTasksToPlayers(List<Player> players, List<String> normalIDs, List<String> redIDs) {
+    // yes i know this can be improved but i've done so much for this plugin i've lost interest kinda
+    public static void distributeTasksToPlayers(List<Player> players, List<String> normalIDs, List<String> redIDs) {
+        // separate players with forced tasks and without forced tasks
+        List<Player> forcedTaskPlayers = new ArrayList<>();
+        List<Player> nonForcedTaskPlayers = new ArrayList<>();
+
         for (Player p : players) {
+            TPlayer tempPlayer = new TPlayer(p.getName());
+            if (!tempPlayer.getNextTask().equals("-1")) {
+                forcedTaskPlayers.add(p);
+            } else {
+                nonForcedTaskPlayers.add(p);
+            }
+        }
+
+        // shuffle non-forced task players
+        Collections.shuffle(nonForcedTaskPlayers);
+
+        // create a final ordered list of players
+        List<Player> orderedPlayers = new ArrayList<>(forcedTaskPlayers);
+        orderedPlayers.addAll(nonForcedTaskPlayers);
+
+        // Distribute tasks to players in the ordered list
+        for (Player p : orderedPlayers) {
             TPlayer tempPlayer = new TPlayer(p.getName());
             int playerLives = tempPlayer.getLives();
 
@@ -97,11 +119,11 @@ public class TaskManager {
 
             List<String> taskIDs = (playerLives >= 2) ? normalIDs : redIDs;
 
-            // group tasks by priority
+            // Group tasks by priority
             Map<Integer, List<String>> tasksByPriority = taskIDs.stream()
                     .collect(Collectors.groupingBy(taskID -> new Task(taskID).getPriority()));
 
-            // shuffle each priority group
+            // Shuffle each priority group
             List<String> shuffledTaskIDs = new ArrayList<>();
             tasksByPriority.keySet().stream()
                     .sorted(Comparator.reverseOrder()) // higher priority tasks come first

@@ -6,11 +6,12 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
@@ -99,6 +100,28 @@ public class LifeEvents implements Listener {
         FireworkEffect fireworkEffect = FireworkEffect.builder().flicker(false).trail(true)
                 .with(FireworkEffect.Type.BALL).withColor(Color.WHITE).withFade(Color.GRAY).build();
         new InstantFirework(fireworkEffect, location, "deathfirework");
+    }
+
+    @EventHandler
+    public void playerDamageEvent(EntityResurrectEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            EquipmentSlot totemHand = event.getHand();
+            if (totemHand != null) {
+                ItemStack totem = player.getInventory().getItem(totemHand);
+                ItemMeta meta = totem.getItemMeta();
+                String metaData = meta.getPersistentDataContainer().get(new NamespacedKey("videogameslifeserver", "itemmeta"), PersistentDataType.STRING);
+                if (totem.getType() == Material.TOTEM_OF_UNDYING) {
+                    System.out.println(metaData);
+                    if (metaData != null) {
+                        if (!metaData.equals("shoptotem")) {
+                            event.setCancelled(true);
+                        }
+                    } else {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler

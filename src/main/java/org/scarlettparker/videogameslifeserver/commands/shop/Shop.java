@@ -225,6 +225,11 @@ public class Shop implements CommandExecutor, Listener {
                             itemMeta.setDisplayName(null);
                             itemToGive.setItemMeta(itemMeta);
 
+                            if (itemToGive.getType() == Material.TOTEM_OF_UNDYING) {
+                                itemMeta.getPersistentDataContainer().set(new NamespacedKey("videogameslifeserver", "itemmeta"), PersistentDataType.STRING, "shoptotem");
+                                itemToGive.setItemMeta(itemMeta);
+                            }
+
                             player.getInventory().addItem(itemToGive);
 
                             player.sendMessage(ChatColor.GREEN + "You purchased " + quantity + " "
