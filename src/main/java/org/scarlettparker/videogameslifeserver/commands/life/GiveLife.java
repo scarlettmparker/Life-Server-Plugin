@@ -17,15 +17,9 @@ public class GiveLife implements CommandExecutor{
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-
         // for cleanliness
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
-            return true;
-        }
-
-        if (!sender.isOp()) {
-            sender.sendMessage(ChatColor.RED + "This command is disabled to players until the third session.");
             return true;
         }
 
@@ -35,7 +29,6 @@ public class GiveLife implements CommandExecutor{
         }
 
         Player receiver = Bukkit.getPlayer(args[0]);
-
 
         if (!playerExists(args[0]) || receiver == null) {
             sender.sendMessage(ChatColor.RED + "Specified player does not exist/is not online.");

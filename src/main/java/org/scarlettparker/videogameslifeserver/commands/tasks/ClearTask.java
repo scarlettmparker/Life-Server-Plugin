@@ -14,9 +14,6 @@ import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBoo
 
 public class ClearTask implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        // for cleanliness
-        Player player = Bukkit.getPlayer(args[0]);
-
         // must be an operator to use the command
         if (sender instanceof Player && !sender.isOp()) {
             sender.sendMessage(ChatColor.RED + "You must be an operator to run this command.");
@@ -27,6 +24,9 @@ public class ClearTask implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /cleartask player");
             return true;
         }
+
+        // for cleanliness
+        Player player = Bukkit.getPlayer(args[0]);
 
         if (!jsonFileExists(playerFile)) {
             sender.sendMessage(ChatColor.RED
@@ -44,7 +44,7 @@ public class ClearTask implements CommandExecutor {
         removeBook(player);
         tempPlayer.setCurrentTask("-1");
 
-        sender.sendMessage(ChatColor.GREEN + "Your task has been cleared.");
+        Bukkit.getPlayer(tempPlayer.getName()).sendMessage(ChatColor.GREEN + "Your task has been cleared.");
         return true;
     }
 }

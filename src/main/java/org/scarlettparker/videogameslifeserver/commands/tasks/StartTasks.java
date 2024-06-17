@@ -104,17 +104,16 @@ public class StartTasks implements CommandExecutor {
                         String name = jsonObject.get("name").getAsString();
                         TPlayer tempPlayer = new TPlayer(name);
                         if (Bukkit.getPlayer(name) == null) {
-                            tempPlayer.setSessionTasks(-1);
+                            tempPlayer.setSessionTasks(0);
                         } else {
                             tempPlayer.setSessionTasks(0);
                             Task tempTask = new Task(tempPlayer.getCurrentTask());
 
                             // create temporary task and set player description back so it displays correctly please
-                            if (!Objects.equals(tempPlayer.getCurrentTask(), "-1")
+                            if (!Objects.equals(tempTask.getName(), "-1")
                                     && tempTask.getDifficulty() != 2) {
-                                tempPlayer.setTaskDescription(Objects.requireNonNull(getJsonObjectAttribute(playerFile,
-                                        tempPlayer.getName(), "taskDescription")).toString());
                                 Bukkit.dispatchCommand(console, "failtask " + tempPlayer.getName() + " dbg");
+                                tempPlayer.setNextTask("-1");
                             }
                         }
                     }

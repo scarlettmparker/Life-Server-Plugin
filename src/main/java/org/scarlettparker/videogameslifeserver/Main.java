@@ -1,6 +1,7 @@
 package org.scarlettparker.videogameslifeserver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.scarlettparker.videogameslifeserver.commands.punish.*;
 import org.scarlettparker.videogameslifeserver.commands.life.GiveLife;
@@ -8,9 +9,7 @@ import org.scarlettparker.videogameslifeserver.commands.life.SetLife;
 import org.scarlettparker.videogameslifeserver.commands.life.StartLife;
 import org.scarlettparker.videogameslifeserver.commands.shop.*;
 import org.scarlettparker.videogameslifeserver.commands.tasks.*;
-import org.scarlettparker.videogameslifeserver.events.InventoryEvents;
-import org.scarlettparker.videogameslifeserver.events.LifeEvents;
-import org.scarlettparker.videogameslifeserver.events.PunishmentEvents;
+import org.scarlettparker.videogameslifeserver.events.*;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.utils.FragilityListener;
 import org.scarlettparker.videogameslifeserver.utils.KnockbackListener;
@@ -35,6 +34,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(inventoryEvents, this);
         getServer().getPluginManager().registerEvents(punishmentEvents, this);
 
+        getServer().getPluginManager().registerEvents(new CompassEvents(), this);
+        getServer().getPluginManager().registerEvents(new TagEvents(), this);
         getServer().getPluginManager().registerEvents(new PunishmentUtils(), this);
         getServer().getPluginManager().registerEvents(new FragilityListener(), this);
         getServer().getPluginManager().registerEvents(new KnockbackListener(), this);
@@ -60,8 +61,11 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("cleartask")).setExecutor(new ClearTask());
         Objects.requireNonNull(getCommand("completetask")).setExecutor(new CompleteTask());
         Objects.requireNonNull(getCommand("deletetask")).setExecutor(new DeleteTask());
+
         EditTask editTaskCommand = new EditTask(this);
         Objects.requireNonNull(getCommand("edittask")).setExecutor(editTaskCommand);
+
+        Objects.requireNonNull(getCommand("endtag")).setExecutor(new EndTag());
         Objects.requireNonNull(getCommand("excludeplayer")).setExecutor(new ExcludePlayer());
         Objects.requireNonNull(getCommand("excludetask")).setExecutor(new ExcludeTask());
         Objects.requireNonNull(getCommand("failtask")).setExecutor(new FailTask());

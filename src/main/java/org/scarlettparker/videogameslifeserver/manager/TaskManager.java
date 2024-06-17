@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 import com.google.gson.JsonObject;
@@ -16,10 +18,12 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.scarlettparker.videogameslifeserver.events.TagEvents.sendActionBarMessageForDuration;
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.*;
 
 public class TaskManager {
+    static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
     public static void generateTasks() {
         String path = "tasks/tasks.txt";
         InputStream is = TaskManager.class.getClassLoader().getResourceAsStream(path);
@@ -88,28 +92,11 @@ public class TaskManager {
     // distribute tasks to players
     // yes i know this can be improved but i've done so much for this plugin i've lost interest kinda
     public static void distributeTasksToPlayers(List<Player> players, List<String> normalIDs, List<String> redIDs) {
-        // separate players with forced tasks and without forced tasks
-        List<Player> forcedTaskPlayers = new ArrayList<>();
-        List<Player> nonForcedTaskPlayers = new ArrayList<>();
+        // shuffle players
+        Collections.shuffle(players);
 
+        // distribute tasks to players in the ordered list
         for (Player p : players) {
-            TPlayer tempPlayer = new TPlayer(p.getName());
-            if (!tempPlayer.getNextTask().equals("-1")) {
-                forcedTaskPlayers.add(p);
-            } else {
-                nonForcedTaskPlayers.add(p);
-            }
-        }
-
-        // shuffle non-forced task players
-        Collections.shuffle(nonForcedTaskPlayers);
-
-        // create a final ordered list of players
-        List<Player> orderedPlayers = new ArrayList<>(forcedTaskPlayers);
-        orderedPlayers.addAll(nonForcedTaskPlayers);
-
-        // Distribute tasks to players in the ordered list
-        for (Player p : orderedPlayers) {
             TPlayer tempPlayer = new TPlayer(p.getName());
             int playerLives = tempPlayer.getLives();
 
@@ -119,11 +106,14 @@ public class TaskManager {
 
             List<String> taskIDs = (playerLives >= 2) ? normalIDs : redIDs;
 
-            // Group tasks by priority
+            // group tasks by priority
             Map<Integer, List<String>> tasksByPriority = taskIDs.stream()
-                    .collect(Collectors.groupingBy(taskID -> new Task(taskID).getPriority()));
+                    .map(Task::new)
+                    .filter(task -> !task.getExcluded()) // filter out excluded tasks
+                    .collect(Collectors.groupingBy(Task::getPriority,
+                            Collectors.mapping(Task::getName, Collectors.toList())));
 
-            // Shuffle each priority group
+            // shuffle each priority group
             List<String> shuffledTaskIDs = new ArrayList<>();
             tasksByPriority.keySet().stream()
                     .sorted(Comparator.reverseOrder()) // higher priority tasks come first
@@ -150,7 +140,7 @@ public class TaskManager {
             if (nextTask.getDescription().contains("{player}")) {
                 // multi player tasks
                 List<Player> onlinePlayers = getAllPlayers();
-                manageMultiplePlayersDescription(tPlayer, nextTask, onlinePlayers);
+                manageMultiplePlayersDescription(nextTask, onlinePlayers);
             } else {
                 // in case {receiver} has been entered weirdly
                 tPlayer.setTaskDescription(manageReceiverDescription(
@@ -181,7 +171,7 @@ public class TaskManager {
                     if (tempTask.getDescription().contains("{player}")) {
                         // multi player tasks
                         List<Player> onlinePlayers = getAllPlayers();
-                        manageMultiplePlayersDescription(tPlayer, tempTask, onlinePlayers);
+                        manageMultiplePlayersDescription(tempTask, onlinePlayers);
                     } else {
                         tPlayer.setTaskDescription(manageReceiverDescription(
                                 manageSenderDescription(tempTask.getDescription(), player), player));
@@ -223,7 +213,7 @@ public class TaskManager {
         return description.replace("{sender}", p.getName());
     }
 
-    public static void manageMultiplePlayersDescription(TPlayer tempPlayer, Task task, List<Player> onlinePlayers) {
+    public static void manageMultiplePlayersDescription(Task task, List<Player> onlinePlayers) {
         String description = task.getDescription();
         List<Player> eligiblePlayers = new ArrayList<>();
         List<Player> forcedPlayers = new ArrayList<>();
@@ -237,7 +227,9 @@ public class TaskManager {
                 if (Objects.equals(tPlayer.getNextTask(), task.getName())) {
                     forcedPlayers.add(player);
                 } else if (Objects.equals(tPlayer.getCurrentTask(), "-1")){
-                    eligiblePlayers.add(player);
+                    if (Objects.equals(tPlayer.getNextTask(), "-1") || Objects.equals(tPlayer.getNextTask(), task.getName())) {
+                        eligiblePlayers.add(player);
+                    }
                 }
             }
         }
@@ -246,9 +238,12 @@ public class TaskManager {
 
         // check if there are enough eligible players
         if (forcedPlayers.size() + eligiblePlayers.size() < playerTagsCount) {
-            Bukkit.getPlayer(tempPlayer.getName()).sendMessage(ChatColor.RED
-                    + "You were assigned a multiplayer task but there are not enough players online. "
-                    + "Contact the admins to manually set your task.");
+            for (Player p : eligiblePlayers) {
+                p.sendMessage(ChatColor.RED
+                        + "You were assigned a multiplayer task but there are not enough players online. "
+                        + "Start a new task by clicking on one of the signs at spawns.");
+                removeBook(p);
+            }
             return;
         }
 
@@ -273,11 +268,16 @@ public class TaskManager {
             List<Player> descriptionPlayers = new ArrayList<>(involvedPlayers);
 
             // update task description for the current player
-            updatedDescription = updatedDescription.replaceFirst("\\{receiver}", descriptionPlayers.get(1).getName());
             descriptionPlayers.remove(i);
 
             for (int j = 0; j < playerTagsCount - 1; j++) {
                 updatedDescription = updatedDescription.replaceFirst("\\{player}", descriptionPlayers.get(j).getName());
+            }
+
+            // lovely tag logic and whatnot, should probably move this to another function
+            if (Objects.equals(task.getName(), "tag")) {
+                Player p = Bukkit.getPlayer(tPlayer.getName());
+                sendTagMessages(p, tPlayer, i);
             }
 
             tPlayer.setTaskDescription(updatedDescription);
@@ -299,5 +299,24 @@ public class TaskManager {
         }
 
         task.setExcluded(true);
+    }
+
+    private static void sendTagMessages(Player p, TPlayer tPlayer, int i) {
+        if (p != null) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (i == 0) {
+                        tPlayer.setTagged(true);
+                        sendActionBarMessageForDuration(p, ChatColor.RED
+                                + "You are currently tagged.", 2 * 60 * 60); // 2 hours
+                    } else {
+                        tPlayer.setTagged(false);
+                        sendActionBarMessageForDuration(p, ChatColor.GREEN
+                                + "You are currently not tagged.", 2 * 60 * 60);
+                    }
+                }
+            }.runTaskLater(plugin, 20 * 20); // 10 second delay
+        }
     }
 }

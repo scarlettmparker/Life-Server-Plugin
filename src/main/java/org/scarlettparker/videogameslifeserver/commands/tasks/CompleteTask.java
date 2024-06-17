@@ -98,6 +98,7 @@ public class CompleteTask implements CommandExecutor {
         tempPlayer.setTokens(tempPlayer.getTokens() + tokensIncrease);
         tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
         tempPlayer.setCurrentTask("-1");
+        tempPlayer.setNextTask("-1");
 
         // if player is currently punished
         if (tempPlayer.getPunishments().length != 0) {

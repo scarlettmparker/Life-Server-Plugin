@@ -50,6 +50,15 @@ public class TPlayer {
         return tasks instanceof String[] ? (String[]) tasks : new String[0]; // default value is empty array
     }
 
+    public boolean getTagged() {
+        Object tagged = getJsonObjectAttribute(playerFile, name, "tagged");
+        return tagged instanceof Boolean && (boolean) tagged;
+    }
+
+    public void setTagged(boolean tagged) {
+        setJsonObjectAttribute(playerFile, name, "tagged", tagged);
+    }
+
     public String getCurrentTask() {
         Object currentTask = getJsonObjectAttribute(playerFile, name, "currentTask");
         return currentTask instanceof String ? (String) currentTask : "-1"; // default value is -1

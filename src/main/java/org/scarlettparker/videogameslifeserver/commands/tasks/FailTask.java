@@ -68,13 +68,13 @@ public class FailTask implements CommandExecutor {
         if (args.length < 2 || !Objects.equals(args[1], "dbg")) {
             player.sendMessage(ChatColor.RED + "You have failed your task."
                     + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
+
+            // tell everyone the user has failed their task
+            Bukkit.broadcastMessage(player.getName() + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE
+                    + ": " + ChatColor.WHITE + tempPlayer.getTaskDescription());
+            tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
         }
 
-        // tell everyone the user has failed their task
-        Bukkit.broadcastMessage(player.getName() + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE + ": "
-                + ChatColor.WHITE + tempPlayer.getTaskDescription());
-
-        tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
         tempPlayer.setCurrentTask("-1");
 
         int punishment = 0;

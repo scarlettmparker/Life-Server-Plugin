@@ -29,6 +29,9 @@ commands:
   edittask:
     description: Edits a task by its name.
     usage: /<command>
+  endtag:
+    description: Ends the tag game.
+    usage: /<command>
   excludeplayer:
     description: Excludes a player from a task.
     usage: /<command> taskID player

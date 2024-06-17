@@ -3,9 +3,12 @@ package org.scarlettparker.videogameslifeserver.utils;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
@@ -124,8 +127,16 @@ public class WorldUtils {
             p.getLocation().getWorld().dropItemNaturally(p.getLocation(), book);
             p.sendMessage(ChatColor.RED + "Your inventory is full! A book has been dropped with your task.");
             p.performCommand("whattask");
+            if (Objects.equals(task.getName(), "tag")) {
+                p.sendMessage(ChatColor.RED + "Your inventory is full! A tracking compass has been dropped. Right click to locate a player (does not auto-update).");
+                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), createTrackingCompass());
+            }
         } else {
             p.getInventory().addItem(book);
+            if (Objects.equals(task.getName(), "tag")) {
+                p.getInventory().addItem(createTrackingCompass());
+                p.sendMessage(ChatColor.YELLOW + "You've received a tracking compass! Right click to locate a player (does not auto-update).");
+            }
         }
     }
 
@@ -143,7 +154,7 @@ public class WorldUtils {
                     p.playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
                     CustomParticleEffect.playTotemEffect(p);
 
-                    this.cancel(); // Cancel the task
+                    this.cancel(); // cancel the task
                     return;
                 }
 
@@ -264,6 +275,22 @@ public class WorldUtils {
 
         meta.setPages(pages);
         book.setItemMeta(meta);
+    }
+
+    private static ItemStack createTrackingCompass() {
+        ItemStack compass = new ItemStack(Material.COMPASS);
+        ItemMeta meta = compass.getItemMeta();
+        meta.setDisplayName(ChatColor.YELLOW + "Tracking Compass");
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "Use this compass to track");
+        lore.add(ChatColor.GRAY + "other players.");
+        meta.setLore(lore);
+
+        // set a custom tag to identify this as a tracking compass
+        meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "trackingCompass"), PersistentDataType.BYTE, (byte) 1);
+
+        compass.setItemMeta(meta);
+        return compass;
     }
 
     public static void removeBook(Player player) {

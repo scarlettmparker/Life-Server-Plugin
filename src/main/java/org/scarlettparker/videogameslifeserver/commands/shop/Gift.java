@@ -16,11 +16,6 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.play
 public class Gift implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!sender.isOp()) {
-            sender.sendMessage(ChatColor.RED + "This command is disabled to players until the third session.");
-            return true;
-        }
-
         if (args.length != 2) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /gift player tokens");
             return true;

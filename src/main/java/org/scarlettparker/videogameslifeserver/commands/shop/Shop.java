@@ -36,34 +36,42 @@ public class Shop implements CommandExecutor, Listener {
     private final List<ItemStack> itemOrder = new ArrayList<>();
 
     public Shop() {
-        addItem(createItem(Material.APPLE, 3, "1 Token"), 1);
-        addItem(createItem(Material.CARROT, 16, "1 Token"), 1);
-        addItem(createItem(Material.POTATO, 16, "1 Token"), 1);
-        addItem(createItem(Material.BAKED_POTATO, 16, "2 Tokens"), 2);
-        addItem(createItem(Material.GOLDEN_APPLE, 1, "2 Tokens"), 2);
+        addItem(createItem(Material.APPLE, 3, "1 Token", "Apple"), 1);
+        addItem(createItem(Material.CARROT, 16, "1 Token", "Carrot"), 1);
+        addItem(createItem(Material.POTATO, 16, "1 Token", "Potato"), 1);
+        addItem(createItem(Material.BAKED_POTATO, 16, "2 Tokens", "Baked Potato"), 2);
+        addItem(createItem(Material.GOLDEN_APPLE, 1, "2 Tokens", "Golden Apple"), 2);
 
         fillBlankSlots(4);
 
-        addItem(createItem(Material.SUGAR_CANE, 16, "1 Token"), 1);
-        addItem(createItem(Material.BAMBOO, 16, "1 Token"), 1);
-        addItem(createItem(Material.CACTUS, 16, "1 Token"), 1);
-        addItem(createItem(Material.EXPERIENCE_BOTTLE, 64, "1 Token"), 1);
-
-        fillBlankSlots(5);
-
-        addItem(createItem(Material.IRON_BLOCK, 1, "1 Token"), 1);
-        addItem(createItem(Material.INFESTED_STONE, 12, "1 Token"), 1);
-        addItem(createMendingBook(1, "7 Tokens"), 7);
+        addItem(createItem(Material.LEATHER, 16, "2 Tokens", "Leather"), 2);
+        addItem(createItem(Material.BAMBOO, 16, "1 Token", "Bamboo"), 1);
+        addItem(createItem(Material.EXPERIENCE_BOTTLE, 64, "1 Token", "Bottle o' Enchanting"), 1);
 
         fillBlankSlots(6);
 
-        addItem(createItem(Material.NETHERITE_SCRAP, 1, "3 Tokens"), 3);
-        addItem(createItem(Material.WOLF_SPAWN_EGG, 2, "5 Tokens"), 5);
-        addItem(createItem(Material.DIAMOND, 3, "2 Tokens"), 2);
-        addItem(createItem(Material.BLAZE_ROD, 16, "8 Tokens"), 8);
+        addItem(createItem(Material.IRON_BLOCK, 1, "1 Token", "Iron Block"), 1);
+        addItem(createEnchantedBook(1, "7 Tokens", Enchantment.MENDING, 1), 7);
+        addItem(createEnchantedBook(1, "5 Tokens", Enchantment.DURABILITY, 3), 5);
 
         fillBlankSlots(5);
 
+        // on the side
+        addItem(createItem(Material.OCELOT_SPAWN_EGG, 1, "2 Tokens", "Ocelot Spawn Egg"), 2);
+
+        // normal
+        addItem(createItem(Material.NETHERITE_SCRAP, 1, "3 Tokens", "Netherite Scrap"), 3);
+        addItem(createItem(Material.DIAMOND, 3, "2 Tokens", "Diamond"), 2);
+        addItem(createItem(Material.LAPIS_LAZULI, 32, "1 Token", "Lapis Lazuli"), 1);
+        addItem(createItem(Material.BLAZE_ROD, 8, "5 Tokens", "Blaze Rod"), 5);
+        addItem(createItem(Material.NETHER_WART, 3, "5 Tokens", "Nether Wart"), 5);
+
+        fillBlankSlots(3);
+
+        // on the side
+        addItem(createItem(Material.WOLF_SPAWN_EGG, 2, "5 Tokens", "Wolf Spawn Egg"), 5);
+
+        // normal
         addItem(createPotionItem(Material.POTION, 1, "2 Tokens",
                 PotionType.INVISIBILITY, false, false), 2);
         addItem(createPotionItem(Material.POTION, 1, "2 Tokens",
@@ -82,7 +90,7 @@ public class Shop implements CommandExecutor, Listener {
 
         fillBlankSlots(1);
 
-        addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "45 Tokens"), 45);
+        addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "45 Tokens", "Totem of Undying"), 45);
     }
 
     private void addItem(ItemStack item, int tokenCost) {
@@ -92,7 +100,7 @@ public class Shop implements CommandExecutor, Listener {
 
     private void fillBlankSlots(int quantity) {
         for (int i = 0; i < quantity; i++) {
-            addItem(createItem(Material.AIR, 0, ""), 0);
+            addItem(createItem(Material.AIR, 0, "", ""), 0);
         }
     }
 
@@ -160,31 +168,41 @@ public class Shop implements CommandExecutor, Listener {
         return shopInventory;
     }
 
-    private ItemStack createItem(Material material, int quantity, String displayName) {
+    private ItemStack createItem(Material material, int quantity, String tokenCost, String displayName) {
         ItemStack itemStack = new ItemStack(material, quantity);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta != null) {
-            itemMeta.setDisplayName(ChatColor.GREEN + displayName);
+            itemMeta.setDisplayName(ChatColor.RESET + displayName);
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GOLD + tokenCost);
+            itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
         }
         return itemStack;
     }
 
-    private ItemStack createPotionItem(Material material, int quantity, String displayName,
+    private ItemStack createPotionItem(Material material, int quantity, String tokenCost,
                                        PotionType potionType, boolean extended, boolean upgraded) {
         ItemStack itemStack = new ItemStack(material, quantity);
         PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-        potionMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
-        potionMeta.setDisplayName(ChatColor.GREEN + displayName);
-        itemStack.setItemMeta(potionMeta);
+        if (potionMeta != null) {
+            potionMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GOLD + tokenCost); // token cost as lore
+            potionMeta.setLore(lore);
+
+            itemStack.setItemMeta(potionMeta);
+        }
         return itemStack;
     }
 
-    private ItemStack createMendingBook(int quantity, String displayName) {
+    private ItemStack createEnchantedBook(int quantity, String tokenCost, Enchantment enchantment, int level) {
         ItemStack itemStack = new ItemStack(Material.ENCHANTED_BOOK, quantity);
         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemStack.getItemMeta();
-        meta.addStoredEnchant(Enchantment.MENDING, 1, true);
-        meta.setDisplayName(ChatColor.GREEN + displayName);
+        meta.addStoredEnchant(enchantment, level, true);
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GOLD + tokenCost);
+        meta.setLore(lore);
         itemStack.setItemMeta(meta);
         return itemStack;
     }
