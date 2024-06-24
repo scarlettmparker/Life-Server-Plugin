@@ -63,8 +63,6 @@ public class CompleteTask implements CommandExecutor {
             return true;
         }
 
-        tempTask.setCompleted(true);
-
         player.sendMessage(ChatColor.GREEN + "Congratulations on completing your task!"
                 + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
 

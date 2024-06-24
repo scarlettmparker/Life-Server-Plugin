@@ -161,7 +161,6 @@ public class AddTask implements CommandExecutor, Listener {
 
                 // set task attributes
                 newTask.setDescription(state.description);
-                newTask.setCompleted(false);
                 newTask.setExcluded(false);
                 newTask.setDifficulty(state.difficulty);
                 newTask.setReward(state.tokens);

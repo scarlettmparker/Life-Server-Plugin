@@ -22,11 +22,6 @@ public class Task {
         return difficulty instanceof Integer ? (int) difficulty : 0; // default value is 0
     }
 
-    public boolean getCompleted() {
-        Object completed = getJsonObjectAttribute(taskFile, String.valueOf(name), "completed");
-        return completed instanceof Boolean && (boolean) completed; // default value is false
-    }
-
     public boolean getExcluded() {
         Object excluded = getJsonObjectAttribute(taskFile, String.valueOf(name), "excluded");
         return !(excluded instanceof Boolean) || (boolean) excluded; // default value is false
@@ -42,11 +37,6 @@ public class Task {
         return description instanceof String ? (String) description : ""; // default value is 0
     }
 
-    public String getPlayerDescription() {
-        Object playerDescription = getJsonObjectAttribute(taskFile, String.valueOf(name), "playerDescription");
-        return playerDescription instanceof String ? (String) playerDescription : ""; // default value is 0
-    }
-
     public int getPriority() {
         Object priority = getJsonObjectAttribute(taskFile, String.valueOf(name), "priority");
         return priority instanceof Integer ? (Integer) priority : 0; // default value is 0
@@ -59,10 +49,6 @@ public class Task {
 
     public void setDifficulty(int difficulty) {
         setJsonObjectAttribute(taskFile, String.valueOf(name), "difficulty", difficulty);
-    }
-
-    public void setCompleted(boolean completed) {
-        setJsonObjectAttribute(taskFile, String.valueOf(name), "completed", completed);
     }
 
     public void setExcluded(boolean excluded) {

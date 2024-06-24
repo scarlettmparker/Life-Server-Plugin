@@ -43,7 +43,6 @@ public class TaskManager {
                 // set task attributes
                 tempTask.setDescription(attributes[1]);
                 tempTask.setDifficulty(Integer.parseInt(attributes[2]));
-                tempTask.setCompleted(false);
                 tempTask.setExcluded(false);
             }
         } catch (Exception e) {

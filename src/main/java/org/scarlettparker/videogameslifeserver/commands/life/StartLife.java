@@ -86,12 +86,20 @@ public class StartLife implements CommandExecutor {
 
     private void setGameRules() {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        // overworld (Dimension 0)
+        setGameRulesForDimension(console, "minecraft:overworld");
+        // nether (Dimension -1)
+        setGameRulesForDimension(console, "minecraft:the_nether");
+        // end (Dimension 1)
+        setGameRulesForDimension(console, "minecraft:the_end");
+    }
 
-        // set the game rules for the server to run properly
-        Bukkit.dispatchCommand(console, "gamerule logAdminCommands false");
-        Bukkit.dispatchCommand(console, "gamerule sendCommandFeedback false");
-        Bukkit.dispatchCommand(console, "gamerule keepInventory true");
-        Bukkit.dispatchCommand(console, "gamerule showDeathMessages false");
-        Bukkit.dispatchCommand(console, "difficulty normal");
+    private void setGameRulesForDimension(ConsoleCommandSender console, String dimension) {
+        // set the game rules for the specified dimension
+        Bukkit.dispatchCommand(console, "execute in " + dimension + " run gamerule logAdminCommands false");
+        Bukkit.dispatchCommand(console, "execute in " + dimension + " run gamerule sendCommandFeedback false");
+        Bukkit.dispatchCommand(console, "execute in " + dimension + " run gamerule keepInventory true");
+        Bukkit.dispatchCommand(console, "execute in " + dimension + " run gamerule showDeathMessages false");
+        Bukkit.dispatchCommand(console, "execute in " + dimension + " run difficulty normal");
     }
 }
