@@ -31,11 +31,11 @@ This plugin is based on the Secret Life YouTube series, however, it is not playe
 ## Setup and Installation
 
 ### Dependencies
-Though not required, this server uses the [NametagEdit plugin](https://www.spigotmc.org/resources/nametagedit.3836/) to modify name colours above player heads. Without NametagEdit, that feature of the plugin won't work.
+Though not required, this server uses the [NametagEdit](https://www.spigotmc.org/resources/nametagedit.3836/) plugin to modify name colours above player heads. Without NametagEdit, that feature of the plugin won't work.
 
 ### Compilation
 
-First, ensure you have [Maven installed](https://maven.apache.org/download.cgi). If not, download and install it from Maven's official website and follow the [installation instructions](https://maven.apache.org/install.html) to ensure you can use it in your terminal.\
+First, ensure you have [Maven](https://maven.apache.org/download.cgi) installed. If not, download and install it from Maven's official website and follow the [installation instructions](https://maven.apache.org/install.html) to ensure you can use it in your terminal.\
 In the root directory of the project, run `mvn clean install` to compile the project. The compiled .jar file	can then be found in the `target` directory as `VideoGamesLifeServer.jar`.
 
 ### Usage on Minecraft
