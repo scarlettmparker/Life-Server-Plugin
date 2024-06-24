@@ -60,6 +60,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("addtask")).setExecutor(addTaskCommand);
         Objects.requireNonNull(getCommand("cleartask")).setExecutor(new ClearTask());
         Objects.requireNonNull(getCommand("completetask")).setExecutor(new CompleteTask());
+        Objects.requireNonNull(getCommand("currenttask")).setExecutor(new CurrentTask());
         Objects.requireNonNull(getCommand("deletetask")).setExecutor(new DeleteTask());
 
         EditTask editTaskCommand = new EditTask(this);
@@ -70,6 +71,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("excludetask")).setExecutor(new ExcludeTask());
         Objects.requireNonNull(getCommand("failtask")).setExecutor(new FailTask());
         Objects.requireNonNull(getCommand("forcetask")).setExecutor(new ForceTask());
+        Objects.requireNonNull(getCommand("filltasks")).setExecutor(new FillTasks());
         Objects.requireNonNull(getCommand("listtasks")).setExecutor(new ListTasks());
         Objects.requireNonNull(getCommand("newtask")).setExecutor(new NewTask());
         Objects.requireNonNull(getCommand("setpriority")).setExecutor(new SetPriority());

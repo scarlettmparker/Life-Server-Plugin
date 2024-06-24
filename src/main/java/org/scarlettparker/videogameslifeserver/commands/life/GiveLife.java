@@ -14,21 +14,21 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.play
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.handleRevive;
 
 public class GiveLife implements CommandExecutor{
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // for cleanliness
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "You must be a player to run this command.");
-            return true;
-        }
-
-        if (args.length != 1) {
+        if (args.length < 1) {
             sender.sendMessage(ChatColor.RED + "Incorrect usage. Correct usage: /givelife player");
             return true;
         }
 
         Player receiver = Bukkit.getPlayer(args[0]);
+
+        // can't send scarlett lives lol
+        if (Objects.equals(args[0], "scarwe")) {
+            sender.sendMessage(ChatColor.RED + "You may not give lives to this player.");
+            return true;
+        }
 
         if (!playerExists(args[0]) || receiver == null) {
             sender.sendMessage(ChatColor.RED + "Specified player does not exist/is not online.");
@@ -41,9 +41,25 @@ public class GiveLife implements CommandExecutor{
         }
 
         // sender and receiver
-        TPlayer sPlayer = new TPlayer(sender.getName());
         TPlayer rPlayer = new TPlayer(receiver.getName());
 
+        if (!(sender instanceof Player)) {
+            if (rPlayer.isZombie()) {
+                rPlayer.setZombie(false);
+                Bukkit.broadcastMessage(ChatColor.YELLOW + receiver.getName() + ChatColor.WHITE + " is no longer a zombie.");
+            }
+
+            int receiverLives = rPlayer.getLives();
+            receiverLives += 1;
+
+            rPlayer.setLives(receiverLives);
+
+            // awesome effect moment
+            receiver.playEffect(EntityEffect.TOTEM_RESURRECT);
+            return true;
+        }
+
+        TPlayer sPlayer = new TPlayer(sender.getName());
         if (sPlayer.getLives() < 1) {
             sender.sendMessage(ChatColor.RED + "You are dead. You cannot give lives.");
             return true;

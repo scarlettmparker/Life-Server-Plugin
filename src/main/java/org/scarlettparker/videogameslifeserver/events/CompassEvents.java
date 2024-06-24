@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -65,8 +66,6 @@ public class CompassEvents implements Listener {
         Inventory clickedInventory = event.getClickedInventory();
 
         if (clickedInventory != null && clickedInventory.equals(player.getOpenInventory().getTopInventory())) {
-            event.setCancelled(true);
-
             ItemStack clickedItem = event.getCurrentItem();
             if (clickedItem != null && clickedItem.getType() == Material.PLAYER_HEAD) {
                 String playerName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());

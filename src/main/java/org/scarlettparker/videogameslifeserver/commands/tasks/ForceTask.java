@@ -38,8 +38,15 @@ public class ForceTask implements CommandExecutor {
             return true;
         }
 
-        Task tempTask = new Task(args[1]);
         TPlayer tempPlayer = new TPlayer(args[0]);
+
+        if (Objects.equals(args[1], "-1")) {
+            sender.sendMessage(ChatColor.YELLOW + args[0] + " no longer has a set forced task.");
+            tempPlayer.setNextTask("-1");
+            return true;
+        }
+
+        Task tempTask = new Task(args[1]);
 
         if (Objects.equals(tempTask.getDescription(), "")) {
             sender.sendMessage(ChatColor.RED + "No such task exists.");

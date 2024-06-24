@@ -3,6 +3,7 @@ package org.scarlettparker.videogameslifeserver.objects;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.handleFinalDeath;
@@ -33,7 +34,9 @@ public class TPlayer {
             handleFinalDeath(name);
         }
         setJsonObjectAttribute(playerFile, name, "lives", lives);
-        setPlayerName(Bukkit.getPlayer(name), lives);
+        if (!Objects.equals(name, "CONSOLE")) {
+            setPlayerName(Bukkit.getPlayer(name), lives);
+        }
     }
 
     public Death[] getDeaths() {

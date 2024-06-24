@@ -36,6 +36,13 @@ public class LifeEvents implements Listener {
             // for players that have joined for the first time
             TPlayer temp = new TPlayer(event.getPlayer().getName());
             temp.setSessionTasks(-1);
+
+            // new players aren't allowed to join
+
+            /*ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+            Bukkit.dispatchCommand(console, "kick " + event.getPlayer().getName() + " Server is closed to new players.");
+            Bukkit.dispatchCommand(console, "ban " + event.getPlayer().getName() + " Server is closed to new players.");*/
+
         } else {
             TPlayer tempPlayer = new TPlayer(event.getPlayer().getName());
             int lives = tempPlayer.getLives();

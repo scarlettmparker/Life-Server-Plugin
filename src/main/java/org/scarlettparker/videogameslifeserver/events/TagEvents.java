@@ -2,14 +2,13 @@ package org.scarlettparker.videogameslifeserver.events;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
@@ -68,6 +67,42 @@ public class TagEvents implements Listener {
                 }
             }
         }
+    }
+
+
+    @EventHandler
+    public void onTeleportEvent(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+
+        // Check if the player has the tag task
+        if (hasTagTask(player)) {
+            // Get the origin and destination environments
+            World.Environment fromEnvironment = event.getFrom().getWorld().getEnvironment();
+            World.Environment toEnvironment = event.getTo().getWorld().getEnvironment();
+
+            // Determine the message based on the destination world
+            String dimensionEntered = "";
+            if (toEnvironment.equals(World.Environment.NORMAL)) {
+                dimensionEntered = "the Overworld";
+            } else if (toEnvironment.equals(World.Environment.NETHER)) {
+                dimensionEntered = "the Nether";
+            } else if (toEnvironment.equals(World.Environment.THE_END)) {
+                dimensionEntered = "the End";
+            }
+
+            // Send the message to all online players with the tag task
+            for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+                if (onlinePlayer != player && hasTagTask(onlinePlayer)) {
+                    onlinePlayer.sendMessage(ChatColor.YELLOW + player.getName() + " has just entered " + dimensionEntered + ".");
+                    onlinePlayer.playNote(player.getLocation(), Instrument.BELL, Note.flat(0, Note.Tone.C));
+                }
+            }
+        }
+    }
+
+    private boolean hasTagTask(Player player) {
+        TPlayer tempPlayer = new TPlayer(player.getName());
+        return Objects.equals(tempPlayer.getCurrentTask(), "tag");
     }
 
     public static void sendActionBarMessageForDuration(Player player, String message, int durationSeconds) {

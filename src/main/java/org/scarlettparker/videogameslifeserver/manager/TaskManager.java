@@ -74,14 +74,9 @@ public class TaskManager {
             int taskDifficulty = task.get("difficulty").getAsInt();
             boolean excluded = task.get("excluded").getAsBoolean();
 
-            // check if the task is excluded
-            if (excluded) {
-                continue;
-            }
-
-            if (taskDifficulty == difficulty || taskDifficulty == 3) {
+            if ((taskDifficulty == difficulty || taskDifficulty == 3) && !excluded) {
                 normalIDs.add(key);
-            } else if (taskDifficulty == 2) {
+            } else if (taskDifficulty == 2 && !excluded) {
                 redIDs.add(key);
             }
         }
@@ -105,6 +100,15 @@ public class TaskManager {
             }
 
             List<String> taskIDs = (playerLives >= 2) ? normalIDs : redIDs;
+            if (redIDs.isEmpty()) {
+                if (tempPlayer.getSessionTasks() < 3) {
+                    p.sendMessage(ChatColor.RED + "There are no red tasks left, so you will be given a normal task.");
+                    taskIDs = normalIDs;
+                } else {
+                    p.sendMessage(ChatColor.RED + "There are no red tasks left, and you have already attempted multiple tasks this session. "
+                    + "You may not attempt any more tasks this session.");
+                }
+            }
 
             // group tasks by priority
             Map<Integer, List<String>> tasksByPriority = taskIDs.stream()
@@ -119,7 +123,6 @@ public class TaskManager {
                     .sorted(Comparator.reverseOrder()) // higher priority tasks come first
                     .forEach(priority -> {
                         List<String> priorityTasks = tasksByPriority.get(priority);
-                        Collections.shuffle(priorityTasks);
                         shuffledTaskIDs.addAll(priorityTasks);
                     });
 
@@ -181,7 +184,7 @@ public class TaskManager {
                     }
                     return;
                 }
-            } else if (Objects.equals(tPlayer.getCurrentTask(), "-1")) {
+            } else if (Objects.equals(tPlayer.getCurrentTask(), "-1") && tPlayer.getLives() != 1) {
                 player.sendMessage(ChatColor.RED + "There are currently no tasks available for you. Please annoy the admins into creating new tasks.");
             }
         }
@@ -201,11 +204,24 @@ public class TaskManager {
 
     public static String manageReceiverDescription(String description, Player p) {
         List<Player> allPlayers = getAllPlayers();
-        if (allPlayers.size() > 1) {
-            allPlayers.remove(p.getPlayer());
+        ArrayList<Player> acceptedPlayers = new ArrayList<>();
+
+        // get players that are still in the game
+        for (Player otherPlayer : allPlayers) {
+            TPlayer tempPlayer = new TPlayer(otherPlayer.getName());
+            if (tempPlayer.getLives() >= 1) {
+                acceptedPlayers.add(otherPlayer);
+            }
         }
-        int random = new Random().nextInt(allPlayers.size());
-        Player pickedPlayer = allPlayers.get(random);
+
+        // ensure player's own name doesn't show up
+        if (acceptedPlayers.size() > 1) {
+            acceptedPlayers.remove(p.getPlayer());
+        }
+
+        // get random player in accepted players list
+        int random = new Random().nextInt(acceptedPlayers.size());
+        Player pickedPlayer = acceptedPlayers.get(random);
         return description.replace("{receiver}", pickedPlayer.getName());
     }
 
@@ -282,6 +298,16 @@ public class TaskManager {
 
             tPlayer.setTaskDescription(updatedDescription);
             addTaskToPlayer(tPlayer, task.getName());
+
+            if (Objects.equals(task.getName(), "socialdeduction") && i == 1) {
+                currentPlayer.sendMessage(ChatColor.RED + "You are the impostor. You will be playing a social deduction game "
+                        + "with others, but once a player dies in the game - rush towards them and kill them in Minecraft.");
+                tPlayer.setCurrentTask("impostor");
+
+                // update description
+                Task impostorTask = new Task("impostor");
+                tPlayer.setTaskDescription(impostorTask.getDescription());
+            }
         }
 
         // why is it in another loop??? I DUNNO

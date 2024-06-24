@@ -11,6 +11,7 @@ import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
@@ -63,14 +64,21 @@ public class SetTask implements CommandExecutor {
             return true;
         }
 
+        if (tempTask.getDescription().contains("{player}")) {
+            // multi player tasks
+            tempPlayer.setNextTask(tempTask.getName());
+            List<Player> onlinePlayers = getAllPlayers();
+            manageMultiplePlayersDescription(tempTask, onlinePlayers);
+        } else {
+            tempPlayer.setTaskDescription(manageReceiverDescription(manageSenderDescription(tempTask.getDescription(), player), player));
+            tempPlayer.setCurrentTask(tempTask.getName());
+
+            // make sure to give the correct book
+            removeBook(player);
+            giveTaskBook(tempTask, player);
+        }
+
         tempTask.setExcluded(true);
-        tempPlayer.setTaskDescription(manageReceiverDescription(manageSenderDescription(tempTask.getDescription(), player), player));
-        tempPlayer.setCurrentTask(tempTask.getName());
-
-        // make sure to give the correct book
-        removeBook(player);
-        giveTaskBook(tempTask, player);
-
         player.sendMessage(ChatColor.GREEN +
                 "Your task has been set to: " + tempTask.getName());
 

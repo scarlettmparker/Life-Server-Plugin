@@ -3,7 +3,6 @@ package org.scarlettparker.videogameslifeserver.utils;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -39,29 +38,30 @@ public class WorldUtils {
             title = String.valueOf(lives);
             contrastColor = ChatColor.WHITE;
             lifeColor = ChatColor.DARK_GREEN;
-            colorPrefix = "&2";
+            colorPrefix = "&5&2";
 
             // wonderful formatting based on no. lives
             if (lives == 1) {
                 lifeColor = ChatColor.RED;
-                colorPrefix = "&c";
+                colorPrefix = "&2&c";
             } else if (lives == 2) {
                 lifeColor = ChatColor.YELLOW;
-                colorPrefix = "&e";
+                colorPrefix = "&3&e";
             } else if (lives == 3) {
                 lifeColor = ChatColor.GREEN;
-                colorPrefix = "&a";
+                colorPrefix = "&4&a";
             }
         } else {
             title = "DEAD";
             contrastColor = ChatColor.GRAY;
             lifeColor = ChatColor.GRAY;
-            colorPrefix = "&7";
+            colorPrefix = "&1&7";
         }
 
         newName = lifeColor + p.getName() + contrastColor
                 + " [" + lifeColor + title + contrastColor + "]";
         command = "nte player " + p.getName() + " prefix " + colorPrefix;
+
 
         // custom name AND tag name now displays
         Bukkit.dispatchCommand(console, command);

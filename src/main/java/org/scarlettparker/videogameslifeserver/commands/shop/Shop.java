@@ -24,10 +24,9 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class Shop implements CommandExecutor, Listener {
     static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
@@ -36,17 +35,17 @@ public class Shop implements CommandExecutor, Listener {
     private final List<ItemStack> itemOrder = new ArrayList<>();
 
     public Shop() {
-        addItem(createItem(Material.APPLE, 3, "1 Token", "Apple"), 1);
+        addItem(createItem(Material.GOLDEN_APPLE, 1, "2 Tokens", "Golden Apple"), 2);
+        addItem(createItem(Material.APPLE, 4, "1 Token", "Apple"), 1);
         addItem(createItem(Material.CARROT, 16, "1 Token", "Carrot"), 1);
         addItem(createItem(Material.POTATO, 16, "1 Token", "Potato"), 1);
         addItem(createItem(Material.BAKED_POTATO, 16, "2 Tokens", "Baked Potato"), 2);
-        addItem(createItem(Material.GOLDEN_APPLE, 1, "2 Tokens", "Golden Apple"), 2);
 
         fillBlankSlots(4);
 
         addItem(createItem(Material.LEATHER, 16, "2 Tokens", "Leather"), 2);
-        addItem(createItem(Material.BAMBOO, 16, "1 Token", "Bamboo"), 1);
         addItem(createItem(Material.EXPERIENCE_BOTTLE, 64, "1 Token", "Bottle o' Enchanting"), 1);
+        addItem(createItem(Material.ENDER_EYE, 2, "1 Token", "Eye of Ender"), 1);
 
         fillBlankSlots(6);
 
@@ -57,7 +56,7 @@ public class Shop implements CommandExecutor, Listener {
         fillBlankSlots(5);
 
         // on the side
-        addItem(createItem(Material.OCELOT_SPAWN_EGG, 1, "2 Tokens", "Ocelot Spawn Egg"), 2);
+        addItem(createItem(Material.CAT_SPAWN_EGG, 1, "2 Tokens", "Cat Spawn Egg"), 2);
 
         // normal
         addItem(createItem(Material.NETHERITE_SCRAP, 1, "3 Tokens", "Netherite Scrap"), 3);
@@ -82,7 +81,7 @@ public class Shop implements CommandExecutor, Listener {
         addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
                 PotionType.POISON, true, false), 2);
         addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
-                PotionType.INSTANT_DAMAGE, false, true), 2);
+                PotionType.INSTANT_DAMAGE, false, false), 2);
         addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
                 PotionType.WEAKNESS, true, false), 2);
         addItem(createPotionItem(Material.SPLASH_POTION, 1, "2 Tokens",
@@ -90,7 +89,8 @@ public class Shop implements CommandExecutor, Listener {
 
         fillBlankSlots(1);
 
-        addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "45 Tokens", "Totem of Undying"), 45);
+        addItem(createItem(Material.NETHER_STAR, 1, "29 Tokens", "Extra Life"), 29);
+        //addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "39 Tokens", "Totem of Undying"), 39);
     }
 
     private void addItem(ItemStack item, int tokenCost) {
@@ -158,6 +158,14 @@ public class Shop implements CommandExecutor, Listener {
                 + ChatColor.DARK_AQUA + tempPlayer.getTokens() + tokenText + ChatColor.BLACK + ".");
 
         int index = 0;
+
+        // conditionally change what's in the shop
+        long unixTime = System.currentTimeMillis() / 1000L;
+        if (unixTime > 1719329400) {
+            itemOrder.removeLast();
+            addItem(createItem(Material.TOTEM_OF_UNDYING, 1, "39 Tokens", "Totem of Undying"), 39);
+        }
+
         for (ItemStack item : itemOrder) {
             if (item.getType() != Material.AIR) {
                 shopInventory.setItem(index, item);
@@ -233,8 +241,6 @@ public class Shop implements CommandExecutor, Listener {
                                 + "Please empty a slot before buying an item.");
                     } else {
                         if (tempPlayer.getTokens() >= tokenCost) {
-                            tempPlayer.setTokens(tempPlayer.getTokens() - tokenCost);
-
                             // create the item to give based on the type and quantity
                             ItemStack itemToGive = shopItem.clone();
 
@@ -248,12 +254,22 @@ public class Shop implements CommandExecutor, Listener {
                                 itemToGive.setItemMeta(itemMeta);
                             }
 
-                            player.getInventory().addItem(itemToGive);
+                            if (itemToGive.getType() == Material.NETHER_STAR) {
+                                if (tempPlayer.getLives() > 3) {
+                                    player.sendMessage(ChatColor.RED + "You may not purchase this item.");
+                                    return;
+                                }
+                                getServer().dispatchCommand(getServer().getConsoleSender(), "givelife " + tempPlayer.getName());
+                            } else {
+                                // clear the item's lore so it's stackable
+                                itemToGive.setLore(new ArrayList<>());
+                                player.getInventory().addItem(itemToGive);
+                                player.sendMessage(ChatColor.GREEN + "You purchased " + quantity + " "
+                                        + shopItem.getType().name().replace("_", " ").toLowerCase()
+                                        + "(s) for " + tokenCost + " tokens!");
+                            }
 
-                            player.sendMessage(ChatColor.GREEN + "You purchased " + quantity + " "
-                                    + shopItem.getType().name().replace("_", " ").toLowerCase()
-                                    + "(s) for " + tokenCost + " tokens!");
-
+                            tempPlayer.setTokens(tempPlayer.getTokens() - tokenCost);
                             // reset shop title so it shows new token value
                             player.openInventory(shopInventory(tempPlayer));
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_CELEBRATE, 2, 1);

@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.Punishment;
@@ -95,12 +94,6 @@ public class FailTask implements CommandExecutor {
         }
 
         removeBook(player);
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-
-        // if it's a hard task, continuous new tasks1!!!
-        if (tempPlayer.getLives() == 1) {
-            Bukkit.dispatchCommand(console, "newtask " + tempPlayer.getName() + " normal");
-        }
 
         // players don't get punished in this instance
         if (punishment == 0) {

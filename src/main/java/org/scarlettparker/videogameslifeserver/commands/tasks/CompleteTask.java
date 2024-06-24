@@ -82,7 +82,6 @@ public class CompleteTask implements CommandExecutor {
             tokensIncrease = 15;
         } else if (difficulty == 2) {
             tokensIncrease = 3;
-            tempTask.setExcluded(false);
         } else if (difficulty == 3) {
             tokensIncrease = 9;
         }
@@ -117,16 +116,8 @@ public class CompleteTask implements CommandExecutor {
             tempPlayer.setPunishments(new String[0]);
         }
 
-        // if it's a hard task, continuous new tasks1!!!
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-
         // remove book from player
         removeBook(player);
-
-        if (tempPlayer.getLives() == 1) {
-            Bukkit.dispatchCommand(console, "newtask " + tempPlayer.getName() + " normal");
-        }
-
         return true;
     }
 }

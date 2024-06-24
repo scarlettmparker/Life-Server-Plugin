@@ -23,6 +23,9 @@ commands:
   completetask:
     description: Completes a player's task.
     usage: /<command> player
+  currenttask:
+    description: Shows a player's task.
+    usage: /<command> player
   deletetask:
     description: Deletes a task.
     usage: /<command> taskID
@@ -44,6 +47,9 @@ commands:
   forcetask:
     description: Force a player's next task.
     usage: /<command> player taskID
+  filltasks:
+    description: Give tasks to players without a task.
+    usage: /<command>
   listtasks:
     description: Lists all (non-excluded) tasks.
     usage: /<command> [allowed|excluded]
