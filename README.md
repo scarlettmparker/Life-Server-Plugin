@@ -52,7 +52,7 @@ There are a base 101 tasks that come with the plugin set-up. You may use the com
 - **Description**: Displays the player's current task. Admins will see excluded players.
 - **Usage**: `/whattask`
 
-### /whatttask <task>
+### /whattask task
 - **Description**: Admin only command to see task difficulty and description by task ID.
 
 ### /tokens
@@ -205,7 +205,7 @@ There are 4 different punishments that will be randomly given upon failing a har
 
 ### Here are some example usages of the commands
 - To give a life to a player named Scarlett: `/givelife Scarlett`
-- To set the number of lives for a player named Scarlett to 5: `/setlife Scarlett 5`
+- To set the number of lives for a player named Scarlett to 5: `/setpunishment Scarlett 5`
 - To set the punishment for a player named Scarlett: `/setlife Scarlett knockback`
 - To add a new task: `/addtask`, and follow through the steps message by message.
 - To clear the task of a player named Scarlett: `/cleartask Scarlett`
