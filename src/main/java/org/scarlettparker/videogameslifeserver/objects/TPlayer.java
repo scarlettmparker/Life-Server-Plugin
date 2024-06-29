@@ -62,6 +62,15 @@ public class TPlayer {
         setJsonObjectAttribute(playerFile, name, "tagged", tagged);
     }
 
+    public boolean getInfected() {
+        Object infected = getJsonObjectAttribute(playerFile, name, "infected");
+        return infected instanceof Boolean && (boolean) infected;
+    }
+
+    public void setInfected(boolean infected) {
+        setJsonObjectAttribute(playerFile, name, "infected", infected);
+    }
+
     public String getCurrentTask() {
         Object currentTask = getJsonObjectAttribute(playerFile, name, "currentTask");
         return currentTask instanceof String ? (String) currentTask : "-1"; // default value is -1

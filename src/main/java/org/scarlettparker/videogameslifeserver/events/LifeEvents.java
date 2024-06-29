@@ -81,7 +81,31 @@ public class LifeEvents implements Listener {
 
             // change death message
             String deathMessage = event.getDeathMessage();
+            TPlayer infectedPlayer = null;
+
             for (Player p : getAllPlayers()) {
+                // test if player is infected
+                TPlayer testInfected = new TPlayer(p.getName());
+                if (testInfected.getInfected()) {
+                    infectedPlayer = testInfected;
+                }
+            }
+
+            for (Player p : getAllPlayers()) {
+                // inform the player that they are infected
+                TPlayer testPlayer = new TPlayer(p.getName());
+                if (infectedPlayer != null && deathMessage.contains(infectedPlayer.getName())
+                        && deathMessage.contains(p.getName()) && !p.getName().equals(infectedPlayer.getName())
+                        && !testPlayer.getInfected()) {
+                    p.sendMessage(ChatColor.RED + "You have been infected. Help other infected players kill " +
+                            "green players and bring them down to a yellow life. You cannot help to defend " +
+                            "uninfected players.");
+                    testPlayer.setInfected(true);
+                }
+            }
+
+            for (Player p : getAllPlayers()) {
+                // change chat death message
                 if (deathMessage.contains(p.getName())) {
                     if (tempPlayer.getLives() < 1) {
                         deathMessage = "";

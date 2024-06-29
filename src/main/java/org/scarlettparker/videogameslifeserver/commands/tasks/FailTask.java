@@ -17,6 +17,7 @@ import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.json
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
 import static org.scarlettparker.videogameslifeserver.manager.PunishmentManager.assignRandomPunishment;
 import static org.scarlettparker.videogameslifeserver.utils.PunishmentUtils.applyPunishment;
+import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.clearInfection;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 
 public class FailTask implements CommandExecutor {
@@ -63,7 +64,6 @@ public class FailTask implements CommandExecutor {
         }
 
         // so it doesnt show up when session starts
-
         if (args.length < 2 || !Objects.equals(args[1], "dbg")) {
             player.sendMessage(ChatColor.RED + "You have failed your task."
                     + ChatColor.WHITE + " Select a new task by right clicking a sign at spawn.");
@@ -72,6 +72,10 @@ public class FailTask implements CommandExecutor {
             Bukkit.broadcastMessage(player.getName() + " has" + ChatColor.RED + " failed their task" + ChatColor.WHITE
                     + ": " + ChatColor.WHITE + tempPlayer.getTaskDescription());
             tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
+        }
+
+        if (Objects.equals(tempPlayer.getCurrentTask(), "infection")) {
+            clearInfection();
         }
 
         tempPlayer.setCurrentTask("-1");

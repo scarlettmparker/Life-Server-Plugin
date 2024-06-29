@@ -1,5 +1,7 @@
 package org.scarlettparker.videogameslifeserver.utils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +16,9 @@ import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import org.scarlettparker.videogameslifeserver.objects.Task;
 
 import java.util.*;
+
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerFile;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.returnAllObjects;
 
 public class WorldUtils {
     static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("VideoGamesLifeServer");
@@ -137,6 +142,10 @@ public class WorldUtils {
                 p.getInventory().addItem(createTrackingCompass());
                 p.sendMessage(ChatColor.YELLOW + "You've received a tracking compass! Right click to locate a player (does not auto-update).");
             }
+        }
+
+        if (Objects.equals(task.getName(), "infection")) {
+            tempPlayer.setInfected(true);
         }
     }
 
@@ -275,6 +284,24 @@ public class WorldUtils {
 
         meta.setPages(pages);
         book.setItemMeta(meta);
+    }
+
+    public static void clearInfection() {
+        JsonObject allPlayers = returnAllObjects(playerFile);
+        for (String key : allPlayers.keySet()) {
+            JsonElement element = allPlayers.get(key);
+            if (element.isJsonObject()) {
+                JsonObject jsonObject = element.getAsJsonObject();
+                if (jsonObject.has("name")) {
+                    String name = jsonObject.get("name").getAsString();
+                    TPlayer infectedPlayer = new TPlayer(name);
+                    infectedPlayer.setInfected(false);
+                    if (Bukkit.getPlayer(name) != null) {
+                        Bukkit.getPlayer(name).sendMessage(ChatColor.GREEN + "You have been cured of the infection.");
+                    }
+                }
+            }
+        }
     }
 
     private static ItemStack createTrackingCompass() {

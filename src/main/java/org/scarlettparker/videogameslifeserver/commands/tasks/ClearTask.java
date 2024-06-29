@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.scarlettparker.videogameslifeserver.objects.TPlayer;
@@ -15,7 +14,6 @@ import org.scarlettparker.videogameslifeserver.objects.TPlayer;
 import java.util.Objects;
 
 import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
-import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.getAllPlayers;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 
 public class ClearTask implements CommandExecutor {

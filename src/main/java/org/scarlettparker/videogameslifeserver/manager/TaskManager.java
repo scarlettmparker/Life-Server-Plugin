@@ -122,6 +122,7 @@ public class TaskManager {
                     .sorted(Comparator.reverseOrder()) // higher priority tasks come first
                     .forEach(priority -> {
                         List<String> priorityTasks = tasksByPriority.get(priority);
+                        Collections.shuffle(priorityTasks); // shuffle the tasks within the priority group
                         shuffledTaskIDs.addAll(priorityTasks);
                     });
 
@@ -299,13 +300,19 @@ public class TaskManager {
             addTaskToPlayer(tPlayer, task.getName());
 
             if (Objects.equals(task.getName(), "socialdeduction") && i == 1) {
-                currentPlayer.sendMessage(ChatColor.RED + "You are the impostor. You will be playing a social deduction game "
-                        + "with others, but once a player dies in the game - rush towards them and kill them in Minecraft.");
+                currentPlayer.sendMessage(ChatColor.RED + "You are the impostor. You will be playing a social deduction game"
+                        + ", but once a player dies, rush towards them and kill them. If you die in the game, you "
+                        + "lose. If you succeed in killing - you pass and that player fails.");
                 tPlayer.setCurrentTask("impostor");
-
-                // update description
                 Task impostorTask = new Task("impostor");
-                tPlayer.setTaskDescription(impostorTask.getDescription());
+
+                // set new impostor description later so it doesn't affect the book
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        tPlayer.setTaskDescription(impostorTask.getDescription());
+                    }
+                }.runTaskLater(plugin, 60 * 20);
             }
         }
 

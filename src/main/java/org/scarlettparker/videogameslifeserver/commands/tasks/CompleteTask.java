@@ -1,5 +1,7 @@
 package org.scarlettparker.videogameslifeserver.commands.tasks;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,10 +16,11 @@ import org.scarlettparker.videogameslifeserver.objects.Task;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.jsonFileExists;
-import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.taskFile;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.*;
+import static org.scarlettparker.videogameslifeserver.manager.ConfigManager.playerFile;
 import static org.scarlettparker.videogameslifeserver.utils.FragilityListener.unregisterFragility;
 import static org.scarlettparker.videogameslifeserver.utils.KnockbackListener.unregisterKnockback;
+import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.clearInfection;
 import static org.scarlettparker.videogameslifeserver.utils.WorldUtils.removeBook;
 
 public class CompleteTask implements CommandExecutor {
@@ -94,6 +97,11 @@ public class CompleteTask implements CommandExecutor {
 
         tempPlayer.setTokens(tempPlayer.getTokens() + tokensIncrease);
         tempPlayer.setSessionTasks(tempPlayer.getSessionTasks() + 1);
+
+        if (Objects.equals(tempPlayer.getCurrentTask(), "infection")) {
+            clearInfection();
+        }
+
         tempPlayer.setCurrentTask("-1");
         tempPlayer.setNextTask("-1");
 
